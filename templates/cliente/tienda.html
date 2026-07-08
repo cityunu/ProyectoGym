@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}| Tienda{% endblock %}
+
+{% block content %}
+<section class="min-h-screen bg-gym-black pt-32 pb-20 px-6 sm:px-10">
+  <div class="max-w-7xl mx-auto">
+
+    <div class="reveal flex items-center justify-between flex-wrap gap-4 mb-12">
+      <div>
+        <p class="text-gym-red text-sm font-semibold uppercase tracking-widest mb-2">Complementa tu entrenamiento</p>
+        <h1 class="font-display text-5xl text-white tracking-wide">Tienda</h1>
+      </div>
+      <a href="{% url 'cliente:ver_carrito' %}" class="flex items-center gap-2 border border-white/20 text-white font-semibold px-6 py-3 rounded-lg uppercase tracking-wider text-sm hover:border-gym-red hover:text-gym-red transition-all duration-200">
+        <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+        Ver carrito
+      </a>
+    </div>
+
+    {% if productos %}
+    <div class="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for producto in productos %}
+      <div class="bg-gym-surface border border-white/5 rounded-2xl overflow-hidden hover:border-gym-red/30 transition-all duration-300">
+        {% if producto.imagen %}
+        <div class="h-48 overflow-hidden">
+          <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="w-full h-full object-cover" width="400" height="300" loading="lazy">
+        </div>
+        {% endif %}
+        <div class="p-6">
+          <h3 class="font-display text-xl text-white tracking-wide mb-1">{{ producto.nombre }}</h3>
+          <p class="text-white/50 text-sm mb-4">{{ producto.descripcion }}</p>
+          <div class="flex items-center justify-between mb-4">
+            <span class="font-display text-2xl text-white">${{ producto.precio }}</span>
+            <span class="text-xs text-gym-gold border border-gym-gold/30 rounded-full px-3 py-0.5">{{ producto.stock }} disponibles</span>
+          </div>
+          <form method="post" action="{% url 'cliente:agregar_al_carrito' producto.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="w-full bg-gym-red hover:bg-red-700 text-white font-semibold py-3 rounded-lg uppercase tracking-wider text-sm transition-all duration-200">
+              Agregar al carrito
+            </button>
+          </form>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-white/50 text-center py-20">No hay productos disponibles por el momento.</p>
+    {% endif %}
+
+    <a href="{% url 'cliente:inicio' %}" class="inline-block mt-10 text-sm font-semibold text-white/60 hover:text-gym-red uppercase tracking-wider">
+      ← Volver al panel
+    </a>
+  </div>
+</section>
+{% endblock %}

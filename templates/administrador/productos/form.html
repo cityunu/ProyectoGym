@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}| {{ titulo }}{% endblock %}
+
+{% block content %}
+<section class="min-h-screen bg-gym-black pt-32 pb-20 px-6 sm:px-10">
+  <div class="max-w-2xl mx-auto">
+    <h1 class="font-display text-4xl text-white tracking-wide mb-10">{{ titulo }}</h1>
+
+    <form method="post" enctype="multipart/form-data" class="reveal bg-gym-surface border border-white/10 rounded-2xl p-8 space-y-6">
+      {% csrf_token %}
+      {% for field in form %}
+      <div>
+        <label class="block text-white/70 text-sm font-medium mb-2">{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}<p class="text-white/30 text-xs mt-1">{{ field.help_text }}</p>{% endif %}
+        {% if field.errors %}<p class="text-gym-red text-xs mt-1">{{ field.errors.0 }}</p>{% endif %}
+      </div>
+      {% endfor %}
+
+      {% if form.instance.imagen %}
+      <div>
+        <p class="text-white/50 text-xs mb-2">Imagen actual:</p>
+        <img src="{{ form.instance.imagen.url }}" alt="{{ form.instance.nombre }}" class="w-32 h-32 object-cover rounded-lg">
+      </div>
+      {% endif %}
+
+      <div class="flex gap-4 pt-4">
+        <button type="submit" class="flex-1 bg-gym-red hover:bg-red-700 text-white font-semibold py-3 rounded-lg uppercase tracking-wider transition-all duration-200">
+          Guardar
+        </button>
+        <a href="{% url 'administrador:lista_productos' %}" class="flex-1 text-center border border-white/20 text-white font-semibold py-3 rounded-lg uppercase tracking-wider hover:border-gym-red hover:text-gym-red transition-all duration-200">
+          Cancelar
+        </a>
+      </div>
+    </form>
+  </div>
+</section>
+
+<style>
+  .form-input {
+    width: 100%;
+    background: #171614;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    color: white;
+    font-size: 0.875rem;
+  }
+  .form-input:focus { outline: none; border-color: #dc2626; }
+  input[type="checkbox"] { width: auto; accent-color: #dc2626; margin-right: 0.5rem; }
+</style>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}| Compra exitosa{% endblock %}
+
+{% block content %}
+<section class="min-h-screen bg-gym-black pt-32 pb-20 px-6 sm:px-10 flex items-center justify-center">
+  <div class="reveal max-w-lg w-full bg-gym-surface border border-white/10 rounded-2xl p-10 text-center">
+    <div class="w-16 h-16 rounded-full bg-gym-red/10 flex items-center justify-center mx-auto mb-6">
+      <i data-lucide="check-circle" class="w-8 h-8 text-gym-red"></i>
+    </div>
+    <h1 class="font-display text-4xl text-white tracking-wide mb-3">¡Compra realizada!</h1>
+    <p class="text-white/50 text-sm mb-8">Recoge tus productos en recepción.</p>
+
+    <div class="text-left space-y-3 mb-8">
+      {% for item in items %}
+      <div class="flex justify-between text-sm text-white/70">
+        <span>{{ item.producto.nombre }} x{{ item.cantidad }}</span>
+        <span>${{ item.subtotal }}</span>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="border-t border-white/10 pt-4 mb-8">
+      <span class="font-display text-2xl text-white">Total: ${{ total }}</span>
+    </div>
+
+    <a href="{% url 'cliente:inicio' %}" class="inline-block bg-gym-red hover:bg-red-700 text-white font-semibold px-8 py-3 rounded-lg uppercase tracking-wider transition-all duration-200">
+      Volver al panel
+    </a>
+  </div>
+</section>
+{% endblock %}

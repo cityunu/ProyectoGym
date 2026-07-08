@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% block title %}| Registro{% endblock %}
+
+{% block content %}
+<section class="auth-page">
+  <div class="auth-shell">
+    <div class="auth-side">
+      <div class="auth-side-content reveal">
+        <div class="auth-brand">
+          <div class="auth-brand-mark">M</div>
+          <div class="auth-brand-copy">
+            <strong>MYGYM</strong>
+            <span>Performance Club</span>
+          </div>
+        </div>
+
+        <div class="auth-side-text">
+          <div class="auth-kicker">Registro de clientes</div>
+          <h1>Construye tu <span>mejor versión</span>.</h1>
+          <p>
+            Crea tu cuenta y entra al ecosistema MyGym con acceso digital,
+            membresías y una experiencia mucho más seria y profesional.
+          </p>
+        </div>
+
+        <div class="auth-side-stats">
+          <div class="auth-stat">
+            <strong>3</strong>
+            <span>Planes</span>
+          </div>
+          <div class="auth-stat">
+            <strong>50+</strong>
+            <span>Máquinas</span>
+          </div>
+          <div class="auth-stat">
+            <strong>10+</strong>
+            <span>Coaches</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="auth-panel-wrap">
+      <div class="auth-panel reveal">
+        <div class="auth-card">
+          <div class="auth-card-body">
+            <span class="auth-topline">Nuevo acceso</span>
+            <h2 class="auth-title">Crea tu cuenta</h2>
+            <p class="auth-subtitle">
+              Completa tus datos para registrarte como cliente.
+            </p>
+
+            {% if form.non_field_errors %}
+              <ul class="auth-errors">
+                {% for error in form.non_field_errors %}
+                  <li>{{ error }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+            <form method="post" class="auth-form">
+              {% csrf_token %}
+
+              <div class="auth-grid-2">
+                <div class="auth-field">
+                  <label for="{{ form.first_name.id_for_label }}">Nombre</label>
+                  {{ form.first_name }}
+                  {% if form.first_name.errors %}
+                    <ul class="auth-field-errors">
+                      {% for error in form.first_name.errors %}
+                        <li>{{ error }}</li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </div>
+
+                <div class="auth-field">
+                  <label for="{{ form.last_name.id_for_label }}">Apellido</label>
+                  {{ form.last_name }}
+                  {% if form.last_name.errors %}
+                    <ul class="auth-field-errors">
+                      {% for error in form.last_name.errors %}
+                        <li>{{ error }}</li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </div>
+              </div>
+
+              <div class="auth-grid-2">
+                <div class="auth-field">
+                  <label for="{{ form.username.id_for_label }}">Usuario</label>
+                  {{ form.username }}
+                  {% if form.username.help_text %}
+                    <small class="auth-help">{{ form.username.help_text|safe }}</small>
+                  {% endif %}
+                  {% if form.username.errors %}
+                    <ul class="auth-field-errors">
+                      {% for error in form.username.errors %}
+                        <li>{{ error }}</li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </div>
+
+                <div class="auth-field">
+                  <label for="{{ form.telefono.id_for_label }}">Teléfono</label>
+                  {{ form.telefono }}
+                  {% if form.telefono.help_text %}
+                    <small class="auth-help">{{ form.telefono.help_text|safe }}</small>
+                  {% endif %}
+                  {% if form.telefono.errors %}
+                    <ul class="auth-field-errors">
+                      {% for error in form.telefono.errors %}
+                        <li>{{ error }}</li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </div>
+              </div>
+
+              <div class="auth-field">
+                <label for="{{ form.email.id_for_label }}">Correo electrónico</label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                  <ul class="auth-field-errors">
+                    {% for error in form.email.errors %}
+                      <li>{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              </div>
+
+              <div class="auth-grid-2">
+                <div class="auth-field">
+                  <label for="{{ form.password1.id_for_label }}">Contraseña</label>
+                  {{ form.password1 }}
+                  {% if form.password1.help_text %}
+                    <small class="auth-help">{{ form.password1.help_text|safe }}</small>
+                  {% endif %}
+                  {% if form.password1.errors %}
+                    <ul class="auth-field-errors">
+                      {% for error in form.password1.errors %}
+                        <li>{{ error }}</li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </div>
+
+                <div class="auth-field">
+                  <label for="{{ form.password2.id_for_label }}">Confirmar contraseña</label>
+                  {{ form.password2 }}
+                  {% if form.password2.help_text %}
+                    <small class="auth-help">{{ form.password2.help_text|safe }}</small>
+                  {% endif %}
+                  {% if form.password2.errors %}
+                    <ul class="auth-field-errors">
+                      {% for error in form.password2.errors %}
+                        <li>{{ error }}</li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </div>
+              </div>
+
+              <button type="submit" class="auth-submit">Crear cuenta</button>
+            </form>
+
+            <div class="auth-divider"></div>
+
+            <div class="auth-links">
+              <span class="auth-help">¿Ya tienes cuenta?</span>
+              <a href="{% url 'login' %}">Iniciar sesión</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

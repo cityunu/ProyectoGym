@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}| Membresías{% endblock %}
+
+{% block content %}
+<section class="min-h-screen bg-gym-black pt-32 pb-20 px-6 sm:px-10">
+  <div class="max-w-6xl mx-auto">
+
+    <div class="reveal mb-12">
+      <h1 class="font-display text-5xl text-white tracking-wide">Gestión de membresías</h1>
+      <p class="text-white/50 text-sm mt-2">Actualiza precio, descripción y disponibilidad de cada plan.</p>
+    </div>
+
+    <div class="reveal grid grid-cols-1 sm:grid-cols-3 gap-6">
+      {% for tipo in tipos %}
+      <div class="bg-gym-surface border border-white/10 rounded-2xl p-6">
+        <p class="text-gym-gold text-xs uppercase tracking-widest font-semibold mb-1">{{ tipo.get_nombre_display }}</p>
+        <p class="font-display text-3xl text-white mb-4">${{ tipo.precio }}</p>
+
+        <form method="post" class="space-y-4">
+          {% csrf_token %}
+          <input type="hidden" name="tipo_id" value="{{ tipo.id }}">
+
+          <div>
+            <label class="block text-white/60 text-xs uppercase tracking-wider mb-1">Nuevo precio</label>
+            <input type="number" name="precio" step="0.01" value="{{ tipo.precio }}" required class="form-input">
+          </div>
+
+          <div>
+            <label class="block text-white/60 text-xs uppercase tracking-wider mb-1">Descripción</label>
+            <textarea name="descripcion" rows="3" class="form-input">{{ tipo.descripcion }}</textarea>
+          </div>
+
+          <label class="flex items-center gap-2 text-white/70 text-sm">
+            <input type="checkbox" name="activo" {% if tipo.activo %}checked{% endif %} class="accent-gym-red">
+            Plan activo
+          </label>
+
+          <button type="submit" class="w-full bg-gym-red hover:bg-red-700 text-white font-semibold py-2.5 rounded-lg uppercase tracking-wider text-sm transition-all duration-200">
+            Actualizar
+          </button>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+
+    <a href="{% url 'administrador:inicio' %}" class="inline-block mt-10 text-sm font-semibold text-white/60 hover:text-gym-red uppercase tracking-wider">
+      ← Volver al panel
+    </a>
+  </div>
+</section>
+
+<style>
+  .form-input {
+    width: 100%;
+    background: #171614;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    color: white;
+    font-size: 0.875rem;
+  }
+  .form-input:focus { outline: none; border-color: #dc2626; }
+</style>
+{% endblock %}

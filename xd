@@ -1,0 +1,170 @@
+Prueba
+Usuario123?
+
+Administrador
+Grandecesar123
+
+
+from django.shortcuts import render
+
+def home(request):
+    servicios = [
+        {"icono": "dumbbell",    "nombre": "Musculación",           "descripcion": "Área de pesas libres y máquinas para desarrollar fuerza, hipertrofia y resistencia muscular."},
+        {"icono": "zap",         "nombre": "Cardio",                "descripcion": "Zona equipada con caminadoras, elípticas y bicicletas estacionarias de última generación."},
+        {"icono": "users",       "nombre": "Clases Grupales",       "descripcion": "Spinning, CrossFit, Zumba, Yoga y más. Grupos pequeños para atención personalizada."},
+        {"icono": "shield",      "nombre": "Entrenamiento Personal","descripcion": "Sesiones uno a uno con coaches certificados, plan nutricional y seguimiento continuo."},
+        {"icono": "trending-up", "nombre": "Nutrición",             "descripcion": "Asesoría nutricional, planes de dieta personalizados y suplementación especializada."},
+        {"icono": "award",       "nombre": "Fisiculturismo",        "descripcion": "Programa de competencia para atletas de alto rendimiento. Prep, posing y estrategia."},
+    ]
+
+    planes = [
+        {
+            "nombre": "Básico", "precio": "299", "destacado": False,
+            "descripcion": "Ideal para comenzar tu transformación.",
+            "beneficios": ["Acceso sala de musculación", "Zona cardio ilimitada", "Casillero incluido", "1 clase grupal/semana", "Evaluación inicial"],
+        },
+        {
+            "nombre": "Pro", "precio": "549", "destacado": True,
+            "descripcion": "El más completo para resultados reales.",
+            "beneficios": ["Todo lo del plan Básico", "Clases grupales ilimitadas", "2 sesiones con coach/mes", "Asesoría nutricional", "Acceso 24/7", "App de seguimiento"],
+        },
+        {
+            "nombre": "Elite", "precio": "999", "destacado": False,
+            "descripcion": "Para atletas que no aceptan límites.",
+            "beneficios": ["Todo lo del plan Pro", "Entrenamiento personal diario", "Plan nutricional personalizado", "Suplementos incluidos", "Prep para competencia", "Coach dedicado"],
+        },
+    ]
+
+    categorias_maquinas = [
+    {"nombre": "Todas",       "slug": "todas"},
+    {"nombre": "Cardio",      "slug": "cardio"},
+    {"nombre": "Fuerza",      "slug": "fuerza"},
+    {"nombre": "Funcional",   "slug": "funcional"},
+    {"nombre": "Máquinas",    "slug": "maquinas"},
+    {"nombre": "Accesorios",  "slug": "accesorios"},
+    {"nombre": "Recuperación","slug": "recuperacion"},
+    ]
+
+    maquinas = [
+
+    # ── CARDIO ──────────────────────────────────────────────────────────────────
+    {"icono": "activity",         "nombre": "Caminadora Pro",           "descripcion": "15 niveles de inclinación motorizada, velocidad 0.8–22 km/h, pantalla HD, USB y altavoces.",             "categoria": "cardio",      "categoria_label": "Cardio"},
+    {"icono": "circle",           "nombre": "Bicicleta Estática",       "descripcion": "24 niveles de resistencia magnética, asiento ergonómico, Bluetooth, compatible con Zwift.",               "categoria": "cardio",      "categoria_label": "Cardio"},
+    {"icono": "wind",             "nombre": "Elíptica Cross Trainer",   "descripcion": "Zancada ajustable 40–53 cm, 25 niveles de resistencia, movimiento de cero impacto articular.",            "categoria": "cardio",      "categoria_label": "Cardio"},
+    {"icono": "target",           "nombre": "Rowing Machine",           "descripcion": "Remo ergómetro de aire Concept2, monitor PM5, seguimiento de splits y vatios en tiempo real.",             "categoria": "cardio",      "categoria_label": "Cardio"},
+    {"icono": "zap",              "nombre": "Assault Bike",             "descripcion": "Bicicleta de aire sin límite de resistencia, ideal para Tabata e intervalos de máxima intensidad.",        "categoria": "cardio",      "categoria_label": "Cardio"},
+    {"icono": "trending-up",      "nombre": "StairMaster",              "descripcion": "Escaladora de escalones reales, 20 velocidades, quema hasta 800 kcal/h, pantalla HDTV.",                  "categoria": "cardio",      "categoria_label": "Cardio"},
+    {"icono": "radio",            "nombre": "Bicicleta Spinning",       "descripcion": "Volante de inercia 22 kg, resistencia por fricción y magnética, manubrio y sillín multi-posición.",        "categoria": "cardio",      "categoria_label": "Cardio"},
+    {"icono": "navigation",       "nombre": "Ski Erg",                  "descripcion": "Simulador de esquí nórdico Concept2, trabajo de cuerpo completo, monitor PM5.",                           "categoria": "cardio",      "categoria_label": "Cardio"},
+    {"icono": "repeat",           "nombre": "Versa Climber",            "descripcion": "Escaladora vertical de movimiento alterno, 0 impacto, activa 96% de la musculatura corporal.",             "categoria": "cardio",      "categoria_label": "Cardio"},
+    {"icono": "chevrons-up",      "nombre": "Jacob's Ladder",           "descripcion": "Escalera sin fin a 40°, autopropulsada por el usuario, intensidad proporcional al esfuerzo.",              "categoria": "cardio",      "categoria_label": "Cardio"},
+
+    # ── FUERZA LIBRE ────────────────────────────────────────────────────────────
+    {"icono": "dumbbell",         "nombre": "Rack Squat / Power Rack",  "descripcion": "Jaula completa, 16 posiciones J-hooks, argollas de landmine, capacidad 700 kg, barras incluidas.",        "categoria": "fuerza",      "categoria_label": "Fuerza"},
+    {"icono": "minus",            "nombre": "Banco Ajustable FID",      "descripcion": "Plano, inclinado y declinado (-15° a +85°), ruedas de transporte, capacidad 320 kg.",                     "categoria": "fuerza",      "categoria_label": "Fuerza"},
+    {"icono": "align-center",     "nombre": "Mancuernas 2–60 kg",       "descripcion": "Set completo en pares, hierro fundido con recubrimiento de goma, soporte en A incluido.",                  "categoria": "fuerza",      "categoria_label": "Fuerza"},
+    {"icono": "box",              "nombre": "Máquina Smith",            "descripcion": "Guías de acero inoxidable, contrapeso balanceado 15 kg, seguros de seguridad en todo el recorrido.",       "categoria": "fuerza",      "categoria_label": "Fuerza"},
+    {"icono": "arrow-up",         "nombre": "Prensa de Pierna 45°",     "descripcion": "Plataforma antideslizante XL, topes de seguridad dobles, capacidad 680 kg.",                              "categoria": "fuerza",      "categoria_label": "Fuerza"},
+    {"icono": "anchor",           "nombre": "Peso Muerto Trap Bar",     "descripcion": "Barra hexagonal de acero 25 kg, asas altas y bajas, capacidad 300 kg, distribución central de carga.",     "categoria": "fuerza",      "categoria_label": "Fuerza"},
+    {"icono": "git-branch",       "nombre": "GHD – Glute Ham Developer","descripcion": "Desarrollo de isquiotibiales, glúteos y core. Acolchado de alta densidad, ajuste en 5 posiciones.",       "categoria": "fuerza",      "categoria_label": "Fuerza"},
+    {"icono": "cpu",              "nombre": "Hip Thrust Machine",       "descripcion": "Máquina exclusiva para empuje de cadera, cojín lumbar, pila de 150 kg, enfoque glúteo máximo.",           "categoria": "fuerza",      "categoria_label": "Fuerza"},
+    {"icono": "sliders",          "nombre": "Barra Olímpica + Discos",  "descripcion": "Barras olímpicas 20 kg y 15 kg (mujer), discos de goma calibrados de 1.25 a 25 kg.",                      "categoria": "fuerza",      "categoria_label": "Fuerza"},
+    {"icono": "maximize",         "nombre": "Banco Scott (Curl Bíceps)","descripcion": "Cojín inclinado anatómico, soporte de barra integrado, ideal para aislamiento de bíceps.",               "categoria": "fuerza",      "categoria_label": "Fuerza"},
+
+    # ── MÁQUINAS GUIADAS ────────────────────────────────────────────────────────
+    {"icono": "layers",           "nombre": "Multiestación 8 en 1",     "descripcion": "Jalón, remo, press pecho, curl, tríceps, fondos, polea alta y baja. Pila 100 kg por estación.",            "categoria": "maquinas",    "categoria_label": "Máquinas"},
+    {"icono": "maximize",         "nombre": "Jalón Polea Alta",         "descripcion": "Pila 120 kg, rodamientos de alta precisión, barra recta, cuerda y barra en V incluidas.",                  "categoria": "maquinas",    "categoria_label": "Máquinas"},
+    {"icono": "shield",           "nombre": "Hack Squat 45°",           "descripcion": "Guías de acero cromado, plataforma XL antideslizante, cojines de hombro acolchados, 400 kg.",              "categoria": "maquinas",    "categoria_label": "Máquinas"},
+    {"icono": "corner-down-right","nombre": "Extensión de Cuádriceps",  "descripcion": "Silla biomecánica ajustable en 5 puntos, rango de movimiento completo, pila 80 kg.",                       "categoria": "maquinas",    "categoria_label": "Máquinas"},
+    {"icono": "corner-up-left",   "nombre": "Curl de Isquiotibiales",   "descripcion": "Modalidad decúbito prono, rodillo anatómico ajustable, pila 80 kg.",                                       "categoria": "maquinas",    "categoria_label": "Máquinas"},
+    {"icono": "arrow-right",      "nombre": "Aductores / Abductores",   "descripcion": "Asiento y respaldo ajustable, rango de movimiento regulable, pila 80 kg. Trabaja ambos grupos.",           "categoria": "maquinas",    "categoria_label": "Máquinas"},
+    {"icono": "rotate-cw",        "nombre": "Press Pecho Convergente",  "descripcion": "Movimiento convergente que imita el press con mancuernas, pila 100 kg, asas ajustables en altura.",        "categoria": "maquinas",    "categoria_label": "Máquinas"},
+    {"icono": "send",             "nombre": "Pec Deck / Mariposa",      "descripcion": "Movimiento de apertura/cierre pectoral, cojines ergonómicos, pila 80 kg.",                                 "categoria": "maquinas",    "categoria_label": "Máquinas"},
+    {"icono": "triangle",         "nombre": "Press Hombro Guiado",      "descripcion": "Arco de movimiento anatómico, asiento ajustable, asas rotativas, pila 80 kg.",                             "categoria": "maquinas",    "categoria_label": "Máquinas"},
+    {"icono": "move",             "nombre": "Remo Horizontal Guiado",   "descripcion": "Pecho pad inclinado, agarre neutro y prono, pila 100 kg, excelente para dorsal.",                          "categoria": "maquinas",    "categoria_label": "Máquinas"},
+    {"icono": "share-2",          "nombre": "Pantorrilla de Pie",       "descripcion": "Plataforma elevada para rango completo, cojines de hombro, pila 200 kg.",                                  "categoria": "maquinas",    "categoria_label": "Máquinas"},
+    {"icono": "crosshair",        "nombre": "Glute Kickback Machine",   "descripcion": "Rodillo para extensión de cadera en cuadrupedia asistida, pila 80 kg, enfoque glúteo.",                    "categoria": "maquinas",    "categoria_label": "Máquinas"},
+
+    # ── FUNCIONAL ───────────────────────────────────────────────────────────────
+    {"icono": "zap",              "nombre": "TRX Suspensión",           "descripcion": "Sistema de suspensión anclado al techo, 300+ ejercicios, ideal para fuerza funcional y movilidad.",        "categoria": "funcional",   "categoria_label": "Funcional"},
+    {"icono": "refresh-cw",       "nombre": "Battle Ropes 15 m",        "descripcion": "Cuerdas de cáñamo 38 mm de diámetro, ancla de pared rotativa, intervalos HIIT.",                           "categoria": "funcional",   "categoria_label": "Funcional"},
+    {"icono": "disc",             "nombre": "Kettlebells 8–48 kg",      "descripcion": "Set completo en intervalos de 4 kg, hierro fundido, agarre texturizado anticorrosión.",                    "categoria": "funcional",   "categoria_label": "Funcional"},
+    {"icono": "square",           "nombre": "Cajones Pliométricos",     "descripcion": "Madera contrachapada 18 mm, alturas 40/50/60 cm, bordes redondeados, superficie antideslizante.",          "categoria": "funcional",   "categoria_label": "Funcional"},
+    {"icono": "sliders",          "nombre": "Barras de Dominadas",      "descripcion": "Estructura independiente, agarres neutro/prono/supino/paralelo, capacidad 250 kg.",                        "categoria": "funcional",   "categoria_label": "Funcional"},
+    {"icono": "globe",            "nombre": "Balón Medicinal 2–20 kg",  "descripcion": "Set completo, superficie de agarre, para lanzamientos, rotaciones y entrenamiento de core.",               "categoria": "funcional",   "categoria_label": "Funcional"},
+    {"icono": "cpu",              "nombre": "Landmine 360°",            "descripcion": "Accesorio rotacional para barras olímpicas, press, remo, sentadilla y rotaciones de core.",                "categoria": "funcional",   "categoria_label": "Funcional"},
+    {"icono": "rotate-cw",        "nombre": "Ab Roller Pro",            "descripcion": "Rueda de doble rodamiento de precisión, estabilizador de rodillas incluido.",                              "categoria": "funcional",   "categoria_label": "Funcional"},
+    {"icono": "compass",          "nombre": "Anillas Olímpicas",        "descripcion": "Madera de fresno laminada, correas de nylon ajustables, ancla al techo hasta 400 kg.",                    "categoria": "funcional",   "categoria_label": "Funcional"},
+    {"icono": "feather",          "nombre": "Bandas de Resistencia",    "descripcion": "Set de 5 niveles (5–60 kg), látex natural, para asistencia en dominadas y activación muscular.",           "categoria": "funcional",   "categoria_label": "Funcional"},
+    {"icono": "bar-chart-2",      "nombre": "Paralelas Fondos",         "descripcion": "Barras paralelas de acero, ancho ajustable, capacidad 200 kg, para fondos y L-sit.",                       "categoria": "funcional",   "categoria_label": "Funcional"},
+
+    # ── ACCESORIOS ──────────────────────────────────────────────────────────────
+    {"icono": "shield",           "nombre": "Cinturones Lumbar",        "descripcion": "Cuero genuino de 10 mm, varios tallas, para sentadilla, peso muerto y press.",                             "categoria": "accesorios",  "categoria_label": "Accesorios"},
+    {"icono": "hand",             "nombre": "Straps y Grips",           "descripcion": "Correas de algodón para jalones, remo y peso muerto. Protegen muñecas y mejoran agarre.",                  "categoria": "accesorios",  "categoria_label": "Accesorios"},
+    {"icono": "loader",           "nombre": "Rodilleras y Muñequeras",  "descripcion": "Neopreno de alta densidad, velcro doble, soporte articular para entrenamiento pesado.",                   "categoria": "accesorios",  "categoria_label": "Accesorios"},
+    {"icono": "hash",             "nombre": "Chalk / Magnesio",         "descripcion": "Carbonato de magnesio en bloque y líquido, zona habilitada para uso libre.",                               "categoria": "accesorios",  "categoria_label": "Accesorios"},
+    {"icono": "monitor",          "nombre": "Espejos de Pared a Pared", "descripcion": "Cubierta total del área de fuerza libre, vidrio de 6 mm, marco de aluminio.",                             "categoria": "accesorios",  "categoria_label": "Accesorios"},
+    {"icono": "battery-charging", "nombre": "Estaciones de Carga USB",  "descripcion": "Puertos USB-A y USB-C en cada zona de entrenamiento, carga rápida 18W.",                                   "categoria": "accesorios",  "categoria_label": "Accesorios"},
+
+    # ── RECUPERACIÓN ────────────────────────────────────────────────────────────
+    {"icono": "thermometer",      "nombre": "Sauna Seco 6 personas",    "descripcion": "Sauna finlandés de madera de cedro, calefactor Harvia 8 kW, temperatura hasta 100°C.",                    "categoria": "recuperacion","categoria_label": "Recuperación"},
+    {"icono": "droplets",         "nombre": "Tina de Crioterapia",      "descripcion": "Inmersión en agua fría 4–15°C, reduce inflamación y acelera recuperación muscular post-entreno.",          "categoria": "recuperacion","categoria_label": "Recuperación"},
+    {"icono": "sun",              "nombre": "Rodillo de Espuma (Foam)", "descripcion": "Set de foam rollers lisos y texturizados de 30–90 cm, para liberación miofascial y movilidad.",           "categoria": "recuperacion","categoria_label": "Recuperación"},
+    {"icono": "heart",            "nombre": "Pistolas de Masaje",       "descripcion": "Theragun Pro disponibles para uso libre, 6 cabezales intercambiables, hasta 2400 ppm.",                    "categoria": "recuperacion","categoria_label": "Recuperación"},
+    {"icono": "moon",             "nombre": "Área de Stretching",       "descripcion": "Zona alfombrada de 40 m², colchonetas de yoga 10 mm, bloques, correas y pelotas de pilates.",             "categoria": "recuperacion","categoria_label": "Recuperación"},
+    {"icono": "wind",             "nombre": "Compresión Neumática",     "descripcion": "Botas NormaTec para recuperación de piernas, 7 cámaras de compresión secuencial, sesiones de 30 min.",    "categoria": "recuperacion","categoria_label": "Recuperación"},
+]
+
+    coaches = [
+        {
+            "nombre": "Carlos Reyes",  "especialidad": "Fisiculturismo & Fuerza",
+            "bio": "Campeón regional IFBB 2023. 8 años formando atletas de competencia.",
+            "certificaciones": ["IFBB", "NSCA"],
+            "foto": "https://pplx-res.cloudinary.com/image/upload/pplx_search_images/ab9fb3422aeed86038cea03a9676ef5c67b60bef.jpg",
+        },
+        {
+            "nombre": "Marco Olvera",  "especialidad": "Powerlifting & Nutrición",
+            "bio": "Ex-powerlifter nacional. Especialista en transformación corporal y periodización.",
+            "certificaciones": ["IPF", "NASM"],
+            "foto": "https://pplx-res.cloudinary.com/image/upload/pplx_search_images/6516ae601b148d4492425776e4cc3a2847edf90d.jpg",
+        },
+        {
+            "nombre": "Luis Herrera",  "especialidad": "CrossFit & Funcional",
+            "bio": "Coach Level 3 CrossFit. Especialista en acondicionamiento físico general.",
+            "certificaciones": ["CF-L3", "FMS"],
+            "foto": "https://pplx-res.cloudinary.com/image/upload/pplx_search_images/ab9fb3422aeed86038cea03a9676ef5c67b60bef.jpg",
+        },
+        {
+            "nombre": "Diego Morales", "especialidad": "Atlético & Cardio",
+            "bio": "Maratonista y triatleta. Especialista en rendimiento aeróbico y pérdida de grasa.",
+            "certificaciones": ["ACSM", "ISSA"],
+            "foto": "https://pplx-res.cloudinary.com/image/upload/pplx_search_images/6516ae601b148d4492425776e4cc3a2847edf90d.jpg",
+        },
+    ]
+
+    galeria = [
+        {"url": "https://pplx-res.cloudinary.com/image/upload/pplx_search_images/9b2d3181e215fbdbb30e5c4abf50b201c7330bf2.jpg",  "alt": "Entrenamiento con pesas"},
+        {"url": "https://pplx-res.cloudinary.com/image/upload/pplx_search_images/d1c71a1a398ee18327cd5916af4d2f0c4563cffe.jpg",  "alt": "Interior del gimnasio"},
+        {"url": "https://pplx-res.cloudinary.com/image/upload/pplx_search_images/e9fc97fd92c86aa428d0a1f2d1e51e60563815b8.jpg",  "alt": "Sesión con entrenador"},
+        {"url": "https://pplx-res.cloudinary.com/image/upload/pplx_search_images/231527df2ef1d98b276594ed89f8fe565c96cde7.jpg",  "alt": "Atleta en máquina"},
+        {"url": "https://pplx-res.cloudinary.com/image/upload/pplx_search_images/c09074f54b8782b129fe382109e482186ffc4310.jpg",  "alt": "Zona de máquinas"},
+        {"url": "https://pplx-res.cloudinary.com/image/upload/pplx_search_images/e354614ff6d66f46c02e2f88ede503344fb1bdd8.jpg",  "alt": "Atleta con kettlebells"},
+        {"url": "https://pplx-res.cloudinary.com/image/upload/pplx_search_images/2bcdb35ea528ad8ea4aa728b734d05c23a06bf2d.jpg",  "alt": "Entrenamiento en pareja"},
+        {"url": "https://pplx-res.cloudinary.com/image/upload/pplx_search_images/99f02540da45219341b9e00e44e1dd1d729df697.jpg",  "alt": "Equipo de coaches"},
+    ]
+
+    testimonios = [
+        {"nombre": "Ana González",  "inicial": "A", "tiempo": "Miembro hace 8 meses", "texto": "Perdí 15 kg en 6 meses con el plan Pro. Los coaches son increíbles, siempre al pendiente de tu progreso."},
+        {"nombre": "Roberto Silva", "inicial": "R", "tiempo": "Miembro hace 1 año",   "texto": "El mejor gimnasio de Morelia sin duda. El equipo es de primera y el ambiente te motiva a dar el 100%."},
+        {"nombre": "Karla Mendoza", "inicial": "K", "tiempo": "Miembro hace 3 meses", "texto": "Empecé de cero y en 3 meses ya noto cambios brutales. Las clases grupales de spinning son adictivas."},
+    ]
+
+    return render(request, "core/home.html", {
+        "servicios": servicios,
+        "planes": planes,
+        "categorias_maquinas": categorias_maquinas,
+        "maquinas": maquinas,
+        "coaches": coaches,
+        "galeria": galeria,
+        "testimonios": testimonios,
+    })

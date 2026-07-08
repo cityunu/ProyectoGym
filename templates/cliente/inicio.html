@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block title %}| Panel del cliente{% endblock %}
+
+{% block content %}
+<section class="min-h-screen bg-gym-black pt-32 pb-20 px-6 sm:px-10">
+  <div class="max-w-7xl mx-auto">
+
+    <div class="reveal mb-12">
+      <p class="text-gym-red text-sm font-semibold uppercase tracking-widest mb-2">Bienvenido de nuevo</p>
+      <h1 class="font-display text-5xl sm:text-6xl text-white tracking-wide">
+        Hola, {{ request.user.first_name|default:request.user.username }}
+      </h1>
+      <p class="text-white/50 text-base mt-3 max-w-xl">
+        Administra tu membresía, tu acceso QR y tus compras desde un solo lugar.
+      </p>
+    </div>
+
+    <div class="reveal grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+
+      <div class="bg-gym-surface border border-white/5 rounded-2xl p-8 hover:border-gym-red/30 transition-all duration-300">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-11 h-11 rounded-lg bg-gym-red/10 flex items-center justify-center">
+            <i data-lucide="badge-check" class="w-5 h-5 text-gym-red"></i>
+          </div>
+          <h3 class="font-display text-2xl text-white tracking-wide">Mi membresía</h3>
+        </div>
+
+        {% if membresia %}
+          <p class="text-white text-lg font-semibold mb-1">{{ membresia.tipo.get_nombre_display }}</p>
+          <p class="text-white/50 text-sm">Vence: {{ membresia.fecha_fin }}</p>
+          <span class="inline-block mt-4 text-xs {% if membresia.activa %}text-gym-gold border-gym-gold/30{% else %}text-white/40 border-white/20{% endif %} border rounded-full px-3 py-1 uppercase tracking-wider">
+            {% if membresia.activa %}Activa{% else %}Inactiva{% endif %}
+          </span>
+        {% else %}
+          <p class="text-white/50 text-sm mb-4">No tienes una membresía activa en este momento.</p>
+          <a href="{% url 'cliente:mi_membresia' %}" class="inline-block text-sm font-semibold text-gym-red hover:text-red-400 uppercase tracking-wider">
+            Elegir un plan →
+          </a>
+        {% endif %}
+      </div>
+
+      <div class="bg-gym-surface border border-white/5 rounded-2xl p-8 hover:border-gym-red/30 transition-all duration-300">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-11 h-11 rounded-lg bg-gym-red/10 flex items-center justify-center">
+            <i data-lucide="shopping-cart" class="w-5 h-5 text-gym-red"></i>
+          </div>
+          <h3 class="font-display text-2xl text-white tracking-wide">Carrito</h3>
+        </div>
+
+        {% if items_carrito > 0 %}
+          <p class="text-white text-lg font-semibold mb-1">{{ items_carrito }} producto{{ items_carrito|pluralize }}</p>
+          <a href="{% url 'cliente:ver_carrito' %}" class="inline-block text-sm font-semibold text-gym-red hover:text-red-400 uppercase tracking-wider mt-2">
+            Ver carrito →
+          </a>
+        {% else %}
+          <p class="text-white/50 text-sm">Tu carrito está vacío por ahora.</p>
+        {% endif %}
+      </div>
+
+    </div>
+
+    <div class="reveal grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <a href="{% url 'cliente:mi_qr' %}"
+         class="flex items-center justify-center gap-2 bg-gym-red hover:bg-red-700 text-white font-semibold py-4 rounded-lg uppercase tracking-wider transition-all duration-200 hover:shadow-lg hover:shadow-gym-red/30">
+        <i data-lucide="qr-code" class="w-4 h-4"></i>
+        Ver mi QR
+      </a>
+
+      <a href="{% url 'cliente:mi_membresia' %}"
+         class="flex items-center justify-center gap-2 border border-white/20 text-white font-semibold py-4 rounded-lg uppercase tracking-wider hover:border-gym-red hover:text-gym-red transition-all duration-200">
+        <i data-lucide="id-card" class="w-4 h-4"></i>
+        Mi membresía
+      </a>
+
+      <a href="{% url 'cliente:tienda' %}"
+         class="flex items-center justify-center gap-2 border border-white/20 text-white font-semibold py-4 rounded-lg uppercase tracking-wider hover:border-gym-red hover:text-gym-red transition-all duration-200">
+        <i data-lucide="store" class="w-4 h-4"></i>
+        Tienda
+      </a>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

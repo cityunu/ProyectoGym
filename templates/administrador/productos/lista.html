@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}| Productos{% endblock %}
+
+{% block content %}
+<section class="min-h-screen bg-gym-black pt-32 pb-20 px-6 sm:px-10">
+  <div class="max-w-6xl mx-auto">
+
+    <div class="reveal flex items-center justify-between flex-wrap gap-4 mb-10">
+      <h1 class="font-display text-5xl text-white tracking-wide">Productos</h1>
+      <a href="{% url 'administrador:agregar_producto' %}"
+         class="bg-gym-red hover:bg-red-700 text-white font-semibold px-6 py-2.5 rounded-lg uppercase tracking-wider text-sm transition-all duration-200">
+        + Agregar producto
+      </a>
+    </div>
+
+    <div class="reveal bg-gym-surface border border-white/10 rounded-2xl overflow-hidden">
+      <table class="w-full text-left text-sm">
+        <thead class="bg-gym-surface-2 text-white/50 uppercase text-xs tracking-wider">
+          <tr>
+            <th class="p-4">Nombre</th>
+            <th class="p-4">Precio</th>
+            <th class="p-4">Stock</th>
+            <th class="p-4">Activo</th>
+            <th class="p-4">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for producto in productos %}
+          <tr class="border-t border-white/5">
+            <td class="p-4 text-white">{{ producto.nombre }}</td>
+            <td class="p-4 text-white/60">${{ producto.precio }}</td>
+            <td class="p-4 {% if producto.stock == 0 %}text-gym-red{% else %}text-white/60{% endif %}">{{ producto.stock }}</td>
+            <td class="p-4">
+              <span class="text-xs {% if producto.activo %}text-gym-gold border-gym-gold/30{% else %}text-white/40 border-white/20{% endif %} border rounded-full px-3 py-0.5 uppercase">
+                {% if producto.activo %}Sí{% else %}No{% endif %}
+              </span>
+            </td>
+            <td class="p-4 flex gap-3">
+              <a href="{% url 'administrador:editar_producto' producto.pk %}" class="text-white/50 hover:text-gym-gold" aria-label="Editar">
+                <i data-lucide="pencil" class="w-4 h-4"></i>
+              </a>
+              <a href="{% url 'administrador:eliminar_producto' producto.pk %}" class="text-white/50 hover:text-gym-red" aria-label="Eliminar">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5" class="p-8 text-center text-white/40">No hay productos registrados.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <a href="{% url 'administrador:inicio' %}" class="inline-block mt-10 text-sm font-semibold text-white/60 hover:text-gym-red uppercase tracking-wider">
+      ← Volver al panel
+    </a>
+  </div>
+</section>
+{% endblock %}

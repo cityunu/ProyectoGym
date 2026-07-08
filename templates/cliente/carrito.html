@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}| Mi carrito{% endblock %}
+
+{% block content %}
+<section class="min-h-screen bg-gym-black pt-32 pb-20 px-6 sm:px-10">
+  <div class="max-w-4xl mx-auto">
+
+    <div class="reveal mb-12">
+      <p class="text-gym-red text-sm font-semibold uppercase tracking-widest mb-2">Revisa antes de comprar</p>
+      <h1 class="font-display text-5xl text-white tracking-wide">Mi carrito</h1>
+    </div>
+
+    {% if items %}
+    <div class="reveal space-y-4 mb-10">
+      {% for item in items %}
+      <div class="bg-gym-surface border border-white/5 rounded-xl p-5 flex items-center justify-between gap-4 flex-wrap">
+        <div>
+          <h3 class="text-white font-semibold">{{ item.producto.nombre }}</h3>
+          <p class="text-white/50 text-sm">Cantidad: {{ item.cantidad }} · ${{ item.producto.precio }} c/u</p>
+        </div>
+        <div class="flex items-center gap-4">
+          <span class="font-display text-xl text-white">${{ item.subtotal }}</span>
+          <form method="post" action="{% url 'cliente:eliminar_del_carrito' item.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="text-white/40 hover:text-gym-red transition-colors" aria-label="Eliminar">
+              <i data-lucide="trash-2" class="w-5 h-5"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="reveal bg-gym-surface border border-white/10 rounded-2xl p-8 flex items-center justify-between flex-wrap gap-4">
+      <span class="font-display text-3xl text-white">Total: ${{ total }}</span>
+      <form method="post" action="{% url 'cliente:confirmar_compra' %}">
+        {% csrf_token %}
+        <button type="submit" class="bg-gym-red hover:bg-red-700 text-white font-semibold px-8 py-4 rounded-lg uppercase tracking-wider transition-all duration-200">
+          Confirmar compra
+        </button>
+      </form>
+    </div>
+    {% else %}
+    <p class="text-white/50 text-center py-20">Tu carrito está vacío.</p>
+    <div class="text-center">
+      <a href="{% url 'cliente:tienda' %}" class="inline-block text-sm font-semibold text-gym-red hover:text-red-400 uppercase tracking-wider">
+        Ir a la tienda →
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}  

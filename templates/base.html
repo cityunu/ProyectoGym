@@ -1,0 +1,164 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyGym {% block title %}{% endblock %}</title>
+  <meta name="theme-color" content="#0b0b0c">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gym: {
+              dark: '#0b0b0c',
+              black: '#111111',
+              surface: '#17171a',
+              red: '#c1121f',
+              gold: '#c8a44d',
+              gray: '#8b8b93'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Cinzel', 'serif']
+          },
+          boxShadow: {
+            glow: '0 20px 50px rgba(193,18,31,.20)',
+            gold: '0 20px 50px rgba(200,164,77,.16)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cinzel:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="bg-gym-dark text-white font-sans selection:bg-gym-red/30">
+  <a class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 bg-gym-gold text-black px-4 py-2 rounded-full z-[999]" href="#contenido">
+    Saltar al contenido
+  </a>
+
+  <header id="navbar" class="fixed top-0 inset-x-0 z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 sm:px-10 py-4">
+      <div class="flex items-center justify-between rounded-2xl border border-white/10 bg-black/40 backdrop-blur-xl px-4 sm:px-6 py-3">
+        <a href="{% url 'landing' %}" class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-xl bg-gym-red flex items-center justify-center text-white font-display text-xl shadow-glow">
+            M
+          </div>
+          <div class="leading-none">
+            <p class="font-display tracking-[0.22em] text-lg">MYGYM</p>
+            <span class="text-[10px] uppercase tracking-[0.35em] text-white/45">Performance Club</span>
+          </div>
+        </a>
+
+        <nav class="hidden lg:flex items-center gap-1">
+          <a href="#hero" class="nav-link px-4 py-2 text-sm text-white/70 hover:text-white transition">Inicio</a>
+          <a href="#servicios" class="nav-link px-4 py-2 text-sm text-white/70 hover:text-white transition">Servicios</a>
+          <a href="#planes" class="nav-link px-4 py-2 text-sm text-white/70 hover:text-white transition">Planes</a>
+          <a href="#maquinas" class="nav-link px-4 py-2 text-sm text-white/70 hover:text-white transition">Equipo</a>
+          <a href="#coaches" class="nav-link px-4 py-2 text-sm text-white/70 hover:text-white transition">Coaches</a>
+          <a href="#galeria" class="nav-link px-4 py-2 text-sm text-white/70 hover:text-white transition">Galería</a>
+          <a href="#contacto" class="nav-link px-4 py-2 text-sm text-white/70 hover:text-white transition">Contacto</a>
+        </nav>
+
+        <div class="hidden lg:flex items-center gap-3">
+          {% if user.is_authenticated %}
+            <a href="{% url 'dashboard' %}" class="px-5 py-2.5 rounded-full border border-white/15 text-white/80 hover:text-white hover:border-gym-red transition">
+              Dashboard
+            </a>
+            <form action="{% url 'logout' %}" method="post" class="inline">
+              {% csrf_token %}
+              <button type="submit" class="px-5 py-2.5 rounded-full bg-gym-red hover:bg-red-700 text-white font-semibold transition shadow-glow">
+                Salir
+              </button>
+            </form>
+          {% else %}
+            <a href="{% url 'login' %}" class="px-5 py-2.5 rounded-full border border-white/15 text-white/80 hover:text-white hover:border-gym-red transition">
+              Login
+            </a>
+            <a href="{% url 'registro' %}" class="px-5 py-2.5 rounded-full bg-gym-red hover:bg-red-700 text-white font-semibold transition shadow-glow">
+              Registro
+            </a>
+          {% endif %}
+        </div>
+
+        <button id="menu-btn" class="lg:hidden w-11 h-11 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+
+      <div id="mobile-menu" class="hidden mt-3 rounded-2xl border border-white/10 bg-black/80 backdrop-blur-xl p-4 lg:hidden">
+        <div class="grid gap-2">
+          <a href="#hero" class="nav-link px-4 py-3 rounded-xl text-white/80 hover:bg-white/5">Inicio</a>
+          <a href="#servicios" class="nav-link px-4 py-3 rounded-xl text-white/80 hover:bg-white/5">Servicios</a>
+          <a href="#planes" class="nav-link px-4 py-3 rounded-xl text-white/80 hover:bg-white/5">Planes</a>
+          <a href="#maquinas" class="nav-link px-4 py-3 rounded-xl text-white/80 hover:bg-white/5">Equipo</a>
+          <a href="#coaches" class="nav-link px-4 py-3 rounded-xl text-white/80 hover:bg-white/5">Coaches</a>
+          <a href="#galeria" class="nav-link px-4 py-3 rounded-xl text-white/80 hover:bg-white/5">Galería</a>
+          <a href="#contacto" class="nav-link px-4 py-3 rounded-xl text-white/80 hover:bg-white/5">Contacto</a>
+
+          <div class="pt-2 border-t border-white/10 grid gap-2 mt-2">
+            {% if user.is_authenticated %}
+              <a href="{% url 'dashboard' %}" class="px-4 py-3 rounded-xl border border-white/10 text-white/80">Dashboard</a>
+              <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="w-full px-4 py-3 rounded-xl bg-gym-red text-white font-semibold text-left">
+                  Salir
+                </button>
+              </form>
+            {% else %}
+              <a href="{% url 'login' %}" class="px-4 py-3 rounded-xl border border-white/10 text-white/80">Login</a>
+              <a href="{% url 'registro' %}" class="px-4 py-3 rounded-xl bg-gym-red text-white font-semibold">Registro</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="contenido">
+    {% if messages %}
+      <div class="max-w-7xl mx-auto px-6 sm:px-10 pt-28">
+        {% for message in messages %}
+          <div class="mb-3 rounded-xl border px-4 py-3 text-sm font-medium
+            {% if message.tags == 'success' %}border-green-500/30 bg-green-500/10 text-green-200
+            {% elif message.tags == 'error' %}border-red-500/30 bg-red-500/10 text-red-200
+            {% elif message.tags == 'warning' %}border-yellow-500/30 bg-yellow-500/10 text-yellow-200
+            {% else %}border-white/10 bg-white/5 text-white/80{% endif %}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="border-t border-white/10 bg-black/60 mt-0">
+    <div class="max-w-7xl mx-auto px-6 sm:px-10 py-10 flex flex-col md:flex-row gap-6 md:items-center md:justify-between">
+      <div>
+        <p class="font-display tracking-[0.22em] text-lg">MYGYM</p>
+        <p class="text-white/40 text-sm mt-2">Disciplina, rendimiento y una experiencia premium.</p>
+      </div>
+      <div class="text-white/35 text-sm">
+        MyGym © 2026 · Morelia, Michoacán
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

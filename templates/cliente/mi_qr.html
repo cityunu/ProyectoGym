@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}| Mi QR{% endblock %}
+
+{% block content %}
+<section class="min-h-screen bg-gym-black pt-32 pb-20 px-6 sm:px-10 flex items-center justify-center">
+  <div class="reveal max-w-md w-full bg-gym-surface border border-white/10 rounded-2xl p-10 text-center">
+    <p class="text-gym-red text-sm font-semibold uppercase tracking-widest mb-2">Acceso digital</p>
+    <h1 class="font-display text-4xl text-white tracking-wide mb-6">Mi código QR</h1>
+
+    {% if qr.imagen_qr %}
+      <div class="bg-white rounded-xl p-6 inline-block mb-6">
+        <img src="{{ qr.imagen_qr.url }}" alt="Código QR de acceso" width="240" height="240" loading="lazy">
+      </div>
+      <p class="text-white/40 text-xs mb-2">Generado el {{ qr.fecha_generado|date:"d M Y, H:i" }}</p>
+    {% else %}
+      <p class="text-white/50 text-sm mb-6">No se pudo generar tu código QR. Intenta recargar la página.</p>
+    {% endif %}
+
+    <p class="text-white/50 text-sm">
+      Presenta este código en recepción para registrar tu ingreso al gimnasio.
+    </p>
+
+    <a href="{% url 'cliente:inicio' %}" class="inline-block mt-8 text-sm font-semibold text-white/60 hover:text-gym-red uppercase tracking-wider">
+      ← Volver al panel
+    </a>
+  </div>
+</section>
+{% endblock %}

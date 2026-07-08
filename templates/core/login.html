@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% block title %}| Login{% endblock %}
+
+{% block content %}
+<section class="auth-page">
+  <div class="auth-shell">
+    <div class="auth-side">
+      <div class="auth-side-content reveal">
+        <div class="auth-brand">
+          <div class="auth-brand-mark">M</div>
+          <div class="auth-brand-copy">
+            <strong>MYGYM</strong>
+            <span>Performance Club</span>
+          </div>
+        </div>
+
+        <div class="auth-side-text">
+          <div class="auth-kicker">Acceso de miembros</div>
+          <h1>Vuelve a tu <span>rutina</span>.</h1>
+          <p>
+            Entra a tu cuenta para revisar tu acceso, membresía, panel personal
+            y todo lo relacionado con tu experiencia dentro de MyGym.
+          </p>
+        </div>
+
+        <div class="auth-side-stats">
+          <div class="auth-stat">
+            <strong>QR</strong>
+            <span>Acceso diario</span>
+          </div>
+          <div class="auth-stat">
+            <strong>Pro</strong>
+            <span>Planes activos</span>
+          </div>
+          <div class="auth-stat">
+            <strong>Gym</strong>
+            <span>Experiencia premium</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="auth-panel-wrap">
+      <div class="auth-panel reveal">
+        <div class="auth-card">
+          <div class="auth-card-body">
+            <span class="auth-topline">Iniciar sesión</span>
+            <h2 class="auth-title">Bienvenido de nuevo</h2>
+            <p class="auth-subtitle">
+              Usa tus credenciales para entrar al sistema y continuar con tu progreso.
+            </p>
+
+            {% if form.non_field_errors %}
+              <ul class="auth-errors">
+                {% for error in form.non_field_errors %}
+                  <li>{{ error }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+            <form method="post" class="auth-form">
+              {% csrf_token %}
+
+              <div class="auth-field">
+                <label for="id_username">Usuario</label>
+                <input
+                  type="text"
+                  name="username"
+                  id="id_username"
+                  class="auth-input"
+                  placeholder="Tu usuario"
+                  value="{{ form.username.value|default_if_none:'' }}"
+                  required
+                >
+                {% if form.username.errors %}
+                  <ul class="auth-field-errors">
+                    {% for error in form.username.errors %}
+                      <li>{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              </div>
+
+              <div class="auth-field">
+                <label for="id_password">Contraseña</label>
+                <input
+                  type="password"
+                  name="password"
+                  id="id_password"
+                  class="auth-input"
+                  placeholder="Tu contraseña"
+                  required
+                >
+                {% if form.password.errors %}
+                  <ul class="auth-field-errors">
+                    {% for error in form.password.errors %}
+                      <li>{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              </div>
+
+              <div class="auth-links">
+                <label class="auth-checkbox">
+                  <input type="checkbox" name="remember_me">
+                  <span>Recordarme</span>
+                </label>
+
+                <a href="#">¿Olvidaste tu contraseña?</a>
+              </div>
+
+              <button type="submit" class="auth-submit">Entrar</button>
+            </form>
+
+            <div class="auth-divider"></div>
+
+            <div class="auth-links">
+              <span class="auth-help">¿Aún no tienes cuenta?</span>
+              <a href="{% url 'registro' %}">Crear cuenta</a>
+            </div>
+
+            <p class="auth-note">
+              Al entrar aceptas la experiencia digital de acceso y administración de MyGym.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

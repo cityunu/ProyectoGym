@@ -1,0 +1,516 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}| Inicio{% endblock %}
+
+{% block content %}
+
+<section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+  <div class="absolute inset-0 z-0">
+    <img src="https://pplx-res.cloudinary.com/image/upload/pplx_search_images/9b2d3181e215fbdbb30e5c4abf50b201c7330bf2.jpg"
+         alt="Atleta en el gimnasio" class="w-full h-full object-cover object-center opacity-30"
+         width="800" height="637" loading="eager">
+    <div class="absolute inset-0 bg-gradient-to-r from-gym-dark via-gym-dark/80 to-transparent"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-gym-dark via-transparent to-gym-dark/40"></div>
+  </div>
+  <div class="absolute left-0 top-0 h-full w-1 bg-gym-red z-10"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 py-32 pt-40">
+    <div class="max-w-3xl">
+      <div class="reveal inline-flex items-center gap-2 bg-gym-red/10 border border-gym-red/30 rounded-full px-4 py-1.5 mb-6">
+        <span class="w-2 h-2 rounded-full bg-gym-red animate-pulse"></span>
+        <span class="text-gym-red text-xs font-semibold uppercase tracking-widest">Abierto hoy · 5 AM – 10 PM</span>
+      </div>
+      <h1 class="reveal font-display text-7xl sm:text-8xl lg:text-9xl leading-none tracking-wide text-white mb-4">
+        FORJA TU<br><span class="text-gym-red">MEJOR</span><br>VERSIÓN
+      </h1>
+      <p class="reveal text-white/60 text-lg leading-relaxed mb-8 max-w-2xl">
+        En MyGym combinamos entrenamiento inteligente, coaches certificados, equipo de primer nivel
+        y una comunidad enfocada en resultados. Nuestro objetivo es ofrecer un espacio donde puedas
+        mejorar tu fuerza, condición física, disciplina y confianza en un entorno moderno y profesional.
+      </p>
+      <div class="reveal flex flex-wrap gap-4">
+        <a href="#planes" class="bg-gym-red hover:bg-red-700 text-white font-semibold px-8 py-4 rounded-md uppercase tracking-wider transition-all duration-200 hover:shadow-xl hover:shadow-gym-red/40 hover:-translate-y-0.5">
+          Ver planes →
+        </a>
+        <a href="#galeria" class="border border-white/30 hover:border-gym-red text-white font-semibold px-8 py-4 rounded-md uppercase tracking-wider transition-all duration-200 hover:text-gym-red">
+          Ver galería
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="absolute bottom-0 left-0 right-0 z-10 bg-gym-black/80 backdrop-blur-sm border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-6 py-5 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      <div><p class="font-display text-4xl text-gym-red">500<span class="text-gym-gold">+</span></p><p class="text-white/50 text-xs uppercase tracking-wider mt-1">Miembros activos</p></div>
+      <div><p class="font-display text-4xl text-gym-red">10<span class="text-gym-gold">+</span></p><p class="text-white/50 text-xs uppercase tracking-wider mt-1">Coaches certificados</p></div>
+      <div><p class="font-display text-4xl text-gym-red">50<span class="text-gym-gold">+</span></p><p class="text-white/50 text-xs uppercase tracking-wider mt-1">Máquinas y equipo</p></div>
+      <div><p class="font-display text-4xl text-gym-red">5<span class="text-gym-gold">★</span></p><p class="text-white/50 text-xs uppercase tracking-wider mt-1">Calificación promedio</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="servicios" class="py-24 bg-gym-dark">
+  <div class="max-w-7xl mx-auto px-6 sm:px-10">
+    <div class="reveal text-center mb-16">
+      <p class="text-gym-red text-sm font-semibold uppercase tracking-widest mb-2">Lo que ofrecemos</p>
+      <h2 class="font-display text-6xl sm:text-7xl text-white tracking-wide">SERVICIOS</h2>
+      <div class="w-16 h-1 bg-gym-red mx-auto mt-4 mb-6"></div>
+      <p class="max-w-3xl mx-auto text-white/55 text-base sm:text-lg leading-relaxed">
+        Diseñamos una experiencia completa para que tu entrenamiento no se limite solo al uso de máquinas.
+        Aquí encuentras acompañamiento, estructura, atención y servicios pensados para ayudarte a avanzar
+        con claridad en tus metas físicas.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for servicio in servicios %}
+      <div class="reveal group bg-gym-surface border border-white/5 rounded-xl p-6 hover:border-gym-red/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-gym-red/10">
+        <div class="w-12 h-12 rounded-lg bg-gym-red/10 flex items-center justify-center mb-4 group-hover:bg-gym-red/20 transition-colors">
+          <i data-lucide="{{ servicio.icono }}" class="w-6 h-6 text-gym-red"></i>
+        </div>
+        <h3 class="font-display text-2xl text-white tracking-wide mb-2">{{ servicio.nombre }}</h3>
+        <p class="text-white/50 text-sm leading-relaxed">{{ servicio.descripcion }}</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="reveal mt-14 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+      <div class="bg-gym-surface border border-white/5 rounded-2xl p-8">
+        <h3 class="font-display text-3xl text-white tracking-wide mb-4">Una experiencia pensada para progresar</h3>
+        <p class="text-white/60 leading-relaxed mb-4">
+          Nuestro enfoque va más allá de solo abrir un espacio para entrenar. Buscamos que cada persona
+          encuentre una estructura clara, un ambiente serio y una operación ordenada que facilite el progreso.
+        </p>
+        <p class="text-white/60 leading-relaxed">
+          Por eso combinamos áreas bien equipadas, atención profesional, entrenadores preparados y una
+          experiencia digital que simplifica el acceso y la administración de tu membresía.
+        </p>
+      </div>
+
+      <div class="bg-gym-black border border-white/10 rounded-2xl p-8">
+        <h3 class="font-display text-3xl text-white tracking-wide mb-4">¿Para quién es MyGym?</h3>
+        <ul class="space-y-4 text-white/65 text-sm leading-relaxed">
+          <li class="flex gap-3"><span class="text-gym-red">•</span><span>Para quienes quieren comenzar a entrenar con disciplina y buena guía desde el inicio.</span></li>
+          <li class="flex gap-3"><span class="text-gym-red">•</span><span>Para personas que buscan mejorar su físico, fuerza, resistencia o composición corporal.</span></li>
+          <li class="flex gap-3"><span class="text-gym-red">•</span><span>Para quienes valoran un ambiente serio, moderno y enfocado en resultados reales.</span></li>
+          <li class="flex gap-3"><span class="text-gym-red">•</span><span>Para miembros que quieren una experiencia más organizada y profesional dentro del gimnasio.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="planes" class="py-24 bg-gym-black">
+  <div class="max-w-7xl mx-auto px-6 sm:px-10">
+    <div class="reveal text-center mb-16">
+      <p class="text-gym-gold text-sm font-semibold uppercase tracking-widest mb-2">Elige tu nivel</p>
+      <h2 class="font-display text-6xl sm:text-7xl text-white tracking-wide">PLANES & PRECIOS</h2>
+      <div class="w-16 h-1 bg-gym-gold mx-auto mt-4 mb-6"></div>
+      <p class="max-w-3xl mx-auto text-white/55 text-base sm:text-lg leading-relaxed">
+        Contamos con planes pensados para distintos objetivos. Ya sea que busques iniciar con constancia,
+        entrenar con acompañamiento más cercano o llevar tu progreso con una estrategia más completa,
+        en MyGym tienes una opción diseñada para avanzar de verdad.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+      {% for plan in planes %}
+      <div class="reveal relative bg-gym-surface border rounded-2xl p-8 flex flex-col transition-all duration-300 hover:-translate-y-1 {% if plan.destacado %}border-gym-red shadow-2xl shadow-gym-red/20 scale-105{% else %}border-white/10 hover:border-gym-red/30{% endif %}">
+        {% if plan.destacado %}
+        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gym-red text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider">
+          🔥 Más popular
+        </div>
+        {% endif %}
+
+        <p class="text-gym-gray text-xs uppercase tracking-widest font-semibold mb-2">{{ plan.nombre }}</p>
+
+        <div class="flex items-end gap-1 mb-1">
+          <span class="font-display text-6xl text-white">${{ plan.precio }}</span>
+          <span class="text-white/40 text-sm mb-3">/mes</span>
+        </div>
+
+        <p class="text-white/50 text-sm mb-6">{{ plan.descripcion }}</p>
+
+        <div class="mb-6 rounded-xl border border-white/5 bg-gym-black/40 p-4">
+          {% if plan.nombre == 'Básico' %}
+            <p class="text-sm text-white/70 leading-relaxed">
+              Ideal para quienes quieren entrenar con libertad, aprovechar el área de pesas,
+              cardio y máquinas, y comenzar a construir disciplina con una membresía accesible.
+            </p>
+          {% elif plan.nombre == 'Pro' %}
+            <p class="text-sm text-white/70 leading-relaxed">
+              Perfecto para quienes buscan mayor enfoque, mejor seguimiento y una experiencia
+              más completa para acelerar resultados físicos y mantener constancia.
+            </p>
+          {% elif plan.nombre == 'Elite' %}
+            <p class="text-sm text-white/70 leading-relaxed">
+              Pensado para quienes quieren una experiencia más premium, con atención más integral,
+              estructura y herramientas para tomarse en serio su transformación.
+            </p>
+          {% else %}
+            <p class="text-sm text-white/70 leading-relaxed">
+              Un plan diseñado para ayudarte a entrenar mejor, mantener constancia y avanzar
+              de manera progresiva dentro de MyGym.
+            </p>
+          {% endif %}
+        </div>
+
+        <ul class="space-y-3 flex-1 mb-8">
+          {% for beneficio in plan.beneficios %}
+          <li class="flex items-center gap-2 text-sm text-white/70">
+            <i data-lucide="check-circle" class="w-4 h-4 text-gym-red flex-shrink-0"></i>
+            {{ beneficio }}
+          </li>
+          {% endfor %}
+        </ul>
+
+        <div class="space-y-3">
+          {% if user.is_authenticated %}
+            <a href="{% url 'dashboard' %}" class="block text-center font-semibold py-3 rounded-lg uppercase tracking-wider transition-all duration-200 {% if plan.destacado %}bg-gym-red text-white hover:bg-red-700 hover:shadow-lg hover:shadow-gym-red/30{% else %}border border-white/20 text-white hover:border-gym-red hover:text-gym-red{% endif %}">
+              Adquirir plan {{ plan.nombre }}
+            </a>
+          {% else %}
+            <a href="{% url 'registro' %}" class="block text-center font-semibold py-3 rounded-lg uppercase tracking-wider transition-all duration-200 {% if plan.destacado %}bg-gym-red text-white hover:bg-red-700 hover:shadow-lg hover:shadow-gym-red/30{% else %}border border-white/20 text-white hover:border-gym-red hover:text-gym-red{% endif %}">
+              Adquirir plan {{ plan.nombre }}
+            </a>
+            <a href="{% url 'login' %}" class="block text-center font-semibold py-3 rounded-lg uppercase tracking-wider border border-gym-gold/20 text-gym-gold hover:bg-gym-gold/10 transition-all duration-200">
+              Ya tengo cuenta
+            </a>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section id="maquinas" class="py-24 bg-gym-dark">
+  <div class="max-w-7xl mx-auto px-6 sm:px-10">
+    <div class="reveal text-center mb-16">
+      <p class="text-gym-red text-sm font-semibold uppercase tracking-widest mb-2">Infraestructura de primera</p>
+      <h2 class="font-display text-6xl sm:text-7xl text-white tracking-wide">NUESTRO EQUIPO</h2>
+      <div class="w-16 h-1 bg-gym-red mx-auto mt-4 mb-6"></div>
+      <p class="max-w-3xl mx-auto text-white/55 text-base sm:text-lg leading-relaxed">
+        Nuestro gimnasio cuenta con áreas equipadas para fuerza, hipertrofia, cardio, entrenamiento funcional
+        y trabajo complementario. Seleccionamos maquinaria y estaciones que permiten entrenar con seguridad,
+        variedad y progresión real para distintos niveles.
+      </p>
+    </div>
+
+    <div class="reveal rounded-2xl overflow-hidden mb-14 relative group">
+      <img src="https://pplx-res.cloudinary.com/image/upload/pplx_search_images/d1c71a1a398ee18327cd5916af4d2f0c4563cffe.jpg"
+           alt="Interior del gimnasio" class="w-full h-72 object-cover object-center group-hover:scale-105 transition-transform duration-700"
+           width="1200" height="400" loading="lazy">
+      <div class="absolute inset-0 bg-gradient-to-t from-gym-dark/80 to-transparent"></div>
+    </div>
+
+    <div class="flex flex-wrap gap-3 justify-center mb-10">
+      {% for cat in categorias_maquinas %}
+      <button onclick="filterMaquinas('{{ cat.slug }}')" id="tab-{{ cat.slug }}"
+              class="maquina-tab px-5 py-2 rounded-full text-sm font-semibold uppercase tracking-wider border transition-all duration-200 {% if forloop.first %}bg-gym-red border-gym-red text-white{% else %}border-white/20 text-white/60 hover:border-gym-red hover:text-gym-red{% endif %}">
+        {{ cat.nombre }}
+      </button>
+      {% endfor %}
+    </div>
+
+    <div id="maquinas-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {% for m in maquinas %}
+      <div class="reveal maquina-item bg-gym-surface border border-white/5 rounded-xl p-5 hover:border-gym-red/30 transition-all duration-300 hover:-translate-y-0.5"
+           data-cat="{{ m.categoria }}">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 rounded-lg bg-gym-red/10 flex items-center justify-center">
+            <i data-lucide="{{ m.icono }}" class="w-5 h-5 text-gym-red"></i>
+          </div>
+          <h4 class="font-display text-xl text-white tracking-wide">{{ m.nombre }}</h4>
+        </div>
+        <p class="text-white/50 text-sm leading-relaxed">{{ m.descripcion }}</p>
+        <span class="inline-block mt-3 text-xs text-gym-gold border border-gym-gold/30 rounded-full px-3 py-0.5">{{ m.categoria_label }}</span>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="reveal mt-14 grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-gym-black border border-white/10 rounded-2xl p-6">
+        <h3 class="font-display text-2xl text-white tracking-wide mb-3">Área de fuerza</h3>
+        <p class="text-white/55 text-sm leading-relaxed">
+          Espacios diseñados para entrenar movimientos compuestos, trabajo libre y progresión en cargas.
+        </p>
+      </div>
+      <div class="bg-gym-black border border-white/10 rounded-2xl p-6">
+        <h3 class="font-display text-2xl text-white tracking-wide mb-3">Zona de cardio</h3>
+        <p class="text-white/55 text-sm leading-relaxed">
+          Equipos para mejorar condición física, resistencia y complementar objetivos de salud o recomposición corporal.
+        </p>
+      </div>
+      <div class="bg-gym-black border border-white/10 rounded-2xl p-6">
+        <h3 class="font-display text-2xl text-white tracking-wide mb-3">Entrenamiento funcional</h3>
+        <p class="text-white/55 text-sm leading-relaxed">
+          Un espacio versátil para trabajo dinámico, movilidad, coordinación y sesiones de mayor intensidad.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="coaches" class="py-24 bg-gym-black">
+  <div class="max-w-7xl mx-auto px-6 sm:px-10">
+    <div class="reveal text-center mb-16">
+      <p class="text-gym-gold text-sm font-semibold uppercase tracking-widest mb-2">Expertos en tu rincón</p>
+      <h2 class="font-display text-6xl sm:text-7xl text-white tracking-wide">NUESTROS COACHES</h2>
+      <div class="w-16 h-1 bg-gym-gold mx-auto mt-4 mb-6"></div>
+      <p class="max-w-3xl mx-auto text-white/55 text-base sm:text-lg leading-relaxed">
+        Nuestro equipo de coaches está preparado para orientar a principiantes y atletas intermedios o avanzados.
+        Cada perfil aporta experiencia, criterio técnico y una visión enfocada en ayudarte a entrenar mejor,
+        evitar errores y sostener resultados en el tiempo.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {% for coach in coaches %}
+      <div class="reveal group relative bg-gym-surface rounded-2xl overflow-hidden border border-white/5 hover:border-gym-red/40 transition-all duration-300 hover:-translate-y-2">
+        <div class="relative overflow-hidden h-64">
+          <img src="{{ coach.foto }}" alt="{{ coach.nombre }}"
+               class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700"
+               width="300" height="400" loading="lazy">
+          <div class="absolute inset-0 bg-gradient-to-t from-gym-black via-transparent to-transparent"></div>
+        </div>
+        <div class="p-5">
+          <h3 class="font-display text-2xl text-white tracking-wide">{{ coach.nombre }}</h3>
+          <p class="text-gym-red text-xs font-semibold uppercase tracking-wider mb-2">{{ coach.especialidad }}</p>
+          <p class="text-white/50 text-sm leading-relaxed">{{ coach.bio }}</p>
+          <div class="flex flex-wrap gap-2 mt-4">
+            {% for cert in coach.certificaciones %}
+            <span class="text-xs bg-gym-gold/10 border border-gym-gold/20 text-gym-gold rounded-full px-2 py-0.5">{{ cert }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="reveal mt-14 rounded-2xl border border-gym-gold/15 bg-gym-surface p-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        <div>
+          <h3 class="font-display text-3xl text-white tracking-wide mb-4">Acompañamiento que sí hace diferencia</h3>
+          <p class="text-white/60 leading-relaxed">
+            Tener acceso a un coach no solo significa resolver dudas. También significa mejorar técnica,
+            estructurar mejor tus entrenamientos, reducir errores frecuentes y entrenar con una dirección más clara.
+          </p>
+        </div>
+        <div>
+          <p class="text-white/60 leading-relaxed">
+            En MyGym queremos que cada persona pueda avanzar con bases sólidas. Por eso nuestros coaches forman
+            parte esencial de la experiencia, tanto para quienes inician como para quienes buscan llevar su rendimiento a otro nivel.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="galeria" class="py-24 bg-gym-dark">
+  <div class="max-w-7xl mx-auto px-6 sm:px-10">
+    <div class="reveal text-center mb-16">
+      <p class="text-gym-red text-sm font-semibold uppercase tracking-widest mb-2">En acción</p>
+      <h2 class="font-display text-6xl sm:text-7xl text-white tracking-wide">GALERÍA</h2>
+      <div class="w-16 h-1 bg-gym-red mx-auto mt-4 mb-6"></div>
+      <p class="max-w-3xl mx-auto text-white/55 text-base sm:text-lg leading-relaxed">
+        Conoce el ambiente, las instalaciones y la energía de MyGym. Queremos que desde antes de visitarnos
+        puedas darte una idea clara del espacio, el estilo de entrenamiento y la experiencia que ofrecemos.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+      {% for img in galeria %}
+      <div class="reveal group relative rounded-xl overflow-hidden cursor-pointer aspect-square"
+           onclick="openLightbox('{{ img.url }}', '{{ img.alt }}')">
+        <img src="{{ img.url }}" alt="{{ img.alt }}"
+             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+             width="400" height="400" loading="lazy">
+        <div class="absolute inset-0 bg-gym-red/0 group-hover:bg-gym-red/20 transition-colors duration-300 flex items-center justify-center">
+          <i data-lucide="zoom-in" class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<div id="lightbox" class="fixed inset-0 bg-black/90 z-[999] hidden items-center justify-center p-4" onclick="closeLightbox()">
+  <button class="absolute top-4 right-4 text-white/60 hover:text-white" aria-label="Cerrar">
+    <i data-lucide="x" class="w-8 h-8"></i>
+  </button>
+  <img id="lightbox-img" src="" alt="" class="max-w-full max-h-full rounded-xl shadow-2xl object-contain" width="900" height="600">
+</div>
+
+<section id="testimonios" class="py-24 bg-gym-black">
+  <div class="max-w-7xl mx-auto px-6 sm:px-10">
+    <div class="reveal text-center mb-16">
+      <p class="text-gym-gold text-sm font-semibold uppercase tracking-widest mb-2">Lo que dicen</p>
+      <h2 class="font-display text-6xl sm:text-7xl text-white tracking-wide">TESTIMONIOS</h2>
+      <div class="w-16 h-1 bg-gym-gold mx-auto mt-4 mb-6"></div>
+      <p class="max-w-3xl mx-auto text-white/55 text-base sm:text-lg leading-relaxed">
+        La mejor referencia de un gimnasio siempre será el progreso y la experiencia de su comunidad.
+        Estos comentarios reflejan la disciplina, el acompañamiento y el ambiente que vivimos día a día.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {% for t in testimonios %}
+      <div class="reveal bg-gym-surface border border-white/5 rounded-2xl p-7 hover:border-gym-gold/20 transition-all duration-300">
+        <div class="flex gap-1 mb-4">
+          <i data-lucide="star" class="w-4 h-4 text-gym-gold fill-gym-gold"></i>
+          <i data-lucide="star" class="w-4 h-4 text-gym-gold fill-gym-gold"></i>
+          <i data-lucide="star" class="w-4 h-4 text-gym-gold fill-gym-gold"></i>
+          <i data-lucide="star" class="w-4 h-4 text-gym-gold fill-gym-gold"></i>
+          <i data-lucide="star" class="w-4 h-4 text-gym-gold fill-gym-gold"></i>
+        </div>
+        <p class="text-white/70 text-sm leading-relaxed mb-6 italic">"{{ t.texto }}"</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-gym-red/20 flex items-center justify-center font-display text-gym-red text-lg">{{ t.inicial }}</div>
+          <div>
+            <p class="text-white font-semibold text-sm">{{ t.nombre }}</p>
+            <p class="text-white/40 text-xs">{{ t.tiempo }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="reveal mt-14 grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="rounded-2xl border border-white/10 bg-gym-surface p-6">
+        <h3 class="font-display text-2xl text-white mb-3">Ambiente</h3>
+        <p class="text-white/55 text-sm leading-relaxed">
+          Un entorno que motiva sin perder orden, enfoque y seriedad en el entrenamiento.
+        </p>
+      </div>
+      <div class="rounded-2xl border border-white/10 bg-gym-surface p-6">
+        <h3 class="font-display text-2xl text-white mb-3">Constancia</h3>
+        <p class="text-white/55 text-sm leading-relaxed">
+          La experiencia está pensada para ayudarte a mantener hábitos y seguir avanzando.
+        </p>
+      </div>
+      <div class="rounded-2xl border border-white/10 bg-gym-surface p-6">
+        <h3 class="font-display text-2xl text-white mb-3">Resultados</h3>
+        <p class="text-white/55 text-sm leading-relaxed">
+          El enfoque integral hace que el progreso se sienta más claro, medible y sostenible.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contacto" class="py-24 bg-gym-dark">
+  <div class="max-w-7xl mx-auto px-6 sm:px-10">
+    <div class="reveal text-center mb-16">
+      <p class="text-gym-red text-sm font-semibold uppercase tracking-widest mb-2">Hablemos</p>
+      <h2 class="font-display text-6xl sm:text-7xl text-white tracking-wide">CONTACTO</h2>
+      <div class="w-16 h-1 bg-gym-red mx-auto mt-4 mb-6"></div>
+      <p class="max-w-3xl mx-auto text-white/55 text-base sm:text-lg leading-relaxed">
+        Si quieres conocer las instalaciones, resolver dudas sobre membresías o elegir el plan ideal para ti,
+        contáctanos y con gusto te orientamos. También puedes registrarte desde ahora y comenzar tu proceso
+        dentro de la plataforma.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+      <div class="reveal space-y-6">
+        <div class="rounded-2xl border border-gym-red/20 bg-gym-red/5 p-6 mb-8">
+          <h3 class="font-display text-3xl text-white tracking-wide mb-3">Agenda tu visita</h3>
+          <p class="text-white/60 text-sm leading-relaxed">
+            Nuestro equipo puede orientarte sobre instalaciones, horarios, planes y el tipo de acompañamiento
+            que mejor se adapte a tus metas. Queremos que tomes una decisión con información clara.
+          </p>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-lg bg-gym-red/10 flex items-center justify-center flex-shrink-0">
+            <i data-lucide="map-pin" class="w-6 h-6 text-gym-red"></i>
+          </div>
+          <div>
+            <h4 class="text-white font-semibold mb-1">Ubicación</h4>
+            <p class="text-white/50 text-sm">
+              Calle Ejercicio #123, Morelia, Michoacán, MX
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-lg bg-gym-red/10 flex items-center justify-center flex-shrink-0">
+            <i data-lucide="clock" class="w-6 h-6 text-gym-red"></i>
+          </div>
+          <div>
+            <h4 class="text-white font-semibold mb-1">Horarios</h4>
+            <p class="text-white/50 text-sm">
+              Lun–Vie: 5:00 AM – 10:00 PM<br>
+              Sáb: 6:00 AM – 8:00 PM<br>
+              Dom: 7:00 AM – 3:00 PM
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-lg bg-gym-red/10 flex items-center justify-center flex-shrink-0">
+            <i data-lucide="phone" class="w-6 h-6 text-gym-red"></i>
+          </div>
+          <div>
+            <h4 class="text-white font-semibold mb-1">Teléfono / WhatsApp</h4>
+            <p class="text-white/50 text-sm">+52 443 000 0000</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-lg bg-gym-red/10 flex items-center justify-center flex-shrink-0">
+            <i data-lucide="mail" class="w-6 h-6 text-gym-red"></i>
+          </div>
+          <div>
+            <h4 class="text-white font-semibold mb-1">Correo</h4>
+            <p class="text-white/50 text-sm">contacto@mygym.com</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal bg-gym-surface border border-white/10 rounded-2xl p-8">
+        <form method="post" action="#" class="space-y-5">
+          {% csrf_token %}
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-white/60 text-xs uppercase tracking-wider mb-2" for="nombre">Nombre</label>
+              <input id="nombre" name="nombre" type="text" placeholder="Tu nombre"
+                     class="w-full bg-gym-black border border-white/10 rounded-lg px-4 py-3 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-gym-red transition-colors">
+            </div>
+            <div>
+              <label class="block text-white/60 text-xs uppercase tracking-wider mb-2" for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="tu@email.com"
+                     class="w-full bg-gym-black border border-white/10 rounded-lg px-4 py-3 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-gym-red transition-colors">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-white/60 text-xs uppercase tracking-wider mb-2" for="plan_interes">Plan de interés</label>
+            <select id="plan_interes" name="plan_interes"
+                    class="w-full bg-gym-black border border-white/10 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-gym-red transition-colors">
+              <option value="">Selecciona un plan</option>
+              <option>Básico</option>
+              <option>Pro</option>
+              <option>Elite</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-white/60 text-xs uppercase tracking-wider mb-2" for="mensaje">Mensaje</label>
+            <textarea id="mensaje" name="mensaje" rows="4" placeholder="¿En qué podemos ayudarte?"
+                      class="w-full bg-gym-black border border-white/10 rounded-lg px-4 py-3 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-gym-red transition-colors resize-none"></textarea>
+          </div>
+
+          <button type="submit"
+                  class="w-full bg-gym-red hover:bg-red-700 text-white font-semibold py-4 rounded-lg uppercase tracking-wider transition-all duration-200 hover:shadow-xl hover:shadow-gym-red/30">
+            Enviar mensaje →
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
