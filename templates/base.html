@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MyGym {% block title %}{% endblock %}</title>
-  <meta name="theme-color" content="#0b0b0c">
+  <meta name="theme-color" content="#0a0a0b">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -14,11 +14,16 @@
         extend: {
           colors: {
             gym: {
-              dark: '#0b0b0c',
-              black: '#111111',
-              surface: '#17171a',
-              red: '#c1121f',
-              gold: '#c8a44d',
+              dark: '#0a0a0b',
+              black: '#000000',
+              surface: '#151517',
+              surface2: '#1c1c1f',
+              ink: '#ffffff',
+              inkmuted: '#9a9aa3',
+              red: '#ff1f35',
+              redsoft: '#ff5c6b',
+              gold: '#ffc94d',
+              goldsoft: '#ffdb8a',
               gray: '#8b8b93'
             }
           },
@@ -27,8 +32,9 @@
             display: ['Cinzel', 'serif']
           },
           boxShadow: {
-            glow: '0 20px 50px rgba(193,18,31,.20)',
-            gold: '0 20px 50px rgba(200,164,77,.16)'
+            glow: '0 0 40px rgba(255,31,53,.35), 0 20px 50px rgba(255,31,53,.20)',
+            gold: '0 0 40px rgba(255,201,77,.30), 0 20px 50px rgba(255,201,77,.18)',
+            glowsm: '0 0 20px rgba(255,31,53,.25)'
           }
         }
       }
@@ -40,33 +46,54 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cinzel:wght@500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+  <style>
+    body {
+      background-color: #0a0a0b;
+      background-image:
+        radial-gradient(circle at 15% 10%, rgba(255,31,53,0.08), transparent 35%),
+        radial-gradient(circle at 85% 25%, rgba(255,201,77,0.06), transparent 30%),
+        radial-gradient(circle at 50% 90%, rgba(255,31,53,0.05), transparent 40%);
+      background-attachment: fixed;
+    }
+  </style>
 </head>
-<body class="bg-gym-dark text-white font-sans selection:bg-gym-red/30">
+<body class="text-gym-ink font-sans selection:bg-gym-red/30">
   <a class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 bg-gym-gold text-black px-4 py-2 rounded-full z-[999]" href="#contenido">
     Saltar al contenido
   </a>
 
   <header id="navbar" class="fixed top-0 inset-x-0 z-50 transition-all duration-300">
     <div class="max-w-7xl mx-auto px-6 sm:px-10 py-4">
-      <div class="flex items-center justify-between rounded-2xl border border-white/10 bg-black/40 backdrop-blur-xl px-4 sm:px-6 py-3">
-        <a href="{% url 'landing' %}" class="flex items-center gap-3">
-          <div class="w-11 h-11 rounded-xl bg-gym-red flex items-center justify-center text-white font-display text-xl shadow-glow">
-            M
-          </div>
-          <div class="leading-none">
-            <p class="font-display tracking-[0.22em] text-lg">MYGYM</p>
-            <span class="text-[10px] uppercase tracking-[0.35em] text-white/45">Performance Club</span>
-          </div>
-        </a>
+      <div class="flex items-center justify-between rounded-2xl border border-white/10 bg-black/50 backdrop-blur-xl px-4 sm:px-6 py-3">
+       <a href="{% url 'landing' %}#hero" class="flex items-center gap-3">
+  <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-gym-red/20 via-black to-gym-gold/20 border border-white/10 flex items-center justify-center shadow-glow overflow-hidden">
+    <svg width="34" height="34" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Logo MyGym">
+      <defs>
+        <linearGradient id="mgStroke" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#ff1f35"/>
+          <stop offset="1" stop-color="#ffc94d"/>
+        </linearGradient>
+      </defs>
+      ircle cx="32" cy="32" r="24" stroke="url(#mgStroke)" stroke-width="3.5" opacity="0.95"/>
+      <path d="M18 42V22L26 33L32 24L38 33L46 22V42" stroke="url(#mgStroke)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M20 46H44" stroke="#ffc94d" stroke-width="3" stroke-linecap="round" opacity="0.95"/>
+    </svg>
+  </div>
+  <div class="leading-none">
+    <p class="font-display tracking-[0.22em] text-lg">MYGYM</p>
+    <span class="text-[10px] uppercase tracking-[0.35em] text-white/45">Performance Club</span>
+  </div>
+</a>
 
         <nav class="hidden lg:flex items-center gap-1">
-          <a href="#hero" class="nav-link px-4 py-2 text-sm text-white/70 hover:text-white transition">Inicio</a>
-          <a href="#servicios" class="nav-link px-4 py-2 text-sm text-white/70 hover:text-white transition">Servicios</a>
-          <a href="#planes" class="nav-link px-4 py-2 text-sm text-white/70 hover:text-white transition">Planes</a>
-          <a href="#maquinas" class="nav-link px-4 py-2 text-sm text-white/70 hover:text-white transition">Equipo</a>
-          <a href="#coaches" class="nav-link px-4 py-2 text-sm text-white/70 hover:text-white transition">Coaches</a>
-          <a href="#galeria" class="nav-link px-4 py-2 text-sm text-white/70 hover:text-white transition">Galería</a>
-          <a href="#contacto" class="nav-link px-4 py-2 text-sm text-white/70 hover:text-white transition">Contacto</a>
+          <a href="{% url 'landing' %}#hero" class="nav-link px-4 py-2 text-sm text-white/70 hover:text-gym-gold transition">Inicio</a>
+     <a href="{% url 'landing' %}#servicios" class="nav-link px-4 py-2 text-sm text-white/70 hover:text-gym-gold transition">Servicios</a>
+<a href="{% url 'landing' %}#planes" class="nav-link px-4 py-2 text-sm text-white/70 hover:text-gym-gold transition">Planes</a>
+<a href="{% url 'landing' %}#maquinas" class="nav-link px-4 py-2 text-sm text-white/70 hover:text-gym-gold transition">Equipo</a>
+<a href="{% url 'landing' %}#coaches" class="nav-link px-4 py-2 text-sm text-white/70 hover:text-gym-gold transition">Coaches</a>
+<a href="{% url 'landing' %}#galeria" class="nav-link px-4 py-2 text-sm text-white/70 hover:text-gym-gold transition">Galería</a>
+<a href="{% url 'landing' %}#contacto" class="nav-link px-4 py-2 text-sm text-white/70 hover:text-gym-gold transition">Contacto</a>
         </nav>
 
         <div class="hidden lg:flex items-center gap-3">
@@ -76,7 +103,7 @@
             </a>
             <form action="{% url 'logout' %}" method="post" class="inline">
               {% csrf_token %}
-              <button type="submit" class="px-5 py-2.5 rounded-full bg-gym-red hover:bg-red-700 text-white font-semibold transition shadow-glow">
+              <button type="submit" class="px-5 py-2.5 rounded-full bg-gym-red hover:bg-red-500 text-white font-semibold transition shadow-glow">
                 Salir
               </button>
             </form>
@@ -84,7 +111,7 @@
             <a href="{% url 'login' %}" class="px-5 py-2.5 rounded-full border border-white/15 text-white/80 hover:text-white hover:border-gym-red transition">
               Login
             </a>
-            <a href="{% url 'registro' %}" class="px-5 py-2.5 rounded-full bg-gym-red hover:bg-red-700 text-white font-semibold transition shadow-glow">
+            <a href="{% url 'registro' %}" class="px-5 py-2.5 rounded-full bg-gym-red hover:bg-red-500 text-white font-semibold transition shadow-glow">
               Registro
             </a>
           {% endif %}
@@ -97,7 +124,7 @@
         </button>
       </div>
 
-      <div id="mobile-menu" class="hidden mt-3 rounded-2xl border border-white/10 bg-black/80 backdrop-blur-xl p-4 lg:hidden">
+      <div id="mobile-menu" class="hidden mt-3 rounded-2xl border border-white/10 bg-black/85 backdrop-blur-xl p-4 lg:hidden">
         <div class="grid gap-2">
           <a href="#hero" class="nav-link px-4 py-3 rounded-xl text-white/80 hover:bg-white/5">Inicio</a>
           <a href="#servicios" class="nav-link px-4 py-3 rounded-xl text-white/80 hover:bg-white/5">Servicios</a>
@@ -144,7 +171,7 @@
     {% block content %}{% endblock %}
   </main>
 
-  <footer class="border-t border-white/10 bg-black/60 mt-0">
+  <footer class="border-t border-white/10 bg-black/70 mt-0">
     <div class="max-w-7xl mx-auto px-6 sm:px-10 py-10 flex flex-col md:flex-row gap-6 md:items-center md:justify-between">
       <div>
         <p class="font-display tracking-[0.22em] text-lg">MYGYM</p>
