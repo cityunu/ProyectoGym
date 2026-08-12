@@ -1,5 +1,6 @@
 import json
 from datetime import timedelta
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
@@ -7,9 +8,15 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
-from .models import Producto, TipoMembresia
+from django.db.models import Q, Sum
+
+from .models import Producto, TipoMembresia, Venta
 from .forms import ProductoForm, TipoMembresiaForm, AsignarMembresiaForm
-from cliente.models import CodigoQR, Membresia
+from cliente.models import CodigoQR, Membresia, Acceso
+
+from .models import Producto, TipoMembresia, Venta
+from cliente.models import CodigoQR, Membresia, Acceso
+from django.db.models import Q, Sum
 
 Usuario = get_user_model()
 
@@ -215,12 +222,50 @@ def verificar_qr(request):
 
 @solo_staff
 def historial_accesos(request):
-    """Historial de accesos recientes"""
     accesos = Acceso.objects.select_related('usuario')[:200]
     return render(request, 'administrador/qr/historial.html', {'accesos': accesos})
 
 @solo_staff
 def historial_ventas(request):
-    """Historial de ventas de productos"""
     ventas = Venta.objects.select_related('cliente').prefetch_related('detalles__producto')[:200]
     return render(request, 'administrador/ventas/historial.html', {'ventas': ventas})
+
+@solo_admin_recepcion
+def lista_clientes(request):
+    """Listado y búsqueda de clientes"""
+    q = request.GET.get('q', '').strip()
+
+    clientes = Usuario.objects.filter(rol='cliente').order_by('first_name', 'last_name', 'username')
+
+    if q:
+        clientes = clientes.filter(
+            Q(first_name__icontains=q) |
+            Q(last_name__icontains=q) |
+            Q(username__icontains=q) |
+            Q(email__icontains=q) |
+            Q(telefono__icontains=q)
+        )
+
+    return render(request, 'administrador/clientes/lista.html', {
+        'clientes': clientes,
+        'q': q,
+    })
+
+@solo_staff
+def reporte_ingresos(request):
+    hoy = timezone.now().date()
+    desde = request.GET.get('desde') or str(hoy.replace(day=1))
+    hasta = request.GET.get('hasta') or str(hoy)
+
+    ventas = Venta.objects.filter(
+        fecha__date__range=[desde, hasta]
+    ).select_related('cliente').prefetch_related('detalles__producto').order_by('-fecha')
+
+    total_periodo = ventas.aggregate(total=Sum('total'))['total'] or 0
+
+    return render(request, 'administrador/ventas/reporte_ingresos.html', {
+        'ventas': ventas,
+        'total_periodo': total_periodo,
+        'desde': desde,
+        'hasta': hasta,
+    })

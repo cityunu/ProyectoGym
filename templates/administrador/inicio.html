@@ -32,17 +32,29 @@
     </div>
 
     <div class="reveal grid grid-cols-1 sm:grid-cols-4 gap-4">
+      <a href="{% url 'administrador:lista_clientes' %}" class="text-center border border-white/20 text-white font-semibold py-4 rounded-lg uppercase tracking-wider text-sm hover:border-gym-red hover:text-gym-red transition-all duration-200">
+        Clientes
+      </a>
       <a href="{% url 'administrador:lista_productos' %}" class="text-center border border-white/20 text-white font-semibold py-4 rounded-lg uppercase tracking-wider text-sm hover:border-gym-red hover:text-gym-red transition-all duration-200">
         Productos
       </a>
       <a href="{% url 'administrador:gestionar_membresias' %}" class="text-center border border-white/20 text-white font-semibold py-4 rounded-lg uppercase tracking-wider text-sm hover:border-gym-red hover:text-gym-red transition-all duration-200">
         Membresías
       </a>
-      <a href="{% url 'administrador:asignar_membresia' %}" class="text-center border {% if clientes_sin_membresia > 0 %}border-gym-gold/50 text-gym-gold{% else %}border-white/20 text-white{% endif %} font-semibold py-4 rounded-lg uppercase tracking-wider text-sm hover:border-gym-red hover:text-gym-red transition-all duration-200">
-        Asignar membresía
-      </a>
       <a href="{% url 'administrador:lector_qr' %}" class="text-center bg-gym-red hover:bg-red-700 text-white font-semibold py-4 rounded-lg uppercase tracking-wider text-sm transition-all duration-200">
         Escanear QR
+      </a>
+    </div>
+
+    <div class="reveal grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+      <a href="{% url 'administrador:historial_accesos' %}" class="text-center border border-white/20 text-white font-semibold py-4 rounded-lg uppercase tracking-wider text-sm hover:border-gym-red hover:text-gym-red transition-all duration-200">
+        Historial de accesos
+      </a>
+      <a href="{% url 'administrador:historial_ventas' %}" class="text-center border border-white/20 text-white font-semibold py-4 rounded-lg uppercase tracking-wider text-sm hover:border-gym-red hover:text-gym-red transition-all duration-200">
+        Historial de ventas
+      </a>
+      <a href="{% url 'administrador:reporte_ingresos' %}" class="text-center border border-gym-gold/40 text-gym-gold font-semibold py-4 rounded-lg uppercase tracking-wider text-sm hover:border-gym-red hover:text-gym-red transition-all duration-200">
+        Reporte de ingresos
       </a>
     </div>
 

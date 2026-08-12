@@ -5,6 +5,7 @@ app_name = 'administrador'
 
 urlpatterns = [
     path('', views.inicio, name='inicio'),
+    path('clientes/', views.lista_clientes, name='lista_clientes'),
     path('productos/', views.lista_productos, name='lista_productos'),
     path('productos/agregar/', views.agregar_producto, name='agregar_producto'),
     path('productos/editar/<int:pk>/', views.editar_producto, name='editar_producto'),
@@ -15,4 +16,5 @@ urlpatterns = [
     path('verificar-qr/', views.verificar_qr, name='verificar_qr'),
     path('accesos/', views.historial_accesos, name='historial_accesos'),
     path('ventas/', views.historial_ventas, name='historial_ventas'),
+    path('ventas/ingresos/', views.reporte_ingresos, name='reporte_ingresos'),
 ]
