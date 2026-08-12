@@ -70,3 +70,24 @@ class CarritoItem(models.Model):
         verbose_name = 'Item del Carrito'
         verbose_name_plural = 'Items del Carrito'
         unique_together = ('usuario', 'producto')
+
+
+class Acceso(models.Model):
+    """Registro de accesos al gym por QR"""
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='accesos'
+    )
+    fecha_hora = models.DateTimeField(auto_now_add=True)
+    valido = models.BooleanField(default=False)
+    motivo = models.CharField(max_length=200, blank=True)
+
+    def __str__(self):
+        estado = 'OK' if self.valido else 'DENEGADO'
+        return f"{self.usuario.username} — {estado} — {self.fecha_hora.strftime('%d/%m/%Y %H:%M')}"
+
+    class Meta:
+        verbose_name = 'Acceso'
+        verbose_name_plural = 'Accesos'
+        ordering = ['-fecha_hora']

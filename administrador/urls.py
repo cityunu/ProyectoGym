@@ -13,4 +13,5 @@ urlpatterns = [
     path('membresias/asignar/', views.asignar_membresia, name='asignar_membresia'),
     path('lector-qr/', views.lector_qr, name='lector_qr'),
     path('verificar-qr/', views.verificar_qr, name='verificar_qr'),
+    path('accesos/', views.historial_accesos, name='historial_accesos'),
 ]

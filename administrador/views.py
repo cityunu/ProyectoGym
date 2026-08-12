@@ -158,6 +158,7 @@ def lector_qr(request):
 @csrf_exempt
 @solo_staff
 def verificar_qr(request):
+    """Recibe el código QR escaneado, verifica membresía y registra el acceso"""
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
@@ -169,12 +170,14 @@ def verificar_qr(request):
             ).first()
 
             if not qr:
+                # Registrar intento fallido sin usuario (no se puede asociar)
                 return JsonResponse({
                     'valido': False,
                     'mensaje': 'QR inválido o expirado. El cliente no tiene acceso.'
                 })
 
             usuario = qr.usuario
+
             membresia = Membresia.objects.filter(
                 usuario=usuario,
                 activa=True,
@@ -182,6 +185,11 @@ def verificar_qr(request):
             ).first()
 
             if membresia:
+                Acceso.objects.create(
+                    usuario=usuario,
+                    valido=True,
+                    motivo='Acceso permitido — membresía vigente.'
+                )
                 return JsonResponse({
                     'valido': True,
                     'mensaje': f'✅ Acceso permitido — {usuario.get_full_name() or usuario.username}',
@@ -190,6 +198,11 @@ def verificar_qr(request):
                     'vence': membresia.fecha_fin.strftime('%d/%m/%Y'),
                 })
             else:
+                Acceso.objects.create(
+                    usuario=usuario,
+                    valido=False,
+                    motivo='Membresía inactiva o vencida.'
+                )
                 return JsonResponse({
                     'valido': False,
                     'mensaje': f'❌ Membresía inactiva o vencida — {usuario.get_full_name() or usuario.username}',
@@ -199,3 +212,9 @@ def verificar_qr(request):
             return JsonResponse({'valido': False, 'mensaje': f'Error: {str(e)}'})
 
     return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+@solo_staff
+def historial_accesos(request):
+    """Historial de accesos recientes"""
+    accesos = Acceso.objects.select_related('usuario')[:200]
+    return render(request, 'administrador/qr/historial.html', {'accesos': accesos})

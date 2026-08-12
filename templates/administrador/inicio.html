@@ -1,15 +1,51 @@
-<div class="reveal grid grid-cols-1 sm:grid-cols-4 gap-4">
-  <a href="{% url 'administrador:lista_productos' %}" class="text-center border border-white/20 text-white font-semibold py-4 rounded-lg uppercase tracking-wider text-sm hover:border-gym-red hover:text-gym-red transition-all duration-200">
-    Productos
-  </a>
-  <a href="{% url 'administrador:gestionar_membresias' %}" class="text-center border border-white/20 text-white font-semibold py-4 rounded-lg uppercase tracking-wider text-sm hover:border-gym-red hover:text-gym-red transition-all duration-200">
-    Membresías
-  </a>
-  <a href="{% url 'administrador:asignar_membresia' %}" class="text-center border {% if clientes_sin_membresia > 0 %}border-gym-gold/50 text-gym-gold{% else %}border-white/20 text-white{% endif %} font-semibold py-4 rounded-lg uppercase tracking-wider text-sm hover:border-gym-red hover:text-gym-red transition-all duration-200">
-    Asignar membresía
-    {% if clientes_sin_membresia > 0 %}<span class="block text-xs mt-1">{{ clientes_sin_membresia }} pendiente(s)</span>{% endif %}
-  </a>
-  <a href="{% url 'administrador:lector_qr' %}" class="text-center bg-gym-red hover:bg-red-700 text-white font-semibold py-4 rounded-lg uppercase tracking-wider text-sm transition-all duration-200">
-    Escanear QR
-  </a>
-</div>
+{% extends 'base.html' %}
+{% block title %}| Panel de administración{% endblock %}
+
+{% block content %}
+<section class="min-h-screen bg-gym-black pt-32 pb-20 px-6 sm:px-10">
+  <div class="max-w-6xl mx-auto">
+
+    <div class="reveal mb-12">
+      <p class="text-gym-red text-sm font-semibold uppercase tracking-widest mb-2">Panel de control</p>
+      <h1 class="font-display text-5xl sm:text-6xl text-white tracking-wide">
+        Hola, {{ request.user.first_name|default:request.user.username }}
+      </h1>
+    </div>
+
+    <div class="reveal grid grid-cols-1 sm:grid-cols-4 gap-6 mb-12">
+      <div class="bg-gym-surface border border-white/5 rounded-2xl p-6">
+        <p class="text-white/50 text-xs uppercase tracking-widest mb-2">Productos activos</p>
+        <p class="font-display text-4xl text-white">{{ total_productos }}</p>
+      </div>
+      <div class="bg-gym-surface border border-white/5 rounded-2xl p-6">
+        <p class="text-white/50 text-xs uppercase tracking-widest mb-2">Membresías activas</p>
+        <p class="font-display text-4xl text-white">{{ total_membresias }}</p>
+      </div>
+      <div class="bg-gym-surface border {% if productos_sin_stock > 0 %}border-gym-red/30{% else %}border-white/5{% endif %} rounded-2xl p-6">
+        <p class="text-white/50 text-xs uppercase tracking-widest mb-2">Sin stock</p>
+        <p class="font-display text-4xl {% if productos_sin_stock > 0 %}text-gym-red{% else %}text-white{% endif %}">{{ productos_sin_stock }}</p>
+      </div>
+      <div class="bg-gym-surface border border-white/5 rounded-2xl p-6">
+        <p class="text-white/50 text-xs uppercase tracking-widest mb-2">Clientes sin membresía</p>
+        <p class="font-display text-4xl {% if clientes_sin_membresia > 0 %}text-gym-gold{% else %}text-white{% endif %}">{{ clientes_sin_membresia }}</p>
+      </div>
+    </div>
+
+    <div class="reveal grid grid-cols-1 sm:grid-cols-4 gap-4">
+      <a href="{% url 'administrador:lista_productos' %}" class="text-center border border-white/20 text-white font-semibold py-4 rounded-lg uppercase tracking-wider text-sm hover:border-gym-red hover:text-gym-red transition-all duration-200">
+        Productos
+      </a>
+      <a href="{% url 'administrador:gestionar_membresias' %}" class="text-center border border-white/20 text-white font-semibold py-4 rounded-lg uppercase tracking-wider text-sm hover:border-gym-red hover:text-gym-red transition-all duration-200">
+        Membresías
+      </a>
+      <a href="{% url 'administrador:asignar_membresia' %}" class="text-center border {% if clientes_sin_membresia > 0 %}border-gym-gold/50 text-gym-gold{% else %}border-white/20 text-white{% endif %} font-semibold py-4 rounded-lg uppercase tracking-wider text-sm hover:border-gym-red hover:text-gym-red transition-all duration-200">
+        Asignar membresía
+      </a>
+      <a href="{% url 'administrador:lector_qr' %}" class="text-center bg-gym-red hover:bg-red-700 text-white font-semibold py-4 rounded-lg uppercase tracking-wider text-sm transition-all duration-200">
+        Escanear QR
+      </a>
+    </div>
+
+  </div>
+</section>
+{% endblock %}
