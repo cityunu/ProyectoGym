@@ -1,5 +1,6 @@
 import qrcode
 import io
+from datetime import timedelta
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -7,6 +8,7 @@ from django.core.files.base import ContentFile
 from django.utils import timezone
 from .models import Membresia, CodigoQR, CarritoItem
 from administrador.models import Producto, TipoMembresia
+
 
 
 def solo_cliente(view_func):
@@ -93,18 +95,28 @@ def mi_membresia(request):
 
 @solo_cliente
 def cambiar_membresia(request):
-    """Permite al cliente cambiar su tipo de membresía"""
+    """Permite al cliente cambiar/renovar su tipo de membresía"""
     if request.method == 'POST':
         tipo_id = request.POST.get('tipo_id')
         tipo = get_object_or_404(TipoMembresia, pk=tipo_id, activo=True)
+        hoy = timezone.now().date()
 
         try:
             membresia = request.user.membresia
             membresia.tipo = tipo
+            membresia.fecha_inicio = hoy
+            membresia.fecha_fin = hoy + timedelta(days=tipo.duracion_dias)
+            membresia.activa = True
             membresia.save()
-            messages.success(request, f'Membresía cambiada a: {tipo.get_nombre_display()}')
+            messages.success(
+                request,
+                f'Membresía cambiada a: {tipo.get_nombre_display()} — vence el {membresia.fecha_fin.strftime("%d/%m/%Y")}.'
+            )
         except Membresia.DoesNotExist:
-            messages.error(request, 'No tienes una membresía activa para cambiar.')
+            messages.error(
+                request,
+                'No tienes una membresía activa. Pide en recepción que te asignen una la primera vez.'
+            )
 
         return redirect('cliente:mi_membresia')
 

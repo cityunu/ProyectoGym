@@ -10,6 +10,7 @@ class TipoMembresia(models.Model):
 
     nombre = models.CharField(max_length=10, choices=OPCIONES, unique=True)
     precio = models.DecimalField(max_digits=8, decimal_places=2)
+    duracion_dias = models.PositiveIntegerField(default=30, help_text='Duración en días')
     descripcion = models.TextField(blank=True)
     activo = models.BooleanField(default=True)
 

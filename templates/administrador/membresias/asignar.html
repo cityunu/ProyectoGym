@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}| Asignar membresía{% endblock %}
+
+{% block content %}
+<section class="min-h-screen bg-gym-black pt-32 pb-20 px-6 sm:px-10">
+  <div class="max-w-2xl mx-auto">
+
+    <div class="reveal mb-10">
+      <h1 class="font-display text-5xl text-white tracking-wide">Asignar membresía</h1>
+      <p class="text-white/50 text-sm mt-2">
+        {{ clientes_sin_membresia|length }} cliente(s) sin membresía activa.
+      </p>
+    </div>
+
+    {% if clientes_sin_membresia %}
+    <form method="post" class="reveal bg-gym-surface border border-white/10 rounded-2xl p-8 space-y-6">
+      {% csrf_token %}
+      <div>
+        <label class="block text-white/70 text-sm font-medium mb-2">Cliente</label>
+        {{ form.usuario }}
+      </div>
+      <div>
+        <label class="block text-white/70 text-sm font-medium mb-2">Tipo de membresía</label>
+        {{ form.tipo }}
+      </div>
+      <button type="submit" class="w-full bg-gym-red hover:bg-red-700 text-white font-semibold py-3 rounded-lg uppercase tracking-wider transition-all duration-200">
+        Asignar membresía
+      </button>
+    </form>
+    {% else %}
+    <p class="text-white/50 text-center py-10">Todos los clientes registrados ya tienen membresía.</p>
+    {% endif %}
+
+    <a href="{% url 'administrador:inicio' %}" class="inline-block mt-10 text-sm font-semibold text-white/60 hover:text-gym-red uppercase tracking-wider">
+      ← Volver al panel
+    </a>
+  </div>
+</section>
+
+<style>
+  select, input {
+    width: 100%;
+    background: #171614;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    color: white;
+    font-size: 0.875rem;
+  }
+  select:focus, input:focus { outline: none; border-color: #dc2626; }
+</style>
+{% endblock %}

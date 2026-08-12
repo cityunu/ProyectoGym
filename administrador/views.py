@@ -1,17 +1,20 @@
 import json
+from datetime import timedelta
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import get_user_model
 from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from .models import Producto, TipoMembresia
-from .forms import ProductoForm, TipoMembresiaForm
+from .forms import ProductoForm, TipoMembresiaForm, AsignarMembresiaForm
 from cliente.models import CodigoQR, Membresia
+
+Usuario = get_user_model()
 
 
 def solo_staff(view_func):
-    """Decorador: solo admin, recepcionista y entrenador"""
     @login_required
     def wrapper(request, *args, **kwargs):
         if request.user.rol not in ['administrador', 'recepcionista', 'entrenador']:
@@ -22,7 +25,6 @@ def solo_staff(view_func):
 
 
 def solo_admin_recepcion(view_func):
-    """Decorador: solo admin y recepcionista"""
     @login_required
     def wrapper(request, *args, **kwargs):
         if request.user.rol not in ['administrador', 'recepcionista']:
@@ -37,12 +39,15 @@ def inicio(request):
     total_productos = Producto.objects.filter(activo=True).count()
     total_membresias = Membresia.objects.filter(activa=True).count()
     productos_sin_stock = Producto.objects.filter(activo=True, stock=0).count()
-    context = {
+    clientes_sin_membresia = Usuario.objects.filter(rol='cliente').exclude(
+        membresia__isnull=False
+    ).count()
+    return render(request, 'administrador/inicio.html', {
         'total_productos': total_productos,
         'total_membresias': total_membresias,
         'productos_sin_stock': productos_sin_stock,
-    }
-    return render(request, 'administrador/inicio.html', context)
+        'clientes_sin_membresia': clientes_sin_membresia,
+    })
 
 
 @solo_admin_recepcion
@@ -108,16 +113,51 @@ def gestionar_membresias(request):
     })
 
 
+@solo_admin_recepcion
+def asignar_membresia(request):
+    """Asigna la primera membresía a un cliente que aún no tiene una"""
+    clientes_sin_membresia = Usuario.objects.filter(rol='cliente').exclude(
+        membresia__isnull=False
+    )
+
+    if request.method == 'POST':
+        form = AsignarMembresiaForm(request.POST)
+        form.fields['usuario'].queryset = clientes_sin_membresia
+        if form.is_valid():
+            usuario = form.cleaned_data['usuario']
+            tipo = form.cleaned_data['tipo']
+            hoy = timezone.now().date()
+            Membresia.objects.create(
+                usuario=usuario,
+                tipo=tipo,
+                fecha_inicio=hoy,
+                fecha_fin=hoy + timedelta(days=tipo.duracion_dias),
+                activa=True,
+            )
+            messages.success(
+                request,
+                f'Membresía "{tipo.get_nombre_display()}" asignada a '
+                f'{usuario.get_full_name() or usuario.username}.'
+            )
+            return redirect('administrador:gestionar_membresias')
+    else:
+        form = AsignarMembresiaForm()
+        form.fields['usuario'].queryset = clientes_sin_membresia
+
+    return render(request, 'administrador/membresias/asignar.html', {
+        'form': form,
+        'clientes_sin_membresia': clientes_sin_membresia,
+    })
+
+
 @solo_staff
 def lector_qr(request):
-    """Pantalla del lector de QR para verificar acceso"""
     return render(request, 'administrador/qr/lector.html')
 
 
 @csrf_exempt
 @solo_staff
 def verificar_qr(request):
-    """Recibe el código QR escaneado y verifica si el cliente tiene membresía activa"""
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
@@ -135,7 +175,6 @@ def verificar_qr(request):
                 })
 
             usuario = qr.usuario
-
             membresia = Membresia.objects.filter(
                 usuario=usuario,
                 activa=True,
