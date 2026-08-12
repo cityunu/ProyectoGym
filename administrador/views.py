@@ -218,3 +218,9 @@ def historial_accesos(request):
     """Historial de accesos recientes"""
     accesos = Acceso.objects.select_related('usuario')[:200]
     return render(request, 'administrador/qr/historial.html', {'accesos': accesos})
+
+@solo_staff
+def historial_ventas(request):
+    """Historial de ventas de productos"""
+    ventas = Venta.objects.select_related('cliente').prefetch_related('detalles__producto')[:200]
+    return render(request, 'administrador/ventas/historial.html', {'ventas': ventas})

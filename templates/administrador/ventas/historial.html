@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}| Historial de ventas{% endblock %}
+
+{% block content %}
+<section class="min-h-screen bg-gym-black pt-32 pb-20 px-6 sm:px-10">
+  <div class="max-w-6xl mx-auto">
+
+    <div class="reveal mb-10 flex items-center justify-between gap-4">
+      <div>
+        <h1 class="font-display text-5xl text-white tracking-wide">Historial de ventas</h1>
+        <p class="text-white/50 text-sm mt-2">
+          Últimas {{ ventas|length }} ventas registradas.
+        </p>
+      </div>
+      <a href="{% url 'cliente:tienda' %}"
+         class="bg-gym-red hover:bg-red-700 text-white font-semibold px-6 py-2.5 rounded-lg uppercase tracking-wider text-sm transition-all duration-200">
+        Ir a tienda
+      </a>
+    </div>
+
+    <div class="reveal bg-gym-surface border border-white/10 rounded-2xl overflow-hidden">
+      <table class="w-full text-left text-sm">
+        <thead class="bg-gym-surface2 text-white/50 uppercase text-xs tracking-wider">
+          <tr>
+            <th class="p-4">#</th>
+            <th class="p-4">Cliente</th>
+            <th class="p-4">Productos</th>
+            <th class="p-4">Total</th>
+            <th class="p-4">Fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for venta in ventas %}
+          <tr class="border-t border-white/5">
+            <td class="p-4 text-white/40 text-xs">#{{ venta.pk }}</td>
+            <td class="p-4 text-white">
+              {{ venta.cliente.get_full_name|default:venta.cliente.username|default:"Venta general" }}
+            </td>
+            <td class="p-4 text-white/60 text-xs">
+              {% for d in venta.detalles.all %}
+                {{ d.producto.nombre }} x{{ d.cantidad }}{% if not forloop.last %}, {% endif %}
+              {% endfor %}
+            </td>
+            <td class="p-4 text-gym-gold font-display text-xl">
+              ${{ venta.total }}
+            </td>
+            <td class="p-4 text-white/50 text-xs">
+              {{ venta.fecha|date:"d/m/Y H:i" }}
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5" class="p-8 text-center text-white/40">
+              No hay ventas registradas todavía.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <a href="{% url 'administrador:inicio' %}" class="inline-block mt-10 text-sm font-semibold text-white/60 hover:text-gym-red uppercase tracking-wider">
+      ← Volver al panel
+    </a>
+  </div>
+</section>
+{% endblock %}

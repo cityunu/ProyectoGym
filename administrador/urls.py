@@ -14,4 +14,5 @@ urlpatterns = [
     path('lector-qr/', views.lector_qr, name='lector_qr'),
     path('verificar-qr/', views.verificar_qr, name='verificar_qr'),
     path('accesos/', views.historial_accesos, name='historial_accesos'),
+    path('ventas/', views.historial_ventas, name='historial_ventas'),
 ]

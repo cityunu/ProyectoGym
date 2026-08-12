@@ -178,7 +178,7 @@ def eliminar_del_carrito(request, item_pk):
 
 @solo_cliente
 def confirmar_compra(request):
-    """Procesa la compra: descuenta stock y limpia el carrito"""
+    """Procesa la compra: descuenta stock, guarda la venta y limpia el carrito"""
     items = CarritoItem.objects.filter(
         usuario=request.user
     ).select_related('producto')
@@ -198,16 +198,37 @@ def confirmar_compra(request):
             messages.error(request, error)
         return redirect('cliente:ver_carrito')
 
-    # Procesar la compra
-    for item in items:
-        item.producto.stock -= item.cantidad
-        item.producto.save()
-
+    # Calcular total y crear venta
     total = sum(item.subtotal() for item in items)
-    items_comprados = list(items)
+    venta = Venta.objects.create(
+        cliente=request.user,
+        total=total,
+    )
+
+    # Procesar la compra: descontar stock y crear detalles
+    items_comprados = []
+    for item in items:
+        producto = item.producto
+        producto.stock -= item.cantidad
+        producto.save()
+
+        detalle = DetalleVenta.objects.create(
+            venta=venta,
+            producto=producto,
+            cantidad=item.cantidad,
+            precio_unitario=producto.precio,
+            subtotal=item.subtotal(),
+        )
+        # Guardar para mostrar en pantalla
+        items_comprados.append(detalle)
+
+    # Vaciar carrito
     items.delete()
 
-    messages.success(request, f'¡Compra realizada! Total: ${total}. Recoge tus productos en recepción.')
+    messages.success(
+        request,
+        f'¡Compra realizada! Total: ${total}. Recoge tus productos en recepción.'
+    )
     return render(request, 'cliente/compra_exitosa.html', {
         'items': items_comprados,
         'total': total,
