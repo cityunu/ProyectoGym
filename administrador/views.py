@@ -8,18 +8,13 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
-from django.db.models import Q, Sum
+from django.db.models import Q, Sum, Count
 
 from .models import Producto, TipoMembresia, Venta, DetalleVenta
-from .forms import ProductoForm, TipoMembresiaForm, AsignarMembresiaForm
-from cliente.models import CodigoQR, Membresia, Acceso
-
-from .models import Producto, TipoMembresia, Venta
-from cliente.models import CodigoQR, Membresia, Acceso
-from django.db.models import Q, Sum
-
-from core.utils import registrar_evento
 from .forms import ProductoForm, TipoMembresiaForm, AsignarMembresiaForm, ClienteForm
+from cliente.models import CodigoQR, Membresia, Acceso
+from core.utils import registrar_evento
+from core.models import Bitacora
 
 Usuario = get_user_model()
 
@@ -35,6 +30,7 @@ def solo_staff(view_func):
 
 
 def solo_admin_recepcion(view_func):
+    """Decorador: solo admin y recepcionista"""
     @login_required
     def wrapper(request, *args, **kwargs):
         if request.user.rol not in ['administrador', 'recepcionista']:
@@ -73,6 +69,7 @@ def agregar_producto(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Producto agregado correctamente.')
+            registrar_evento(request.user, 'Agregar producto', f'Se agregó "{form.instance.nombre}".')
             return redirect('administrador:lista_productos')
     else:
         form = ProductoForm()
@@ -86,6 +83,7 @@ def editar_producto(request, pk):
         form = ProductoForm(request.POST, request.FILES, instance=producto)
         if form.is_valid():
             form.save()
+            registrar_evento(request.user, 'Editar producto', f'Se editó "{producto.nombre}".')
             messages.success(request, 'Producto actualizado correctamente.')
             return redirect('administrador:lista_productos')
     else:
@@ -118,7 +116,7 @@ def gestionar_membresias(request):
         form = TipoMembresiaForm(request.POST, instance=tipo)
         if form.is_valid():
             form.save()
-            messages.success(request, f'Precio de "{tipo.get_nombre_display()}" actualizado.')
+            messages.success(request, f'Info de "{tipo.get_nombre_display()}" actualizada.')
             return redirect('administrador:gestionar_membresias')
     else:
         form = TipoMembresiaForm()
@@ -161,6 +159,14 @@ def asignar_membresia(request):
                 f'{usuario.get_full_name() or usuario.username}.'
             )
             return redirect('administrador:gestionar_membresias')
+    else:
+        form = AsignarMembresiaForm()
+        form.fields['usuario'].queryset = clientes_sin_membresia
+
+    return render(request, 'administrador/membresias/asignar.html', {
+        'form': form,
+        'clientes_sin_membresia': clientes_sin_membresia,
+    })
 
 
 @solo_staff
@@ -178,15 +184,13 @@ def verificar_qr(request):
             codigo = data.get('codigo', '').strip()
 
             qr = CodigoQR.objects.select_related('usuario').filter(
-                codigo=codigo,
-                fecha_generado__date=timezone.now().date()
+                codigo=codigo
             ).first()
 
             if not qr:
-                # Registrar intento fallido sin usuario (no se puede asociar)
                 return JsonResponse({
                     'valido': False,
-                    'mensaje': 'QR inválido o expirado. El cliente no tiene acceso.'
+                    'mensaje': 'QR inválido. El cliente no tiene acceso.'
                 })
 
             usuario = qr.usuario
@@ -226,15 +230,18 @@ def verificar_qr(request):
 
     return JsonResponse({'error': 'Método no permitido'}, status=405)
 
+
 @solo_staff
 def historial_accesos(request):
     accesos = Acceso.objects.select_related('usuario')[:200]
     return render(request, 'administrador/qr/historial.html', {'accesos': accesos})
 
+
 @solo_staff
 def historial_ventas(request):
     ventas = Venta.objects.select_related('cliente').prefetch_related('detalles__producto')[:200]
     return render(request, 'administrador/ventas/historial.html', {'ventas': ventas})
+
 
 @solo_admin_recepcion
 def cancelar_venta(request, venta_id):
@@ -246,7 +253,6 @@ def cancelar_venta(request, venta_id):
             messages.warning(request, 'La venta ya está cancelada.')
             return redirect('administrador:historial_ventas')
 
-        # Devolver stock
         for detalle in venta.detalles.all():
             producto = detalle.producto
             producto.stock += detalle.cantidad
@@ -265,6 +271,7 @@ def cancelar_venta(request, venta_id):
         return redirect('administrador:historial_ventas')
 
     return render(request, 'administrador/ventas/confirmar_cancelar.html', {'venta': venta})
+
 
 @solo_admin_recepcion
 def lista_clientes(request):
@@ -287,10 +294,11 @@ def lista_clientes(request):
         'q': q,
     })
 
+
 @solo_admin_recepcion
 def detalle_cliente(request, usuario_id):
     """Detalle de cliente con membresía y QR"""
-    usuario = get_user_model().objects.get(pk=usuario_id, rol='cliente')
+    usuario = get_object_or_404(Usuario, pk=usuario_id, rol='cliente')
     try:
         membresia = usuario.membresia
     except Membresia.DoesNotExist:
@@ -331,8 +339,10 @@ def editar_cliente(request, usuario_id):
         'form': form,
     })
 
+
 @solo_staff
 def reporte_ingresos(request):
+    """Reporte simple de ingresos por ventas de productos"""
     hoy = timezone.now().date()
     desde = request.GET.get('desde') or str(hoy.replace(day=1))
     hasta = request.GET.get('hasta') or str(hoy)
@@ -343,18 +353,24 @@ def reporte_ingresos(request):
 
     total_periodo = ventas.aggregate(total=Sum('total'))['total'] or 0
 
+    cantidad_ventas = ventas.count()
+    promedio_venta = total_periodo / cantidad_ventas if cantidad_ventas > 0 else 0
+
     return render(request, 'administrador/ventas/reporte_ingresos.html', {
         'ventas': ventas,
         'total_periodo': total_periodo,
         'desde': desde,
         'hasta': hasta,
+        'cantidad_ventas': cantidad_ventas,
+        'promedio_venta': promedio_venta,
     })
+
 
 @solo_staff
 def reporte_asistencias(request):
     """Reporte de asistencias basadas en accesos válidos"""
     hoy = timezone.now().date()
-    desde = request.GET.get('desde') or str(hoy.replace(day=1))  # inicio de mes
+    desde = request.GET.get('desde') or str(hoy.replace(day=1))
     hasta = request.GET.get('hasta') or str(hoy)
 
     accesos = Acceso.objects.filter(
@@ -364,8 +380,6 @@ def reporte_asistencias(request):
 
     total_asistencias = accesos.count()
 
-    # Agrupar por usuario para mostrar cuántas asistencias tiene cada uno
-    from django.db.models import Count
     asistencias_por_cliente = (
         Acceso.objects.filter(
             fecha_hora__date__range=[desde, hasta],
@@ -383,6 +397,7 @@ def reporte_asistencias(request):
         'desde': desde,
         'hasta': hasta,
     })
+
 
 @solo_staff
 def bitacora(request):

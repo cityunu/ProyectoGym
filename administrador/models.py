@@ -52,9 +52,11 @@ class Venta(models.Model):
     )
     total = models.DecimalField(max_digits=10, decimal_places=2)
     fecha = models.DateTimeField(auto_now_add=True)
+    cancelada = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Venta #{self.pk} — ${self.total} — {self.fecha.strftime('%d/%m/%Y %H:%M')}"
+        estado = "CANCELADA" if self.cancelada else "OK"
+        return f"Venta #{self.pk} — ${self.total} — {estado} — {self.fecha.strftime('%d/%m/%Y %H:%M')}"
 
     class Meta:
         verbose_name = 'Venta'
@@ -83,24 +85,3 @@ class DetalleVenta(models.Model):
     class Meta:
         verbose_name = 'Detalle de venta'
         verbose_name_plural = 'Detalles de venta'
-
-class Venta(models.Model):
-    cliente = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name='ventas'
-    )
-    total = models.DecimalField(max_digits=10, decimal_places=2)
-    fecha = models.DateTimeField(auto_now_add=True)
-    cancelada = models.BooleanField(default=False)  # ← nuevo campo
-
-    def __str__(self):
-        estado = "CANCELADA" if self.cancelada else "OK"
-        return f"Venta #{self.pk} — ${self.total} — {estado} — {self.fecha.strftime('%d/%m/%Y %H:%M')}"
-
-    class Meta:
-        verbose_name = 'Venta'
-        verbose_name_plural = 'Ventas'
-        ordering = ['-fecha']

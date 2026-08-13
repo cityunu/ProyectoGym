@@ -1,16 +1,17 @@
 import qrcode
 import io
+import uuid
 from datetime import timedelta
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.files.base import ContentFile
 from django.utils import timezone
+
 from .models import Membresia, CodigoQR, CarritoItem
-from administrador.models import Producto, TipoMembresia
+from administrador.models import Producto, TipoMembresia, Venta, DetalleVenta
 from core.utils import registrar_evento
-
-
 
 
 def solo_cliente(view_func):
@@ -58,24 +59,23 @@ def inicio(request):
 
 @solo_cliente
 def mi_qr(request):
-    """Muestra el QR diario del cliente — regenera si es de otro día"""
+    """Muestra el QR del cliente. Si no existe, lo genera una sola vez."""
     try:
         qr_obj = request.user.codigo_qr
-        # Si el QR es de un día anterior, regenerar
-        if qr_obj.fecha_generado.date() < timezone.now().date():
-            import uuid
-            qr_obj.codigo = uuid.uuid4()
-            imagen = generar_imagen_qr(qr_obj.codigo)
-            qr_obj.imagen_qr.save(f'qr_{request.user.pk}.png', imagen, save=False)
-            qr_obj.save()
+        print("QR existente:", qr_obj.codigo)
     except CodigoQR.DoesNotExist:
-        # Crear QR por primera vez
-        import uuid
         nuevo_codigo = uuid.uuid4()
+        print("Creando QR nuevo:", nuevo_codigo)
         qr_obj = CodigoQR(usuario=request.user, codigo=nuevo_codigo)
         imagen = generar_imagen_qr(nuevo_codigo)
         qr_obj.imagen_qr.save(f'qr_{request.user.pk}.png', imagen, save=False)
+        qr_obj.fecha_generado = timezone.now()
         qr_obj.save()
+        registrar_evento(
+            request.user,
+            'Generar QR',
+            f'Se generó QR inicial con código {qr_obj.codigo}.'
+        )
 
     return render(request, 'cliente/mi_qr.html', {'qr': qr_obj})
 
@@ -195,7 +195,6 @@ def confirmar_compra(request):
         messages.warning(request, 'Tu carrito está vacío.')
         return redirect('cliente:ver_carrito')
 
-    # Verificar stock antes de procesar
     errores = []
     for item in items:
         if item.cantidad > item.producto.stock:
@@ -206,14 +205,12 @@ def confirmar_compra(request):
             messages.error(request, error)
         return redirect('cliente:ver_carrito')
 
-    # Calcular total y crear venta
     total = sum(item.subtotal() for item in items)
     venta = Venta.objects.create(
         cliente=request.user,
         total=total,
     )
 
-    # Procesar la compra: descontar stock y crear detalles
     items_comprados = []
     for item in items:
         producto = item.producto
@@ -227,14 +224,16 @@ def confirmar_compra(request):
             precio_unitario=producto.precio,
             subtotal=item.subtotal(),
         )
-        # Guardar para mostrar en pantalla
         items_comprados.append(detalle)
+
+    items.delete()
 
     registrar_evento(
         request.user,
         'Compra de productos',
         f'Compra realizada por ${total}. Venta #{venta.pk}.'
     )
+
     messages.success(
         request,
         f'¡Compra realizada! Total: ${total}. Recoge tus productos en recepción.'

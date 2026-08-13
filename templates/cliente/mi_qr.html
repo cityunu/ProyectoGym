@@ -11,6 +11,9 @@
       <div class="bg-white rounded-xl p-6 inline-block mb-6">
         <img src="{{ qr.imagen_qr.url }}" alt="Código QR de acceso" width="240" height="240" loading="lazy">
       </div>
+      <p class="text-white/40 text-xs mt-2">
+        Código: {{ qr.codigo }}
+      </p>
       <p class="text-white/40 text-xs mb-2">Generado el {{ qr.fecha_generado|date:"d M Y, H:i" }}</p>
     {% else %}
       <p class="text-white/50 text-sm mb-6">No se pudo generar tu código QR. Intenta recargar la página.</p>

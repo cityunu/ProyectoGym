@@ -44,16 +44,12 @@
       </div>
       <div class="bg-gym-surface border border-white/10 rounded-2xl p-4">
         <p class="text-white/50 text-xs uppercase tracking-widest mb-2">Número de ventas</p>
-        <p class="font-display text-3xl text-white">{{ ventas|length }}</p>
+        <p class="font-display text-3xl text-white">{{ cantidad_ventas }}</p>
       </div>
       <div class="bg-gym-surface border border-white/10 rounded-2xl p-4">
         <p class="text-white/50 text-xs uppercase tracking-widest mb-2">Promedio por venta</p>
         <p class="font-display text-3xl text-white">
-          {% if ventas %}
-            ${{ total_periodo|divisibleby:ventas|default_if_none:0 }}
-          {% else %}
-            $0
-          {% endif %}
+          ${{ promedio_venta|floatformat:2 }}
         </p>
       </div>
     </div>
