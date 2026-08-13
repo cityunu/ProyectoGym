@@ -28,3 +28,23 @@ class AsignarMembresiaForm(forms.Form):
         label='Tipo de membresía',
         widget=forms.Select(attrs={'class': 'form-input'})
     )
+
+
+class ClienteForm(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        fields = ['first_name', 'last_name', 'email', 'telefono', 'rol']
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-input'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-input'}),
+            'email': forms.EmailInput(attrs={'class': 'form-input'}),
+            'telefono': forms.TextInput(attrs={'class': 'form-input'}),
+            'rol': forms.Select(attrs={'class': 'form-input'}),
+        }
+        labels = {
+            'first_name': 'Nombre',
+            'last_name': 'Apellido',
+            'email': 'Correo',
+            'telefono': 'Teléfono',
+            'rol': 'Rol',
+        }

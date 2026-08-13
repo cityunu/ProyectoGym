@@ -37,7 +37,9 @@
           {% for u in clientes %}
           <tr class="border-t border-white/5">
             <td class="p-4 text-white">
-              {{ u.get_full_name|default:u.username }}
+              <a href="{% url 'administrador:detalle_cliente' u.pk %}" class="text-white hover:text-gym-gold">
+                {{ u.get_full_name|default:u.username }}
+              </a>
             </td>
             <td class="p-4 text-white/60">
               {{ u.username }}
@@ -58,6 +60,11 @@
                   Sin membresía
                 </span>
               {% endif %}
+            </td>
+            <td class="p-4 text-right">
+              <a href="{% url 'administrador:editar_cliente' u.pk %}" class="text-white/50 hover:text-gym-gold text-xs uppercase tracking-wider">
+                Editar
+              </a>
             </td>
           </tr>
           {% empty %}

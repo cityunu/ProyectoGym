@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}| Detalle cliente{% endblock %}
+
+{% block content %}
+<section class="min-h-screen bg-gym-black pt-32 pb-20 px-6 sm:px-10">
+  <div class="max-w-5xl mx-auto">
+
+    <div class="reveal mb-8 flex items-center justify-between gap-4">
+      <div>
+        <h1 class="font-display text-4xl text-white tracking-wide">
+          {{ cliente.get_full_name|default:cliente.username }}
+        </h1>
+        <p class="text-white/50 text-sm mt-1">
+          Usuario: {{ cliente.username }} · Rol: {{ cliente.get_rol_display }}
+        </p>
+      </div>
+      <a href="{% url 'administrador:editar_cliente' cliente.pk %}"
+         class="border border-white/20 text-white font-semibold px-5 py-2 rounded-lg uppercase tracking-wider text-xs hover:border-gym-red hover:text-gym-red transition-all duration-200">
+        Editar datos
+      </a>
+    </div>
+
+    <div class="reveal grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+      <div class="bg-gym-surface border border-white/10 rounded-2xl p-6">
+        <h2 class="text-white/80 text-sm uppercase tracking-wider mb-3">Contacto</h2>
+        <p class="text-white text-sm"><strong>Correo:</strong> {{ cliente.email|default:"—" }}</p>
+        <p class="text-white text-sm mt-1"><strong>Teléfono:</strong> {{ cliente.telefono|default:"—" }}</p>
+      </div>
+
+      <div class="bg-gym-surface border border-white/10 rounded-2xl p-6">
+        <h2 class="text-white/80 text-sm uppercase tracking-wider mb-3">Membresía</h2>
+        {% if membresia %}
+          <p class="text-white text-sm font-semibold">{{ membresia.tipo.get_nombre_display }}</p>
+          <p class="text-white/60 text-sm mt-1">
+            Inicio: {{ membresia.fecha_inicio|date:"d/m/Y" }} · Vence: {{ membresia.fecha_fin|date:"d/m/Y" }}
+          </p>
+          <span class="inline-block mt-3 text-xs text-gym-gold border border-gym-gold/30 rounded-full px-3 py-0.5 uppercase">
+            {% if membresia.activa %}Activa{% else %}Inactiva{% endif %}
+          </span>
+        {% else %}
+          <p class="text-white/50 text-sm">No tiene membresía asignada.</p>
+        {% endif %}
+      </div>
+
+      <div class="bg-gym-surface border border-white/10 rounded-2xl p-6 text-center">
+        <h2 class="text-white/80 text-sm uppercase tracking-wider mb-3">Código QR</h2>
+        {% if qr and qr.imagen_qr %}
+          <div class="bg-white rounded-xl p-4 inline-block">
+            <img src="{{ qr.imagen_qr.url }}" alt="QR de acceso" width="160" height="160" loading="lazy">
+          </div>
+          <p class="text-white/40 text-xs mt-2">Generado el {{ qr.fecha_generado|date:"d/m/Y H:i" }}</p>
+        {% else %}
+          <p class="text-white/50 text-sm">No tiene QR generado aún.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <a href="{% url 'administrador:lista_clientes' %}" class="inline-block mt-4 text-sm font-semibold text-white/60 hover:text-gym-red uppercase tracking-wider">
+      ← Volver al listado
+    </a>
+  </div>
+</section>
+{% endblock %}

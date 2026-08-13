@@ -19,6 +19,7 @@ from cliente.models import CodigoQR, Membresia, Acceso
 from django.db.models import Q, Sum
 
 from core.utils import registrar_evento
+from .forms import ProductoForm, TipoMembresiaForm, AsignarMembresiaForm, ClienteForm
 
 Usuario = get_user_model()
 
@@ -254,6 +255,50 @@ def lista_clientes(request):
     return render(request, 'administrador/clientes/lista.html', {
         'clientes': clientes,
         'q': q,
+    })
+
+@solo_admin_recepcion
+def detalle_cliente(request, usuario_id):
+    """Detalle de cliente con membresía y QR"""
+    usuario = get_user_model().objects.get(pk=usuario_id, rol='cliente')
+    try:
+        membresia = usuario.membresia
+    except Membresia.DoesNotExist:
+        membresia = None
+    try:
+        qr = usuario.codigo_qr
+    except CodigoQR.DoesNotExist:
+        qr = None
+
+    return render(request, 'administrador/clientes/detalle.html', {
+        'cliente': usuario,
+        'membresia': membresia,
+        'qr': qr,
+    })
+
+
+@solo_admin_recepcion
+def editar_cliente(request, usuario_id):
+    """Editar datos básicos de cliente"""
+    usuario = get_object_or_404(Usuario, pk=usuario_id, rol='cliente')
+
+    if request.method == 'POST':
+        form = ClienteForm(request.POST, instance=usuario)
+        if form.is_valid():
+            form.save()
+            registrar_evento(
+                request.user,
+                'Editar cliente',
+                f'Se actualizaron datos de {usuario.get_full_name() or usuario.username}.'
+            )
+            messages.success(request, 'Datos del cliente actualizados correctamente.')
+            return redirect('administrador:detalle_cliente', usuario_id=usuario.pk)
+    else:
+        form = ClienteForm(instance=usuario)
+
+    return render(request, 'administrador/clientes/form.html', {
+        'cliente': usuario,
+        'form': form,
     })
 
 @solo_staff
