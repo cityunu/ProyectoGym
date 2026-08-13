@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}| Bitácora{% endblock %}
+
+{% block content %}
+<section class="min-h-screen bg-gym-black pt-32 pb-20 px-6 sm:px-10">
+  <div class="max-w-6xl mx-auto">
+
+    <div class="reveal mb-8">
+      <h1 class="font-display text-5xl text-white tracking-wide">Bitácora del sistema</h1>
+      <p class="text-white/50 text-sm mt-2">
+        Últimos {{ eventos|length }} eventos registrados.
+      </p>
+    </div>
+
+    <div class="reveal bg-gym-surface border border-white/10 rounded-2xl overflow-hidden">
+      <table class="w-full text-left text-sm">
+        <thead class="bg-gym-surface2 text-white/50 uppercase text-xs tracking-wider">
+          <tr>
+            <th class="p-4">Fecha y hora</th>
+            <th class="p-4">Usuario</th>
+            <th class="p-4">Acción</th>
+            <th class="p-4">Detalle</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for e in eventos %}
+          <tr class="border-t border-white/5">
+            <td class="p-4 text-white/60">
+              {{ e.fecha_hora|date:"d/m/Y H:i" }}
+            </td>
+            <td class="p-4 text-white">
+              {{ e.usuario.get_full_name|default:e.usuario.username|default:"Sistema" }}
+            </td>
+            <td class="p-4 text-gym-gold text-xs uppercase tracking-wider">
+              {{ e.accion }}
+            </td>
+            <td class="p-4 text-white/50 text-xs">
+              {{ e.detalle|default:"—" }}
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4" class="p-8 text-center text-white/40">
+              No hay eventos registrados aún.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <a href="{% url 'administrador:inicio' %}" class="inline-block mt-10 text-sm font-semibold text-white/60 hover:text-gym-red uppercase tracking-wider">
+      ← Volver al panel
+    </a>
+  </div>
+</section>
+{% endblock %}

@@ -15,6 +15,8 @@ urlpatterns = [
     path('lector-qr/', views.lector_qr, name='lector_qr'),
     path('verificar-qr/', views.verificar_qr, name='verificar_qr'),
     path('accesos/', views.historial_accesos, name='historial_accesos'),
+    path('accesos/reporte/', views.reporte_asistencias, name='reporte_asistencias'),
     path('ventas/', views.historial_ventas, name='historial_ventas'),
     path('ventas/ingresos/', views.reporte_ingresos, name='reporte_ingresos'),
+     path('bitacora/', views.bitacora, name='bitacora'),
 ]

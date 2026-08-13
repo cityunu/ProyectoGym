@@ -18,6 +18,8 @@ from .models import Producto, TipoMembresia, Venta
 from cliente.models import CodigoQR, Membresia, Acceso
 from django.db.models import Q, Sum
 
+from core.utils import registrar_evento
+
 Usuario = get_user_model()
 
 
@@ -94,7 +96,13 @@ def editar_producto(request, pk):
 def eliminar_producto(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
     if request.method == 'POST':
+        nombre = producto.nombre
         producto.delete()
+        registrar_evento(
+            request.user,
+            'Eliminar producto',
+            f'Se eliminó el producto "{nombre}".'
+        )
         messages.success(request, 'Producto eliminado.')
         return redirect('administrador:lista_productos')
     return render(request, 'administrador/productos/confirmar_eliminar.html', {'producto': producto})
@@ -141,20 +149,17 @@ def asignar_membresia(request):
                 fecha_fin=hoy + timedelta(days=tipo.duracion_dias),
                 activa=True,
             )
+            registrar_evento(
+                request.user,
+                'Asignar membresía',
+                f'Se asignó "{tipo.get_nombre_display()}" a {usuario.get_full_name() or usuario.username}.'
+            )
             messages.success(
                 request,
                 f'Membresía "{tipo.get_nombre_display()}" asignada a '
                 f'{usuario.get_full_name() or usuario.username}.'
             )
             return redirect('administrador:gestionar_membresias')
-    else:
-        form = AsignarMembresiaForm()
-        form.fields['usuario'].queryset = clientes_sin_membresia
-
-    return render(request, 'administrador/membresias/asignar.html', {
-        'form': form,
-        'clientes_sin_membresia': clientes_sin_membresia,
-    })
 
 
 @solo_staff
@@ -269,3 +274,42 @@ def reporte_ingresos(request):
         'desde': desde,
         'hasta': hasta,
     })
+
+@solo_staff
+def reporte_asistencias(request):
+    """Reporte de asistencias basadas en accesos válidos"""
+    hoy = timezone.now().date()
+    desde = request.GET.get('desde') or str(hoy.replace(day=1))  # inicio de mes
+    hasta = request.GET.get('hasta') or str(hoy)
+
+    accesos = Acceso.objects.filter(
+        fecha_hora__date__range=[desde, hasta],
+        valido=True
+    ).select_related('usuario').order_by('-fecha_hora')
+
+    total_asistencias = accesos.count()
+
+    # Agrupar por usuario para mostrar cuántas asistencias tiene cada uno
+    from django.db.models import Count
+    asistencias_por_cliente = (
+        Acceso.objects.filter(
+            fecha_hora__date__range=[desde, hasta],
+            valido=True
+        )
+        .values('usuario__id', 'usuario__first_name', 'usuario__last_name', 'usuario__username')
+        .annotate(total=Count('id'))
+        .order_by('-total')
+    )
+
+    return render(request, 'administrador/qr/reporte_asistencias.html', {
+        'accesos': accesos,
+        'total_asistencias': total_asistencias,
+        'asistencias_por_cliente': asistencias_por_cliente,
+        'desde': desde,
+        'hasta': hasta,
+    })
+
+@solo_staff
+def bitacora(request):
+    eventos = Bitacora.objects.select_related('usuario')[:200]
+    return render(request, 'administrador/bitacora/lista.html', {'eventos': eventos})

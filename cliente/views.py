@@ -8,6 +8,8 @@ from django.core.files.base import ContentFile
 from django.utils import timezone
 from .models import Membresia, CodigoQR, CarritoItem
 from administrador.models import Producto, TipoMembresia
+from core.utils import registrar_evento
+
 
 
 
@@ -108,6 +110,11 @@ def cambiar_membresia(request):
             membresia.fecha_fin = hoy + timedelta(days=tipo.duracion_dias)
             membresia.activa = True
             membresia.save()
+            registrar_evento(
+                request.user,
+                'Cambiar membresía',
+                f'Membresía cambiada a "{tipo.get_nombre_display()}".'
+            )
             messages.success(
                 request,
                 f'Membresía cambiada a: {tipo.get_nombre_display()} — vence el {membresia.fecha_fin.strftime("%d/%m/%Y")}.'
@@ -222,9 +229,11 @@ def confirmar_compra(request):
         # Guardar para mostrar en pantalla
         items_comprados.append(detalle)
 
-    # Vaciar carrito
-    items.delete()
-
+    registrar_evento(
+        request.user,
+        'Compra de productos',
+        f'Compra realizada por ${total}. Venta #{venta.pk}.'
+    )
     messages.success(
         request,
         f'¡Compra realizada! Total: ${total}. Recoge tus productos en recepción.'
