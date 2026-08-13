@@ -27,6 +27,7 @@
             <th class="p-4">Productos</th>
             <th class="p-4">Total</th>
             <th class="p-4">Fecha</th>
+            <th class="p-4">Estado</th>
           </tr>
         </thead>
         <tbody>
@@ -47,10 +48,25 @@
             <td class="p-4 text-white/50 text-xs">
               {{ venta.fecha|date:"d/m/Y H:i" }}
             </td>
+            <td class="p-4 text-white/60 text-xs">
+              {% if venta.cancelada %}
+                <span class="inline-block text-gym-red border border-gym-red/40 rounded-full px-3 py-0.5 uppercase tracking-wider">
+                  Cancelada
+                </span>
+              {% else %}
+                <form method="post" action="{% url 'administrador:cancelar_venta' venta.pk %}">
+                  {% csrf_token %}
+                  <button type="submit"
+                          class="inline-flex items-center gap-1 text-xs text-white/60 hover:text-gym-red border border-white/20 hover:border-gym-red rounded-full px-3 py-0.5 uppercase tracking-wider transition-all duration-200">
+                    Cancelar
+                  </button>
+                </form>
+              {% endif %}
+            </td>
           </tr>
           {% empty %}
           <tr>
-            <td colspan="5" class="p-8 text-center text-white/40">
+            <td colspan="6" class="p-8 text-center text-white/40">
               No hay ventas registradas todavía.
             </td>
           </tr>

@@ -20,5 +20,6 @@ urlpatterns = [
     path('accesos/reporte/', views.reporte_asistencias, name='reporte_asistencias'),
     path('ventas/', views.historial_ventas, name='historial_ventas'),
     path('ventas/ingresos/', views.reporte_ingresos, name='reporte_ingresos'),
+    path('ventas/<int:venta_id>/cancelar/', views.cancelar_venta, name='cancelar_venta'),
      path('bitacora/', views.bitacora, name='bitacora'),
 ]

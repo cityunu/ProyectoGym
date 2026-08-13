@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from django.db.models import Q, Sum
 
-from .models import Producto, TipoMembresia, Venta
+from .models import Producto, TipoMembresia, Venta, DetalleVenta
 from .forms import ProductoForm, TipoMembresiaForm, AsignarMembresiaForm
 from cliente.models import CodigoQR, Membresia, Acceso
 
@@ -235,6 +235,36 @@ def historial_accesos(request):
 def historial_ventas(request):
     ventas = Venta.objects.select_related('cliente').prefetch_related('detalles__producto')[:200]
     return render(request, 'administrador/ventas/historial.html', {'ventas': ventas})
+
+@solo_admin_recepcion
+def cancelar_venta(request, venta_id):
+    """Cancela una venta y devuelve stock de los productos"""
+    venta = get_object_or_404(Venta, pk=venta_id)
+
+    if request.method == 'POST':
+        if venta.cancelada:
+            messages.warning(request, 'La venta ya está cancelada.')
+            return redirect('administrador:historial_ventas')
+
+        # Devolver stock
+        for detalle in venta.detalles.all():
+            producto = detalle.producto
+            producto.stock += detalle.cantidad
+            producto.save()
+
+        venta.cancelada = True
+        venta.save()
+
+        registrar_evento(
+            request.user,
+            'Cancelar venta',
+            f'Se canceló la venta #{venta.pk} y se devolvió stock de sus productos.'
+        )
+
+        messages.success(request, f'Venta #{venta.pk} cancelada correctamente.')
+        return redirect('administrador:historial_ventas')
+
+    return render(request, 'administrador/ventas/confirmar_cancelar.html', {'venta': venta})
 
 @solo_admin_recepcion
 def lista_clientes(request):

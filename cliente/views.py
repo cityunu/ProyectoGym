@@ -117,7 +117,8 @@ def cambiar_membresia(request):
             )
             messages.success(
                 request,
-                f'Membresía cambiada a: {tipo.get_nombre_display()} — vence el {membresia.fecha_fin.strftime("%d/%m/%Y")}.'
+                f'Tu membresía ahora es "{tipo.get_nombre_display()}". '
+                f'Nuevo periodo: {membresia.fecha_inicio.strftime("%d/%m/%Y")} - {membresia.fecha_fin.strftime("%d/%m/%Y")}.'
             )
         except Membresia.DoesNotExist:
             messages.error(
