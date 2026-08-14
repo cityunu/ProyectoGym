@@ -5,6 +5,7 @@
 {% block content %}
 
 <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+
   <div class="absolute inset-0 z-0">
     <img
       src="https://pplx-res.cloudinary.com/image/upload/pplx_search_images/9b2d3181e215fbdbb30e5c4abf50b201c7330bf2.jpg"
@@ -12,10 +13,12 @@
       class="w-full h-full object-cover object-center opacity-45"
       width="1600"
       height="1000"
-      loading="eager"
-    >
+      loading="eager">
+
     <div class="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/30"></div>
+
     <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,201,77,0.20),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(255,31,53,0.22),transparent_26%)]"></div>
+
     <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40"></div>
   </div>
 
@@ -23,10 +26,15 @@
 
   <div class="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 py-32 pt-40 w-full">
     <div class="grid grid-cols-1 lg:grid-cols-[1.15fr_.85fr] gap-12 items-center">
+
       <div class="max-w-3xl">
+
         <div class="reveal inline-flex items-center gap-2 bg-gym-red/15 border border-gym-red/50 rounded-full px-4 py-1.5 mb-6 shadow-glowsm">
           <span class="w-2 h-2 rounded-full bg-gym-red animate-pulse"></span>
-          <span class="text-gym-gold text-xs font-bold uppercase tracking-widest">Inscripciones abiertas · Cupo limitado este mes</span>
+
+          <span class="text-gym-gold text-xs font-bold uppercase tracking-widest">
+            Inscripciones abiertas · Cupo limitado este mes
+          </span>
         </div>
 
         <h1 class="reveal font-display text-6xl sm:text-7xl lg:text-8xl xl:text-9xl leading-[0.95] tracking-wide text-white mb-5">
@@ -45,19 +53,27 @@
         </p>
 
         <div class="reveal flex flex-wrap gap-4 mb-6">
+
           {% if user.is_authenticated %}
-          <a href="{% url 'dashboard' %}" class="bg-gym-red hover:bg-red-500 text-white font-bold px-8 py-4 rounded-lg uppercase tracking-wider transition-all duration-200 shadow-glow hover:-translate-y-0.5">
-            Ir a mi cuenta →
-          </a>
+            <a
+              href="{% url 'cliente:mi_membresia' %}"
+              class="bg-gym-red hover:bg-red-500 text-white font-bold px-8 py-4 rounded-lg uppercase tracking-wider transition-all duration-200 shadow-glow hover:-translate-y-0.5">
+              Elegir mi membresía →
+            </a>
           {% else %}
-          <a href="{% url 'registro' %}" class="bg-gym-red hover:bg-red-500 text-white font-bold px-8 py-4 rounded-lg uppercase tracking-wider transition-all duration-200 shadow-glow hover:-translate-y-0.5">
-            Inscribirme hoy →
-          </a>
+            <a
+              href="{% url 'registro' %}?next={% url 'cliente:mi_membresia' %}"
+              class="bg-gym-red hover:bg-red-500 text-white font-bold px-8 py-4 rounded-lg uppercase tracking-wider transition-all duration-200 shadow-glow hover:-translate-y-0.5">
+              Inscribirme y elegir plan →
+            </a>
           {% endif %}
 
-          <a href="#planes" class="border-2 border-gym-gold text-gym-gold font-bold px-8 py-4 rounded-lg uppercase tracking-wider transition-all duration-200 hover:bg-gym-gold hover:text-black hover:-translate-y-0.5 shadow-gold">
+          <a
+            href="#planes"
+            class="border-2 border-gym-gold text-gym-gold font-bold px-8 py-4 rounded-lg uppercase tracking-wider transition-all duration-200 hover:bg-gym-gold hover:text-black hover:-translate-y-0.5 shadow-gold">
             Ver planes
           </a>
+
         </div>
 
         <div class="reveal flex flex-wrap gap-6 text-xs sm:text-sm text-white/50 uppercase tracking-wider font-semibold">
@@ -65,39 +81,58 @@
             <span class="w-2 h-2 rounded-full bg-gym-red"></span>
             Primera visita guiada
           </span>
+
           <span class="flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-gym-gold"></span>
             Ambiente serio y moderno
           </span>
+
           <span class="flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-gym-red"></span>
             Atención personalizada
           </span>
         </div>
+
       </div>
 
       <div class="reveal">
         <div class="relative rounded-3xl border border-gym-red/25 bg-gym-surface/80 backdrop-blur-md p-6 sm:p-8 shadow-glow overflow-hidden">
+
           <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,201,77,0.15),transparent_26%),radial-gradient(circle_at_bottom_left,rgba(255,31,53,0.15),transparent_24%)]"></div>
+
           <div class="relative z-10">
+
             <div class="flex items-center justify-between mb-6">
               <div>
-                <p class="text-gym-gold text-xs uppercase tracking-[0.3em] font-bold mb-2">Comienza hoy</p>
-                <h3 class="font-display text-3xl text-white tracking-wide">Tu cambio empieza aquí</h3>
+                <p class="text-gym-gold text-xs uppercase tracking-[0.3em] font-bold mb-2">
+                  Comienza hoy
+                </p>
+
+                <h3 class="font-display text-3xl text-white tracking-wide">
+                  Tu cambio empieza aquí
+                </h3>
               </div>
+
               <div class="w-14 h-14 rounded-2xl bg-gym-red/20 border border-gym-red/40 flex items-center justify-center flex-shrink-0 shadow-glowsm">
                 <i data-lucide="flame" class="w-7 h-7 text-gym-red"></i>
               </div>
             </div>
 
             <div class="space-y-4 mb-6">
+
               <div class="flex items-start gap-3 rounded-2xl border border-white/10 bg-black/30 p-4">
                 <div class="w-10 h-10 rounded-xl bg-gym-red/20 flex items-center justify-center flex-shrink-0">
                   <i data-lucide="activity" class="w-5 h-5 text-gym-red"></i>
                 </div>
+
                 <div>
-                  <h4 class="text-white font-bold text-sm mb-1">Rutina clara desde el inicio</h4>
-                  <p class="text-white/55 text-sm leading-relaxed">No llegas a improvisar; comienzas con dirección y estructura.</p>
+                  <h4 class="text-white font-bold text-sm mb-1">
+                    Rutina clara desde el inicio
+                  </h4>
+
+                  <p class="text-white/55 text-sm leading-relaxed">
+                    No llegas a improvisar; comienzas con dirección y estructura.
+                  </p>
                 </div>
               </div>
 
@@ -105,9 +140,15 @@
                 <div class="w-10 h-10 rounded-xl bg-gym-gold/20 flex items-center justify-center flex-shrink-0">
                   <i data-lucide="dumbbell" class="w-5 h-5 text-gym-gold"></i>
                 </div>
+
                 <div>
-                  <h4 class="text-white font-bold text-sm mb-1">Equipo para resultados reales</h4>
-                  <p class="text-white/55 text-sm leading-relaxed">Áreas de fuerza, cardio y funcional para distintos objetivos.</p>
+                  <h4 class="text-white font-bold text-sm mb-1">
+                    Equipo para resultados reales
+                  </h4>
+
+                  <p class="text-white/55 text-sm leading-relaxed">
+                    Áreas de fuerza, cardio y funcional para distintos objetivos.
+                  </p>
                 </div>
               </div>
 
@@ -115,60 +156,106 @@
                 <div class="w-10 h-10 rounded-xl bg-gym-red/20 flex items-center justify-center flex-shrink-0">
                   <i data-lucide="users" class="w-5 h-5 text-gym-red"></i>
                 </div>
+
                 <div>
-                  <h4 class="text-white font-bold text-sm mb-1">Coaches que sí te orientan</h4>
-                  <p class="text-white/55 text-sm leading-relaxed">Acompañamiento para técnica, enfoque y constancia.</p>
+                  <h4 class="text-white font-bold text-sm mb-1">
+                    Orientación durante tu proceso
+                  </h4>
+
+                  <p class="text-white/55 text-sm leading-relaxed">
+                    Acompañamiento para técnica, enfoque y constancia.
+                  </p>
                 </div>
               </div>
+
             </div>
 
             {% if user.is_authenticated %}
-            <a href="{% url 'dashboard' %}" class="block w-full text-center bg-gym-gold text-black hover:bg-yellow-400 font-bold py-4 rounded-xl uppercase tracking-wider transition-all duration-200 shadow-gold">
-              Entrar a mi cuenta
-            </a>
+              <a
+                href="{% url 'cliente:mi_membresia' %}"
+                class="block w-full text-center bg-gym-gold text-black hover:bg-yellow-400 font-bold py-4 rounded-xl uppercase tracking-wider transition-all duration-200 shadow-gold">
+                Elegir mi membresía
+              </a>
             {% else %}
-            <a href="{% url 'registro' %}" class="block w-full text-center bg-gym-gold text-black hover:bg-yellow-400 font-bold py-4 rounded-xl uppercase tracking-wider transition-all duration-200 shadow-gold">
-              Crear cuenta ahora
-            </a>
+              <a
+                href="{% url 'registro' %}?next={% url 'cliente:mi_membresia' %}"
+                class="block w-full text-center bg-gym-gold text-black hover:bg-yellow-400 font-bold py-4 rounded-xl uppercase tracking-wider transition-all duration-200 shadow-gold">
+                Crear cuenta y elegir plan
+              </a>
             {% endif %}
+
           </div>
         </div>
       </div>
+
     </div>
   </div>
 
   <div class="absolute bottom-0 left-0 right-0 z-10 bg-black/90 backdrop-blur-sm border-t border-gym-gold/20">
     <div class="max-w-7xl mx-auto px-6 py-5 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+
       <div>
-        <p class="font-display text-4xl text-gym-red drop-shadow-[0_0_15px_rgba(255,31,53,0.5)]">500<span class="text-gym-gold">+</span></p>
-        <p class="text-white/50 text-xs uppercase tracking-wider mt-1 font-semibold">Miembros activos</p>
+        <p class="font-display text-4xl text-gym-red">
+          500<span class="text-gym-gold">+</span>
+        </p>
+
+        <p class="text-white/50 text-xs uppercase tracking-wider mt-1 font-semibold">
+          Miembros activos
+        </p>
       </div>
+
       <div>
-        <p class="font-display text-4xl text-gym-gold drop-shadow-[0_0_15px_rgba(255,201,77,0.5)]">10<span class="text-gym-red">+</span></p>
-        <p class="text-white/50 text-xs uppercase tracking-wider mt-1 font-semibold">Coaches certificados</p>
+        <p class="font-display text-4xl text-gym-gold">
+          10<span class="text-gym-red">+</span>
+        </p>
+
+        <p class="text-white/50 text-xs uppercase tracking-wider mt-1 font-semibold">
+          Coaches certificados
+        </p>
       </div>
+
       <div>
-        <p class="font-display text-4xl text-gym-red drop-shadow-[0_0_15px_rgba(255,31,53,0.5)]">50<span class="text-gym-gold">+</span></p>
-        <p class="text-white/50 text-xs uppercase tracking-wider mt-1 font-semibold">Máquinas y equipo</p>
+        <p class="font-display text-4xl text-gym-red">
+          50<span class="text-gym-gold">+</span>
+        </p>
+
+        <p class="text-white/50 text-xs uppercase tracking-wider mt-1 font-semibold">
+          Máquinas y equipo
+        </p>
       </div>
+
       <div>
-        <p class="font-display text-4xl text-gym-gold drop-shadow-[0_0_15px_rgba(255,201,77,0.5)]">5<span class="text-gym-red">★</span></p>
-        <p class="text-white/50 text-xs uppercase tracking-wider mt-1 font-semibold">Calificación promedio</p>
+        <p class="font-display text-4xl text-gym-gold">
+          5<span class="text-gym-red">★</span>
+        </p>
+
+        <p class="text-white/50 text-xs uppercase tracking-wider mt-1 font-semibold">
+          Calificación promedio
+        </p>
       </div>
+
     </div>
   </div>
 </section>
 
 <section class="py-14 bg-gym-dark border-y border-gym-red/10">
   <div class="max-w-7xl mx-auto px-6 sm:px-10">
+
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
       <div class="reveal flex items-start gap-3 rounded-2xl border border-white/8 bg-gym-surface p-5">
         <div class="w-11 h-11 rounded-xl bg-gym-red/15 flex items-center justify-center flex-shrink-0">
           <i data-lucide="calendar-check" class="w-5 h-5 text-gym-red"></i>
         </div>
+
         <div>
-          <h4 class="text-white font-bold text-sm mb-1">Plan desde tu primer día</h4>
-          <p class="text-white/50 text-xs leading-relaxed">Empiezas con estructura, no improvisando.</p>
+          <h4 class="text-white font-bold text-sm mb-1">
+            Plan desde tu primer día
+          </h4>
+
+          <p class="text-white/50 text-xs leading-relaxed">
+            Empiezas con estructura, no improvisando.
+          </p>
         </div>
       </div>
 
@@ -176,9 +263,15 @@
         <div class="w-11 h-11 rounded-xl bg-gym-gold/15 flex items-center justify-center flex-shrink-0">
           <i data-lucide="shield-check" class="w-5 h-5 text-gym-gold"></i>
         </div>
+
         <div>
-          <h4 class="text-white font-bold text-sm mb-1">Ambiente que inspira confianza</h4>
-          <p class="text-white/50 text-xs leading-relaxed">Ideal para principiantes y personas constantes.</p>
+          <h4 class="text-white font-bold text-sm mb-1">
+            Ambiente que inspira confianza
+          </h4>
+
+          <p class="text-white/50 text-xs leading-relaxed">
+            Ideal para principiantes y personas constantes.
+          </p>
         </div>
       </div>
 
@@ -186,9 +279,15 @@
         <div class="w-11 h-11 rounded-xl bg-gym-red/15 flex items-center justify-center flex-shrink-0">
           <i data-lucide="smartphone" class="w-5 h-5 text-gym-red"></i>
         </div>
+
         <div>
-          <h4 class="text-white font-bold text-sm mb-1">Experiencia digital simple</h4>
-          <p class="text-white/50 text-xs leading-relaxed">QR, membresía y acceso desde tu cuenta.</p>
+          <h4 class="text-white font-bold text-sm mb-1">
+            Experiencia digital simple
+          </h4>
+
+          <p class="text-white/50 text-xs leading-relaxed">
+            QR, membresía y acceso desde tu cuenta.
+          </p>
         </div>
       </div>
 
@@ -196,156 +295,272 @@
         <div class="w-11 h-11 rounded-xl bg-gym-gold/15 flex items-center justify-center flex-shrink-0">
           <i data-lucide="badge-check" class="w-5 h-5 text-gym-gold"></i>
         </div>
+
         <div>
-          <h4 class="text-white font-bold text-sm mb-1">Resultados con seguimiento</h4>
-          <p class="text-white/50 text-xs leading-relaxed">Más claridad para sostener el progreso.</p>
+          <h4 class="text-white font-bold text-sm mb-1">
+            Resultados con seguimiento
+          </h4>
+
+          <p class="text-white/50 text-xs leading-relaxed">
+            Más claridad para sostener el progreso.
+          </p>
         </div>
       </div>
+
     </div>
   </div>
 </section>
 
 <section id="servicios" class="py-24 bg-gym-dark">
   <div class="max-w-7xl mx-auto px-6 sm:px-10">
+
     <div class="reveal text-center mb-16">
-      <p class="text-gym-gold text-sm font-bold uppercase tracking-widest mb-2">Lo que más busca un cliente</p>
-      <h2 class="font-display text-5xl sm:text-6xl lg:text-7xl text-white tracking-wide">¿POR QUÉ INSCRIBIRTE?</h2>
+      <p class="text-gym-gold text-sm font-bold uppercase tracking-widest mb-2">
+        Lo que más busca un cliente
+      </p>
+
+      <h2 class="font-display text-5xl sm:text-6xl lg:text-7xl text-white tracking-wide">
+        ¿POR QUÉ INSCRIBIRTE?
+      </h2>
+
       <div class="w-16 h-1 bg-gym-red mx-auto mt-4 mb-6 shadow-glowsm"></div>
+
       <p class="max-w-3xl mx-auto text-white/55 text-base sm:text-lg leading-relaxed">
-        Un cliente no solo quiere máquinas. Quiere sentir que va a avanzar, que va a recibir atención real,
-        que el ambiente le va a ayudar a regresar y que su dinero sí va a valer la pena.
+        Un cliente no solo quiere máquinas. Quiere sentir que va a avanzar,
+        recibir atención real y encontrar un ambiente que le ayude a regresar.
       </p>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {% for servicio in servicios %}
-      <div class="reveal group relative bg-gym-surface border border-white/8 rounded-2xl p-6 overflow-hidden transition-all duration-300 hover:border-gym-red/50 hover:-translate-y-1 hover:shadow-glow">
-        <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-gym-red via-gym-gold to-gym-red opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        <div class="w-12 h-12 rounded-xl bg-gym-red/15 flex items-center justify-center mb-4 group-hover:bg-gym-red/25 transition-colors">
-          <i data-lucide="{{ servicio.icono }}" class="w-6 h-6 text-gym-red"></i>
+        <div class="reveal group relative bg-gym-surface border border-white/8 rounded-2xl p-6 overflow-hidden transition-all duration-300 hover:border-gym-red/50 hover:-translate-y-1 hover:shadow-glow">
+
+          <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-gym-red via-gym-gold to-gym-red opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+          <div class="w-12 h-12 rounded-xl bg-gym-red/15 flex items-center justify-center mb-4 group-hover:bg-gym-red/25 transition-colors">
+            <i data-lucide="{{ servicio.icono }}" class="w-6 h-6 text-gym-red"></i>
+          </div>
+
+          <h3 class="font-display text-2xl text-white tracking-wide mb-2">
+            {{ servicio.nombre }}
+          </h3>
+
+          <p class="text-white/55 text-sm leading-relaxed">
+            {{ servicio.descripcion }}
+          </p>
+
         </div>
-        <h3 class="font-display text-2xl text-white tracking-wide mb-2">{{ servicio.nombre }}</h3>
-        <p class="text-white/55 text-sm leading-relaxed">{{ servicio.descripcion }}</p>
-      </div>
       {% endfor %}
     </div>
 
     <div class="reveal mt-14 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+
       <div class="bg-gym-surface border border-white/8 rounded-2xl p-8">
-        <p class="text-gym-gold text-xs uppercase tracking-[0.25em] font-bold mb-3">Experiencia MyGym</p>
-        <h3 class="font-display text-3xl text-white tracking-wide mb-4">Lo que ve el cliente importa</h3>
-        <p class="text-white/60 leading-relaxed mb-4">
-          La primera impresión define si una persona se anima a conocer el gimnasio o se va a otra opción.
-          Por eso MyGym comunica energía, orden, profesionalismo y una promesa clara de progreso desde el primer vistazo.
+        <p class="text-gym-gold text-xs uppercase tracking-[0.25em] font-bold mb-3">
+          Experiencia MyGym
         </p>
+
+        <h3 class="font-display text-3xl text-white tracking-wide mb-4">
+          Lo que ve el cliente importa
+        </h3>
+
+        <p class="text-white/60 leading-relaxed mb-4">
+          La primera impresión define si una persona se anima a conocer el gimnasio.
+          Por eso MyGym comunica energía, orden, profesionalismo y una promesa clara de progreso.
+        </p>
+
         <p class="text-white/60 leading-relaxed">
-          Queremos que cada visitante perciba un espacio moderno, confiable y enfocado en resultados antes incluso de pisar las instalaciones.
+          Queremos que cada visitante perciba un espacio moderno, confiable y enfocado en resultados.
         </p>
       </div>
 
       <div class="bg-gym-surface2 border border-gym-red/20 rounded-2xl p-8">
-        <p class="text-gym-red text-xs uppercase tracking-[0.25em] font-bold mb-3">Pensado para convertir</p>
-        <h3 class="font-display text-3xl text-white tracking-wide mb-4">Lo que más convence antes de pagar</h3>
+        <p class="text-gym-red text-xs uppercase tracking-[0.25em] font-bold mb-3">
+          Una experiencia completa
+        </p>
+
+        <h3 class="font-display text-3xl text-white tracking-wide mb-4">
+          Lo que más convence antes de pagar
+        </h3>
+
         <ul class="space-y-4 text-white/65 text-sm leading-relaxed">
-          <li class="flex gap-3"><span class="text-gym-gold font-bold">•</span><span>Ver instalaciones modernas y bien cuidadas.</span></li>
-          <li class="flex gap-3"><span class="text-gym-gold font-bold">•</span><span>Saber que habrá coaches que sí orienten.</span></li>
-          <li class="flex gap-3"><span class="text-gym-gold font-bold">•</span><span>Entender rápido qué plan le conviene y cuánto cuesta.</span></li>
-          <li class="flex gap-3"><span class="text-gym-gold font-bold">•</span><span>Sentir que el ambiente es motivante y profesional.</span></li>
-          <li class="flex gap-3"><span class="text-gym-gold font-bold">•</span><span>Tener un CTA directo para registrarse sin complicaciones.</span></li>
+
+          <li class="flex gap-3">
+            <span class="text-gym-gold font-bold">•</span>
+            <span>Instalaciones modernas y bien cuidadas.</span>
+          </li>
+
+          <li class="flex gap-3">
+            <span class="text-gym-gold font-bold">•</span>
+            <span>Orientación para entrenar con mayor seguridad.</span>
+          </li>
+
+          <li class="flex gap-3">
+            <span class="text-gym-gold font-bold">•</span>
+            <span>Planes claros y precios fáciles de comparar.</span>
+          </li>
+
+          <li class="flex gap-3">
+            <span class="text-gym-gold font-bold">•</span>
+            <span>Ambiente motivante y profesional.</span>
+          </li>
+
+          <li class="flex gap-3">
+            <span class="text-gym-gold font-bold">•</span>
+            <span>Registro sencillo desde cualquier dispositivo.</span>
+          </li>
+
         </ul>
       </div>
+
     </div>
   </div>
 </section>
 
 <section id="planes" class="py-24 bg-black">
   <div class="max-w-7xl mx-auto px-6 sm:px-10">
+
     <div class="reveal text-center mb-16">
-      <p class="text-gym-red text-sm font-bold uppercase tracking-widest mb-2">Elige tu nivel</p>
-      <h2 class="font-display text-5xl sm:text-6xl lg:text-7xl text-white tracking-wide">PLANES & PRECIOS</h2>
+      <p class="text-gym-red text-sm font-bold uppercase tracking-widest mb-2">
+        Elige tu nivel
+      </p>
+
+      <h2 class="font-display text-5xl sm:text-6xl lg:text-7xl text-white tracking-wide">
+        PLANES & PRECIOS
+      </h2>
+
       <div class="w-16 h-1 bg-gym-gold mx-auto mt-4 mb-6 shadow-[0_0_15px_rgba(255,201,77,0.5)]"></div>
+
       <p class="max-w-3xl mx-auto text-white/55 text-base sm:text-lg leading-relaxed">
-        Un buen plan no solo debe verse atractivo: debe dejar claro qué incluye, a quién le conviene y por qué vale la pena.
-        Aquí el cliente puede comparar rápido y tomar una decisión.
+        Compara las opciones disponibles y elige el plan que mejor se adapte a tus objetivos.
       </p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+
       {% for plan in planes %}
-      <div class="reveal relative bg-gym-surface border rounded-3xl p-8 flex flex-col transition-all duration-300 hover:-translate-y-1 {% if plan.destacado %}border-gym-red shadow-glow scale-[1.02]{% else %}border-white/10 hover:border-gym-gold/40{% endif %}">
-        {% if plan.destacado %}
-        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gym-red text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider shadow-glowsm">
-          Más elegido
-        </div>
-        {% endif %}
 
-        <p class="text-gym-gold text-xs uppercase tracking-[0.3em] font-bold mb-3">{{ plan.nombre }}</p>
-
-        <div class="flex items-end gap-1 mb-2">
-          <span class="font-display text-6xl text-white">${{ plan.precio }}</span>
-          <span class="text-white/40 text-sm mb-3">/mes</span>
-        </div>
-
-        <p class="text-white/50 text-sm mb-6">{{ plan.descripcion }}</p>
-
-        <div class="mb-6 rounded-2xl border border-white/8 bg-black/40 p-4">
-          {% if plan.nombre == 'Básico' %}
-            <p class="text-sm text-white/70 leading-relaxed">
-              Ideal para quienes quieren comenzar con constancia, entrenar por su cuenta y aprovechar las áreas principales del gimnasio.
-            </p>
-          {% elif plan.nombre == 'Pro' %}
-            <p class="text-sm text-white/70 leading-relaxed">
-              Perfecto para quienes quieren avanzar con mayor enfoque, mejor seguimiento y una experiencia más completa.
-            </p>
-          {% elif plan.nombre == 'Elite' %}
-            <p class="text-sm text-white/70 leading-relaxed">
-              Pensado para quienes buscan una experiencia premium con mayor atención, estructura y herramientas para acelerar resultados.
-            </p>
+        <div class="reveal relative bg-gym-surface border rounded-3xl p-8 flex flex-col transition-all duration-300 hover:-translate-y-1
+          {% if plan.destacado %}
+            border-gym-red shadow-glow scale-[1.02]
           {% else %}
+            border-white/10 hover:border-gym-gold/40
+          {% endif %}">
+
+          {% if plan.destacado %}
+            <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gym-red text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider shadow-glowsm">
+              Más elegido
+            </div>
+          {% endif %}
+
+          <p class="text-gym-gold text-xs uppercase tracking-[0.3em] font-bold mb-3">
+            {{ plan.nombre }}
+          </p>
+
+          <div class="flex items-end gap-1 mb-2">
+            <span class="font-display text-6xl text-white">
+              ${{ plan.precio }}
+            </span>
+
+            <span class="text-white/40 text-sm mb-3">
+              /mes
+            </span>
+          </div>
+
+          <p class="text-white/50 text-sm mb-6">
+            {{ plan.descripcion }}
+          </p>
+
+          <div class="mb-6 rounded-2xl border border-white/8 bg-black/40 p-4">
             <p class="text-sm text-white/70 leading-relaxed">
-              Una opción diseñada para ayudarte a progresar, mantener constancia y entrenar con mejor dirección.
+              Plan diseñado para ayudarte a progresar, mantener constancia y entrenar con mejor dirección.
             </p>
-          {% endif %}
+          </div>
+
+          <ul class="space-y-3 flex-1 mb-8">
+            {% for beneficio in plan.beneficios %}
+              <li class="flex items-center gap-2 text-sm text-white/70">
+                <i data-lucide="check-circle" class="w-4 h-4 text-gym-gold flex-shrink-0"></i>
+                {{ beneficio }}
+              </li>
+            {% endfor %}
+          </ul>
+
+          <div class="space-y-3">
+
+            {% if user.is_authenticated %}
+
+              <a
+                href="{% url 'cliente:mi_membresia' %}"
+                class="block text-center font-bold py-3.5 rounded-xl uppercase tracking-wider transition-all duration-200
+                {% if plan.destacado %}
+                  bg-gym-red text-white hover:bg-red-500 shadow-glow
+                {% else %}
+                  border border-gym-gold/40 text-gym-gold hover:bg-gym-gold/10
+                {% endif %}">
+                Elegir plan {{ plan.nombre }}
+              </a>
+
+            {% else %}
+
+              <a
+                href="{% url 'registro' %}?next={% url 'cliente:mi_membresia' %}"
+                class="block text-center font-bold py-3.5 rounded-xl uppercase tracking-wider transition-all duration-200
+                {% if plan.destacado %}
+                  bg-gym-red text-white hover:bg-red-500 shadow-glow
+                {% else %}
+                  border border-gym-gold/40 text-gym-gold hover:bg-gym-gold/10
+                {% endif %}">
+                Registrarme y elegir plan
+              </a>
+
+              <a
+                href="{% url 'login' %}?next={% url 'cliente:mi_membresia' %}"
+                class="block text-center font-bold py-3.5 rounded-xl uppercase tracking-wider border border-white/15 text-white/75 hover:border-gym-red hover:text-gym-red transition-all duration-200">
+                Ya tengo cuenta
+              </a>
+
+            {% endif %}
+
+          </div>
         </div>
 
-        <ul class="space-y-3 flex-1 mb-8">
-          {% for beneficio in plan.beneficios %}
-          <li class="flex items-center gap-2 text-sm text-white/70">
-            <i data-lucide="check-circle" class="w-4 h-4 text-gym-gold flex-shrink-0"></i>
-            {{ beneficio }}
-          </li>
-          {% endfor %}
-        </ul>
+      {% empty %}
 
-        <div class="space-y-3">
-          {% if user.is_authenticated %}
-            <a href="{% url 'dashboard' %}" class="block text-center font-bold py-3.5 rounded-xl uppercase tracking-wider transition-all duration-200 {% if plan.destacado %}bg-gym-red text-white hover:bg-red-500 shadow-glow{% else %}border border-gym-gold/40 text-gym-gold hover:bg-gym-gold/10{% endif %}">
-              Adquirir plan {{ plan.nombre }}
-            </a>
-          {% else %}
-            <a href="{% url 'registro' %}" class="block text-center font-bold py-3.5 rounded-xl uppercase tracking-wider transition-all duration-200 {% if plan.destacado %}bg-gym-red text-white hover:bg-red-500 shadow-glow{% else %}border border-gym-gold/40 text-gym-gold hover:bg-gym-gold/10{% endif %}">
-              Adquirir plan {{ plan.nombre }}
-            </a>
-            <a href="{% url 'login' %}" class="block text-center font-bold py-3.5 rounded-xl uppercase tracking-wider border border-white/15 text-white/75 hover:border-gym-red hover:text-gym-red transition-all duration-200">
-              Ya tengo cuenta
-            </a>
-          {% endif %}
+        <div class="md:col-span-3 rounded-2xl border border-white/10 bg-gym-surface p-10 text-center">
+          <i data-lucide="badge-alert" class="w-10 h-10 text-gym-red mx-auto mb-4"></i>
+
+          <h3 class="font-display text-2xl text-white mb-2">
+            No hay planes disponibles
+          </h3>
+
+          <p class="text-white/50 text-sm">
+            Actualmente no hay membresías activas para mostrar.
+          </p>
         </div>
-      </div>
+
       {% endfor %}
+
     </div>
   </div>
 </section>
 
 <section id="maquinas" class="py-24 bg-gym-dark">
   <div class="max-w-7xl mx-auto px-6 sm:px-10">
+
     <div class="reveal text-center mb-16">
-      <p class="text-gym-gold text-sm font-bold uppercase tracking-widest mb-2">Infraestructura de primera</p>
-      <h2 class="font-display text-5xl sm:text-6xl lg:text-7xl text-white tracking-wide">NUESTRO EQUIPO</h2>
+      <p class="text-gym-gold text-sm font-bold uppercase tracking-widest mb-2">
+        Infraestructura de primera
+      </p>
+
+      <h2 class="font-display text-5xl sm:text-6xl lg:text-7xl text-white tracking-wide">
+        NUESTRO EQUIPO
+      </h2>
+
       <div class="w-16 h-1 bg-gym-red mx-auto mt-4 mb-6 shadow-glowsm"></div>
+
       <p class="max-w-3xl mx-auto text-white/55 text-base sm:text-lg leading-relaxed">
-        Las instalaciones son una de las primeras cosas que un cliente quiere ver antes de inscribirse.
-        Por eso mostramos un espacio preparado para fuerza, cardio, hipertrofia y entrenamiento funcional.
+        Instalaciones preparadas para fuerza, cardio, hipertrofia y entrenamiento funcional.
       </p>
     </div>
 
@@ -356,231 +571,475 @@
         class="w-full h-72 md:h-80 object-cover object-center group-hover:scale-105 transition-transform duration-700"
         width="1200"
         height="400"
-        loading="lazy"
-      >
+        loading="lazy">
+
       <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+
       <div class="absolute left-6 bottom-6 right-6">
         <div class="inline-flex items-center gap-2 bg-black/70 backdrop-blur-sm border border-gym-gold/30 rounded-full px-4 py-2">
           <span class="w-2 h-2 rounded-full bg-gym-gold"></span>
-          <span class="text-gym-gold text-xs uppercase tracking-widest font-bold">Espacios diseñados para progresar</span>
+
+          <span class="text-gym-gold text-xs uppercase tracking-widest font-bold">
+            Espacios diseñados para progresar
+          </span>
         </div>
       </div>
     </div>
 
     <div class="flex flex-wrap gap-3 justify-center mb-10">
       {% for cat in categorias_maquinas %}
-      <button onclick="filterMaquinas('{{ cat.slug }}')" id="tab-{{ cat.slug }}"
-              class="maquina-tab px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wider border transition-all duration-200 {% if forloop.first %}bg-gym-red border-gym-red text-white shadow-glowsm{% else %}border-white/20 text-white/60 hover:border-gym-gold hover:text-gym-gold{% endif %}">
-        {{ cat.nombre }}
-      </button>
+        <button
+          onclick="filterMaquinas('{{ cat.slug }}')"
+          id="tab-{{ cat.slug }}"
+          class="maquina-tab px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wider border transition-all duration-200
+          {% if forloop.first %}
+            bg-gym-red border-gym-red text-white shadow-glowsm
+          {% else %}
+            border-white/20 text-white/60 hover:border-gym-gold hover:text-gym-gold
+          {% endif %}">
+          {{ cat.nombre }}
+        </button>
       {% endfor %}
     </div>
 
     <div id="maquinas-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
       {% for m in maquinas %}
-      <div class="reveal maquina-item bg-gym-surface border border-white/8 rounded-2xl p-5 hover:border-gym-red/40 transition-all duration-300 hover:-translate-y-0.5"
-           data-cat="{{ m.categoria }}">
-        <div class="flex items-center gap-3 mb-3">
-          <div class="w-10 h-10 rounded-lg bg-gym-red/15 flex items-center justify-center">
-            <i data-lucide="{{ m.icono }}" class="w-5 h-5 text-gym-red"></i>
+        <div
+          class="reveal maquina-item bg-gym-surface border border-white/8 rounded-2xl p-5 hover:border-gym-red/40 transition-all duration-300 hover:-translate-y-0.5"
+          data-cat="{{ m.categoria }}">
+
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-lg bg-gym-red/15 flex items-center justify-center">
+              <i data-lucide="{{ m.icono }}" class="w-5 h-5 text-gym-red"></i>
+            </div>
+
+            <h4 class="font-display text-xl text-white tracking-wide">
+              {{ m.nombre }}
+            </h4>
           </div>
-          <h4 class="font-display text-xl text-white tracking-wide">{{ m.nombre }}</h4>
+
+          <p class="text-white/50 text-sm leading-relaxed">
+            {{ m.descripcion }}
+          </p>
+
+          <span class="inline-block mt-3 text-xs text-gym-gold border border-gym-gold/30 bg-gym-gold/10 rounded-full px-3 py-0.5 font-semibold">
+            {{ m.categoria_label }}
+          </span>
         </div>
-        <p class="text-white/50 text-sm leading-relaxed">{{ m.descripcion }}</p>
-        <span class="inline-block mt-3 text-xs text-gym-gold border border-gym-gold/30 bg-gym-gold/10 rounded-full px-3 py-0.5 font-semibold">{{ m.categoria_label }}</span>
-      </div>
       {% endfor %}
     </div>
 
     <div class="reveal mt-14 grid grid-cols-1 md:grid-cols-3 gap-6">
+
       <div class="bg-gym-surface border border-white/8 rounded-2xl p-6">
-        <h3 class="font-display text-2xl text-white tracking-wide mb-3">Área de fuerza</h3>
+        <h3 class="font-display text-2xl text-white tracking-wide mb-3">
+          Área de fuerza
+        </h3>
+
         <p class="text-white/55 text-sm leading-relaxed">
-          Espacios pensados para trabajo libre, progresión de cargas y desarrollo muscular con seguridad.
+          Espacios pensados para trabajo libre, progresión de cargas y desarrollo muscular.
         </p>
       </div>
+
       <div class="bg-gym-surface2 border border-gym-gold/20 rounded-2xl p-6">
-        <h3 class="font-display text-2xl text-white tracking-wide mb-3">Zona de cardio</h3>
+        <h3 class="font-display text-2xl text-white tracking-wide mb-3">
+          Zona de cardio
+        </h3>
+
         <p class="text-white/55 text-sm leading-relaxed">
-          Equipos para resistencia, salud cardiovascular y apoyo en objetivos de pérdida de grasa.
+          Equipos para resistencia, salud cardiovascular y objetivos de pérdida de grasa.
         </p>
       </div>
+
       <div class="bg-gym-surface border border-white/8 rounded-2xl p-6">
-        <h3 class="font-display text-2xl text-white tracking-wide mb-3">Entrenamiento funcional</h3>
+        <h3 class="font-display text-2xl text-white tracking-wide mb-3">
+          Entrenamiento funcional
+        </h3>
+
         <p class="text-white/55 text-sm leading-relaxed">
-          Un espacio versátil para sesiones dinámicas, movilidad, coordinación y trabajo de alto rendimiento.
+          Un espacio versátil para movilidad, coordinación y trabajo de alto rendimiento.
         </p>
       </div>
+
     </div>
   </div>
 </section>
 
-<section id="coaches" class="py-24 bg-black">
+<section id="entrenadores" class="py-24 bg-black">
   <div class="max-w-7xl mx-auto px-6 sm:px-10">
+
     <div class="reveal text-center mb-16">
-      <p class="text-gym-red text-sm font-bold uppercase tracking-widest mb-2">Expertos en tu proceso</p>
-      <h2 class="font-display text-5xl sm:text-6xl lg:text-7xl text-white tracking-wide">NUESTROS COACHES</h2>
+      <p class="text-gym-red text-sm font-bold uppercase tracking-widest mb-2">
+        Nuestro equipo de alto rendimiento
+      </p>
+
+      <h2 class="font-display text-5xl sm:text-6xl lg:text-7xl text-white tracking-wide">
+        NUESTROS ENTRENADORES
+      </h2>
+
       <div class="w-16 h-1 bg-gym-gold mx-auto mt-4 mb-6 shadow-[0_0_15px_rgba(255,201,77,0.5)]"></div>
+
       <p class="max-w-3xl mx-auto text-white/55 text-base sm:text-lg leading-relaxed">
-        Un cliente se siente más seguro cuando sabe que no va a entrenar solo. Nuestros coaches ayudan a mejorar técnica,
-        crear constancia y entrenar con una dirección más clara.
+        En MyGym contamos con los entrenadores más grandes, fuertes y legendarios del mundo.
+        
       </p>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      {% for coach in coaches %}
-      <div class="reveal group relative bg-gym-surface rounded-2xl overflow-hidden border border-white/8 hover:border-gym-red/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-glow">
-        <div class="relative overflow-hidden h-64">
-          <img src="{{ coach.foto }}" alt="{{ coach.nombre }}"
-               class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700"
-               width="300" height="400" loading="lazy">
+
+      <article class="reveal group relative bg-gym-surface rounded-2xl overflow-hidden border border-white/8 hover:border-gym-red/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-glow">
+        <div class="relative overflow-hidden h-72">
+          <img
+            src="/media/fisicoculturistas/arnold-schwarzenegger.jpg"
+            alt="Arnold Schwarzenegger, entrenador honorario de MyGym"
+            class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700"
+            width="300"
+            height="420"
+            loading="lazy">
+
           <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+
+          <span class="absolute top-4 right-4 text-xs text-gym-gold bg-black/70 border border-gym-gold/30 rounded-full px-3 py-1 uppercase tracking-wider">
+            Coach honorario
+          </span>
         </div>
+
         <div class="p-5">
-          <h3 class="font-display text-2xl text-white tracking-wide">{{ coach.nombre }}</h3>
-          <p class="text-gym-gold text-xs font-bold uppercase tracking-wider mb-2">{{ coach.especialidad }}</p>
-          <p class="text-white/50 text-sm leading-relaxed">{{ coach.bio }}</p>
-          <div class="flex flex-wrap gap-2 mt-4">
-            {% for cert in coach.certificaciones %}
-            <span class="text-xs bg-gym-gold/15 border border-gym-gold/30 text-gym-gold rounded-full px-2 py-0.5 font-semibold">{{ cert }}</span>
-            {% endfor %}
-          </div>
+          <h3 class="font-display text-2xl text-white tracking-wide">
+            Arnold Schwarzenegger
+          </h3>
+
+          <p class="text-gym-gold text-xs font-bold uppercase tracking-wider mt-1 mb-3">
+            Entrenador de motivación
+          </p>
+
+          <p class="text-white/50 text-sm leading-relaxed">
+            Especialista en recordarte que todavía puedes hacer una repetición más.
+          </p>
+
+          <span class="inline-flex items-center gap-2 mt-4 text-xs text-white/40">
+            <i data-lucide="flame" class="w-3.5 h-3.5 text-gym-red"></i>
+            Nivel de intensidad: legendario
+          </span>
         </div>
-      </div>
-      {% endfor %}
+      </article>
+
+      <article class="reveal group relative bg-gym-surface rounded-2xl overflow-hidden border border-white/8 hover:border-gym-red/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-glow">
+        <div class="relative overflow-hidden h-72">
+          <img
+            src="/media/fisicoculturistas/ronnie-coleman.jpg"
+            alt="Ronnie Coleman, entrenador honorario de MyGym"
+            class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700"
+            width="300"
+            height="420"
+            loading="lazy">
+
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+
+          <span class="absolute top-4 right-4 text-xs text-gym-gold bg-black/70 border border-gym-gold/30 rounded-full px-3 py-1 uppercase tracking-wider">
+            Coach honorario
+          </span>
+        </div>
+
+        <div class="p-5">
+          <h3 class="font-display text-2xl text-white tracking-wide">
+            Ronnie Coleman
+          </h3>
+
+          <p class="text-gym-gold text-xs font-bold uppercase tracking-wider mt-1 mb-3">
+            Entrenador de fuerza
+          </p>
+
+          <p class="text-white/50 text-sm leading-relaxed">
+            Encargado de recordarte que sí puedes levantar más, aunque tus piernas opinen lo contrario.
+          </p>
+
+          <span class="inline-flex items-center gap-2 mt-4 text-xs text-white/40">
+            <i data-lucide="dumbbell" class="w-3.5 h-3.5 text-gym-red"></i>
+            Nivel de fuerza: ¡Yeah buddy!
+          </span>
+        </div>
+      </article>
+
+      <article class="reveal group relative bg-gym-surface rounded-2xl overflow-hidden border border-white/8 hover:border-gym-red/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-glow">
+        <div class="relative overflow-hidden h-72">
+          <img
+            src="/media/fisicoculturistas/dorian-yates.jpg"
+            alt="Dorian Yates, entrenador honorario de MyGym"
+            class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700"
+            width="300"
+            height="420"
+            loading="lazy">
+
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+
+          <span class="absolute top-4 right-4 text-xs text-gym-gold bg-black/70 border border-gym-gold/30 rounded-full px-3 py-1 uppercase tracking-wider">
+            Coach honorario
+          </span>
+        </div>
+
+        <div class="p-5">
+          <h3 class="font-display text-2xl text-white tracking-wide">
+            Dorian Yates
+          </h3>
+
+          <p class="text-gym-gold text-xs font-bold uppercase tracking-wider mt-1 mb-3">
+            Entrenador de intensidad
+          </p>
+
+          <p class="text-white/50 text-sm leading-relaxed">
+            Responsable de enseñarte que una serie bien hecha puede cambiar completamente tu entrenamiento.
+          </p>
+
+          <span class="inline-flex items-center gap-2 mt-4 text-xs text-white/40">
+            <i data-lucide="target" class="w-3.5 h-3.5 text-gym-red"></i>
+            Nivel de enfoque: extremo
+          </span>
+        </div>
+      </article>
+
+      <article class="reveal group relative bg-gym-surface rounded-2xl overflow-hidden border border-white/8 hover:border-gym-red/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-glow">
+        <div class="relative overflow-hidden h-72">
+          <img
+            src="/media/fisicoculturistas/phil-heath.jpg"
+            alt="Phil Heath, entrenador honorario de MyGym"
+            class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700"
+            width="300"
+            height="420"
+            loading="lazy">
+
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+
+          <span class="absolute top-4 right-4 text-xs text-gym-gold bg-black/70 border border-gym-gold/30 rounded-full px-3 py-1 uppercase tracking-wider">
+            Coach honorario
+          </span>
+        </div>
+
+        <div class="p-5">
+          <h3 class="font-display text-2xl text-white tracking-wide">
+            Phil Heath
+          </h3>
+
+          <p class="text-gym-gold text-xs font-bold uppercase tracking-wider mt-1 mb-3">
+            Entrenador de simetría
+          </p>
+
+          <p class="text-white/50 text-sm leading-relaxed">
+            Te ayuda a recordar que la técnica y la estética también cuentan después de entrenar.
+          </p>
+
+          <span class="inline-flex items-center gap-2 mt-4 text-xs text-white/40">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-gym-red"></i>
+            Nivel de estética: profesional
+          </span>
+        </div>
+      </article>
+
     </div>
 
-    <div class="reveal mt-14 rounded-3xl border border-gym-red/20 bg-gym-surface p-8">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-        <div>
-          <p class="text-gym-red text-xs uppercase tracking-[0.25em] font-bold mb-3">Acompañamiento real</p>
-          <h3 class="font-display text-3xl text-white tracking-wide mb-4">La diferencia no está solo en las máquinas</h3>
-          <p class="text-white/60 leading-relaxed">
-            Tener acceso a coaches preparados cambia por completo la experiencia del cliente. Da confianza, mejora la técnica y reduce el abandono de las primeras semanas.
-          </p>
-        </div>
-        <div>
-          <p class="text-white/60 leading-relaxed">
-            En MyGym buscamos que cada persona pueda avanzar con bases sólidas. Por eso el acompañamiento forma parte esencial de la experiencia, tanto para quien empieza como para quien quiere ir más lejos.
-          </p>
-        </div>
-      </div>
+<div class="reveal mt-14 rounded-3xl border border-gym-red/20 bg-gym-surface p-8">
+  <div class="mb-8">
+    <p class="text-gym-red text-xs uppercase tracking-[0.25em] font-bold mb-3">
+      Entrenamiento con actitud
+    </p>
+
+    <h3 class="font-display text-3xl sm:text-4xl text-white tracking-wide mb-4 max-w-3xl">
+      Aquí todos entrenan como leyendas
+    </h3>
+
+    <p class="text-white/60 leading-relaxed max-w-4xl">
+      Aunque nuestros entrenadores de la página sean un pequeño homenaje a las grandes figuras del culturismo,
+      el objetivo es muy real: ayudarte a entrenar con disciplina, técnica y constancia.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="rounded-2xl border border-white/8 bg-black/30 p-5">
+      <p class="text-gym-gold text-xs uppercase tracking-widest font-bold mb-2">
+        Motivación
+      </p>
+      <p class="text-white/60 text-sm leading-relaxed">
+        Entrenar con mentalidad fuerte desde el primer día.
+      </p>
     </div>
+
+    <div class="rounded-2xl border border-white/8 bg-black/30 p-5">
+      <p class="text-gym-gold text-xs uppercase tracking-widest font-bold mb-2">
+        Técnica
+      </p>
+      <p class="text-white/60 text-sm leading-relaxed">
+        Mejorar tu ejecución para avanzar con seguridad.
+      </p>
+    </div>
+
+    <div class="rounded-2xl border border-white/8 bg-black/30 p-5">
+      <p class="text-gym-gold text-xs uppercase tracking-widest font-bold mb-2">
+        Constancia
+      </p>
+      <p class="text-white/60 text-sm leading-relaxed">
+        Hacer del entrenamiento un hábito real y sostenible.
+      </p>
+    </div>
+  </div>
+</div>
   </div>
 </section>
 
 <section id="galeria" class="py-24 bg-gym-dark">
   <div class="max-w-7xl mx-auto px-6 sm:px-10">
+
     <div class="reveal text-center mb-16">
-      <p class="text-gym-gold text-sm font-bold uppercase tracking-widest mb-2">Ambiente real</p>
-      <h2 class="font-display text-5xl sm:text-6xl lg:text-7xl text-white tracking-wide">GALERÍA</h2>
+      <p class="text-gym-gold text-sm font-bold uppercase tracking-widest mb-2">
+        Ambiente real
+      </p>
+
+      <h2 class="font-display text-5xl sm:text-6xl lg:text-7xl text-white tracking-wide">
+        GALERÍA
+      </h2>
+
       <div class="w-16 h-1 bg-gym-red mx-auto mt-4 mb-6 shadow-glowsm"></div>
+
       <p class="max-w-3xl mx-auto text-white/55 text-base sm:text-lg leading-relaxed">
-        Antes de visitar un gimnasio, el cliente quiere imaginarse ahí dentro. Esta galería ayuda a transmitir energía,
-        limpieza, orden y una experiencia moderna.
+        Conoce el ambiente, las instalaciones y la experiencia de entrenar en MyGym.
       </p>
     </div>
 
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
       {% for img in galeria %}
-      <div class="reveal group relative rounded-2xl overflow-hidden cursor-pointer aspect-square border border-white/8"
-           onclick="openLightbox('{{ img.url }}', '{{ img.alt }}')">
-        <img src="{{ img.url }}" alt="{{ img.alt }}"
-             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-             width="400" height="400" loading="lazy">
-        <div class="absolute inset-0 bg-gym-red/0 group-hover:bg-gym-red/25 transition-colors duration-300 flex items-center justify-center">
-          <i data-lucide="zoom-in" class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
+        <div
+          class="reveal group relative rounded-2xl overflow-hidden cursor-pointer aspect-square border border-white/8"
+          onclick="openLightbox('{{ img.url }}', '{{ img.alt }}')">
+
+          <img
+            src="{{ img.url }}"
+            alt="{{ img.alt }}"
+            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            width="400"
+            height="400"
+            loading="lazy">
+
+          <div class="absolute inset-0 bg-gym-red/0 group-hover:bg-gym-red/25 transition-colors duration-300 flex items-center justify-center">
+            <i data-lucide="zoom-in" class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
+          </div>
         </div>
-      </div>
       {% endfor %}
     </div>
+
   </div>
 </section>
 
-<div id="lightbox" class="fixed inset-0 bg-black/95 z-[999] hidden items-center justify-center p-4" onclick="closeLightbox()">
-  <button class="absolute top-4 right-4 text-white/60 hover:text-white" aria-label="Cerrar">
+<div
+  id="lightbox"
+  class="fixed inset-0 bg-black/95 z-[999] hidden items-center justify-center p-4"
+  onclick="closeLightbox()">
+
+  <button
+    type="button"
+    class="absolute top-4 right-4 text-white/60 hover:text-white"
+    aria-label="Cerrar">
+
     <i data-lucide="x" class="w-8 h-8"></i>
   </button>
-  <img id="lightbox-img" src="" alt="" class="max-w-full max-h-full rounded-xl shadow-2xl object-contain" width="900" height="600">
+
+  <img
+    id="lightbox-img"
+    src=""
+    alt=""
+    class="max-w-full max-h-full rounded-xl shadow-2xl object-contain"
+    width="900"
+    height="600">
 </div>
 
 <section id="testimonios" class="py-24 bg-black">
   <div class="max-w-7xl mx-auto px-6 sm:px-10">
+
     <div class="reveal text-center mb-16">
-      <p class="text-gym-red text-sm font-bold uppercase tracking-widest mb-2">Confianza social</p>
-      <h2 class="font-display text-5xl sm:text-6xl lg:text-7xl text-white tracking-wide">TESTIMONIOS</h2>
+      <p class="text-gym-red text-sm font-bold uppercase tracking-widest mb-2">
+        Confianza social
+      </p>
+
+      <h2 class="font-display text-5xl sm:text-6xl lg:text-7xl text-white tracking-wide">
+        TESTIMONIOS
+      </h2>
+
       <div class="w-16 h-1 bg-gym-gold mx-auto mt-4 mb-6 shadow-[0_0_15px_rgba(255,201,77,0.5)]"></div>
+
       <p class="max-w-3xl mx-auto text-white/55 text-base sm:text-lg leading-relaxed">
-        La prueba social ayuda mucho a que un visitante decida quedarse y registrarse. Ver resultados y opiniones reales
-        genera confianza y reduce la duda al momento de elegir un gimnasio.
+        Conoce las experiencias de personas que decidieron comenzar y mantener su proceso.
       </p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       {% for t in testimonios %}
-      <div class="reveal bg-gym-surface border border-white/8 rounded-2xl p-7 hover:border-gym-gold/30 transition-all duration-300">
-        <div class="flex gap-1 mb-4">
-          <i data-lucide="star" class="w-4 h-4 text-gym-gold fill-gym-gold"></i>
-          <i data-lucide="star" class="w-4 h-4 text-gym-gold fill-gym-gold"></i>
-          <i data-lucide="star" class="w-4 h-4 text-gym-gold fill-gym-gold"></i>
-          <i data-lucide="star" class="w-4 h-4 text-gym-gold fill-gym-gold"></i>
-          <i data-lucide="star" class="w-4 h-4 text-gym-gold fill-gym-gold"></i>
-        </div>
-        <p class="text-white/75 text-sm leading-relaxed mb-6 italic">"{{ t.texto }}"</p>
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-full bg-gym-red/20 flex items-center justify-center font-display text-gym-red text-lg">{{ t.inicial }}</div>
-          <div>
-            <p class="text-white font-bold text-sm">{{ t.nombre }}</p>
-            <p class="text-white/45 text-xs">{{ t.tiempo }}</p>
+        <div class="reveal bg-gym-surface border border-white/8 rounded-2xl p-7 hover:border-gym-gold/30 transition-all duration-300">
+
+          <div class="flex gap-1 mb-4">
+            {% for estrella in "12345" %}
+              <i data-lucide="star" class="w-4 h-4 text-gym-gold fill-gym-gold"></i>
+            {% endfor %}
           </div>
+
+          <p class="text-white/75 text-sm leading-relaxed mb-6 italic">
+            "{{ t.texto }}"
+          </p>
+
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-gym-red/20 flex items-center justify-center font-display text-gym-red text-lg">
+              {{ t.inicial }}
+            </div>
+
+            <div>
+              <p class="text-white font-bold text-sm">
+                {{ t.nombre }}
+              </p>
+
+              <p class="text-white/45 text-xs">
+                {{ t.tiempo }}
+              </p>
+            </div>
+          </div>
+
         </div>
-      </div>
       {% endfor %}
     </div>
 
-    <div class="reveal mt-14 grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="rounded-2xl border border-white/8 bg-gym-surface p-6">
-        <h3 class="font-display text-2xl text-white mb-3">Ambiente</h3>
-        <p class="text-white/55 text-sm leading-relaxed">
-          Un entorno que motiva, ordenado y con energía para mantener el enfoque.
-        </p>
-      </div>
-      <div class="rounded-2xl border border-gym-gold/20 bg-gym-surface2 p-6">
-        <h3 class="font-display text-2xl text-white mb-3">Constancia</h3>
-        <p class="text-white/55 text-sm leading-relaxed">
-          Todo está pensado para ayudarte a regresar, adaptarte y seguir avanzando.
-        </p>
-      </div>
-      <div class="rounded-2xl border border-white/8 bg-gym-surface p-6">
-        <h3 class="font-display text-2xl text-white mb-3">Resultados</h3>
-        <p class="text-white/55 text-sm leading-relaxed">
-          El progreso se siente más claro cuando hay estructura, apoyo y seguimiento.
-        </p>
-      </div>
-    </div>
   </div>
 </section>
 
 <section id="contacto" class="py-24 bg-gym-dark">
   <div class="max-w-7xl mx-auto px-6 sm:px-10">
+
     <div class="reveal text-center mb-16">
-      <p class="text-gym-gold text-sm font-bold uppercase tracking-widest mb-2">Da el siguiente paso</p>
-      <h2 class="font-display text-5xl sm:text-6xl lg:text-7xl text-white tracking-wide">CONTACTO</h2>
+      <p class="text-gym-gold text-sm font-bold uppercase tracking-widest mb-2">
+        Da el siguiente paso
+      </p>
+
+      <h2 class="font-display text-5xl sm:text-6xl lg:text-7xl text-white tracking-wide">
+        CONTACTO
+      </h2>
+
       <div class="w-16 h-1 bg-gym-red mx-auto mt-4 mb-6 shadow-glowsm"></div>
+
       <p class="max-w-3xl mx-auto text-white/55 text-base sm:text-lg leading-relaxed">
-        Si el cliente ya llegó hasta aquí, lo importante es que pueda actuar rápido. Un formulario simple y un CTA claro
-        ayudan a convertir el interés en registro o visita.
+        Estamos listos para ayudarte a conocer las instalaciones y elegir el plan adecuado.
       </p>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+
       <div class="reveal space-y-6">
+
         <div class="rounded-3xl border border-gym-red/30 bg-gym-red/10 p-6 mb-8">
-          <p class="text-gym-red text-xs uppercase tracking-[0.25em] font-bold mb-3">Visítanos</p>
-          <h3 class="font-display text-3xl text-white tracking-wide mb-3">Agenda tu visita</h3>
+          <p class="text-gym-red text-xs uppercase tracking-[0.25em] font-bold mb-3">
+            Visítanos
+          </p>
+
+          <h3 class="font-display text-3xl text-white tracking-wide mb-3">
+            Agenda tu visita
+          </h3>
+
           <p class="text-white/65 text-sm leading-relaxed">
-            Nuestro equipo puede orientarte sobre horarios, planes, instalaciones y el tipo de acompañamiento
-            que mejor se adapte a tus metas.
+            Nuestro equipo puede orientarte sobre horarios, planes, instalaciones y opciones de entrenamiento.
           </p>
         </div>
 
@@ -588,8 +1047,12 @@
           <div class="w-12 h-12 rounded-lg bg-gym-red/15 flex items-center justify-center flex-shrink-0">
             <i data-lucide="map-pin" class="w-6 h-6 text-gym-red"></i>
           </div>
+
           <div>
-            <h4 class="text-white font-bold mb-1">Ubicación</h4>
+            <h4 class="text-white font-bold mb-1">
+              Ubicación
+            </h4>
+
             <p class="text-white/55 text-sm">
               Calle Ejercicio #123, Morelia, Michoacán, MX
             </p>
@@ -600,8 +1063,12 @@
           <div class="w-12 h-12 rounded-lg bg-gym-gold/15 flex items-center justify-center flex-shrink-0">
             <i data-lucide="clock" class="w-6 h-6 text-gym-gold"></i>
           </div>
+
           <div>
-            <h4 class="text-white font-bold mb-1">Horarios</h4>
+            <h4 class="text-white font-bold mb-1">
+              Horarios
+            </h4>
+
             <p class="text-white/55 text-sm">
               Lun–Vie: 5:00 AM – 10:00 PM<br>
               Sáb: 6:00 AM – 8:00 PM<br>
@@ -614,9 +1081,15 @@
           <div class="w-12 h-12 rounded-lg bg-gym-red/15 flex items-center justify-center flex-shrink-0">
             <i data-lucide="phone" class="w-6 h-6 text-gym-red"></i>
           </div>
+
           <div>
-            <h4 class="text-white font-bold mb-1">Teléfono / WhatsApp</h4>
-            <p class="text-white/55 text-sm">+52 443 000 0000</p>
+            <h4 class="text-white font-bold mb-1">
+              Teléfono / WhatsApp
+            </h4>
+
+            <p class="text-white/55 text-sm">
+              +52 443 000 0000
+            </p>
           </div>
         </div>
 
@@ -624,55 +1097,114 @@
           <div class="w-12 h-12 rounded-lg bg-gym-gold/15 flex items-center justify-center flex-shrink-0">
             <i data-lucide="mail" class="w-6 h-6 text-gym-gold"></i>
           </div>
+
           <div>
-            <h4 class="text-white font-bold mb-1">Correo</h4>
-            <p class="text-white/55 text-sm">contacto@mygym.com</p>
+            <h4 class="text-white font-bold mb-1">
+              Correo
+            </h4>
+
+            <p class="text-white/55 text-sm">
+              contacto@mygym.com
+            </p>
           </div>
         </div>
+
       </div>
 
       <div class="reveal bg-gym-surface border border-white/10 rounded-3xl p-8 shadow-glow">
+
         <div class="mb-6">
-          <p class="text-gym-gold text-xs uppercase tracking-[0.25em] font-bold mb-2">Inscripción rápida</p>
-          <h3 class="font-display text-3xl text-white tracking-wide mb-2">Déjanos tus datos</h3>
-          <p class="text-white/55 text-sm">Te ayudamos a elegir el plan ideal y resolver tus dudas.</p>
+          <p class="text-gym-gold text-xs uppercase tracking-[0.25em] font-bold mb-2">
+            Inscripción rápida
+          </p>
+
+          <h3 class="font-display text-3xl text-white tracking-wide mb-2">
+            Déjanos tus datos
+          </h3>
+
+          <p class="text-white/55 text-sm">
+            Te ayudamos a elegir el plan ideal y resolver tus dudas.
+          </p>
         </div>
 
         <form method="post" action="#" class="space-y-5">
           {% csrf_token %}
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+
             <div>
-              <label class="block text-white/55 text-xs uppercase tracking-wider mb-2 font-semibold" for="nombre">Nombre</label>
-              <input id="nombre" name="nombre" type="text" placeholder="Tu nombre"
-                     class="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-white text-sm placeholder:text-white/25 focus:outline-none focus:border-gym-red transition-colors">
+              <label
+                class="block text-white/55 text-xs uppercase tracking-wider mb-2 font-semibold"
+                for="nombre">
+                Nombre
+              </label>
+
+              <input
+                id="nombre"
+                name="nombre"
+                type="text"
+                placeholder="Tu nombre"
+                class="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-white text-sm placeholder:text-white/25 focus:outline-none focus:border-gym-red transition-colors">
             </div>
+
             <div>
-              <label class="block text-white/55 text-xs uppercase tracking-wider mb-2 font-semibold" for="email">Email</label>
-              <input id="email" name="email" type="email" placeholder="tu@email.com"
-                     class="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-white text-sm placeholder:text-white/25 focus:outline-none focus:border-gym-red transition-colors">
+              <label
+                class="block text-white/55 text-xs uppercase tracking-wider mb-2 font-semibold"
+                for="email">
+                Email
+              </label>
+
+              <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="tu@email.com"
+                class="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-white text-sm placeholder:text-white/25 focus:outline-none focus:border-gym-red transition-colors">
             </div>
+
           </div>
 
           <div>
-            <label class="block text-white/55 text-xs uppercase tracking-wider mb-2 font-semibold" for="plan_interes">Plan de interés</label>
-            <select id="plan_interes" name="plan_interes"
-                    class="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-gym-red transition-colors">
+            <label
+              class="block text-white/55 text-xs uppercase tracking-wider mb-2 font-semibold"
+              for="plan_interes">
+              Plan de interés
+            </label>
+
+            <select
+              id="plan_interes"
+              name="plan_interes"
+              class="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-gym-red transition-colors">
+
               <option value="">Selecciona un plan</option>
-              <option>Básico</option>
-              <option>Pro</option>
-              <option>Elite</option>
+
+              {% for plan in planes %}
+                <option value="{{ plan.id }}">
+                  {{ plan.nombre }} - ${{ plan.precio }}/mes
+                </option>
+              {% endfor %}
+
             </select>
           </div>
 
           <div>
-            <label class="block text-white/55 text-xs uppercase tracking-wider mb-2 font-semibold" for="mensaje">Mensaje</label>
-            <textarea id="mensaje" name="mensaje" rows="4" placeholder="¿En qué podemos ayudarte?"
-                      class="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-white text-sm placeholder:text-white/25 focus:outline-none focus:border-gym-red transition-colors resize-none"></textarea>
+            <label
+              class="block text-white/55 text-xs uppercase tracking-wider mb-2 font-semibold"
+              for="mensaje">
+              Mensaje
+            </label>
+
+            <textarea
+              id="mensaje"
+              name="mensaje"
+              rows="4"
+              placeholder="¿En qué podemos ayudarte?"
+              class="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-white text-sm placeholder:text-white/25 focus:outline-none focus:border-gym-red transition-colors resize-none"></textarea>
           </div>
 
-          <button type="submit"
-                  class="w-full bg-gym-red hover:bg-red-500 text-white font-bold py-4 rounded-xl uppercase tracking-wider transition-all duration-200 shadow-glow">
+          <button
+            type="submit"
+            class="w-full bg-gym-red hover:bg-red-500 text-white font-bold py-4 rounded-xl uppercase tracking-wider transition-all duration-200 shadow-glow">
             Quiero información →
           </button>
 
@@ -680,9 +1212,40 @@
             Respuesta rápida para ayudarte a elegir el mejor plan.
           </p>
         </form>
+
       </div>
     </div>
   </div>
 </section>
+
+<script>
+  function openLightbox(url, alt) {
+    const lightbox = document.getElementById('lightbox');
+    const image = document.getElementById('lightbox-img');
+
+    image.src = url;
+    image.alt = alt || 'Imagen ampliada';
+
+    lightbox.classList.remove('hidden');
+    lightbox.classList.add('flex');
+  }
+
+  function closeLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    const image = document.getElementById('lightbox-img');
+
+    lightbox.classList.add('hidden');
+    lightbox.classList.remove('flex');
+
+    image.src = '';
+    image.alt = '';
+  }
+
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      closeLightbox();
+    }
+  });
+</script>
 
 {% endblock %}

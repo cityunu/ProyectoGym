@@ -2,62 +2,283 @@
 {% block title %}| Detalle cliente{% endblock %}
 
 {% block content %}
-<section class="min-h-screen bg-gym-black pt-32 pb-20 px-6 sm:px-10">
-  <div class="max-w-5xl mx-auto">
+<section class="min-h-screen bg-gym-black pt-28 sm:pt-32 pb-20 px-4 sm:px-8 lg:px-10">
+  <div class="max-w-6xl mx-auto">
 
-    <div class="reveal mb-8 flex items-center justify-between gap-4">
-      <div>
-        <h1 class="font-display text-4xl text-white tracking-wide">
-          {{ cliente.get_full_name|default:cliente.username }}
-        </h1>
-        <p class="text-white/50 text-sm mt-1">
-          Usuario: {{ cliente.username }} · Rol: {{ cliente.get_rol_display }}
-        </p>
-      </div>
-      <a href="{% url 'administrador:editar_cliente' cliente.pk %}"
-         class="border border-white/20 text-white font-semibold px-5 py-2 rounded-lg uppercase tracking-wider text-xs hover:border-gym-red hover:text-gym-red transition-all duration-200">
-        Editar datos
-      </a>
-    </div>
+    <!-- Encabezado -->
+    <div class="reveal mb-10 sm:mb-12">
+      <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
 
-    <div class="reveal grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-      <div class="bg-gym-surface border border-white/10 rounded-2xl p-6">
-        <h2 class="text-white/80 text-sm uppercase tracking-wider mb-3">Contacto</h2>
-        <p class="text-white text-sm"><strong>Correo:</strong> {{ cliente.email|default:"—" }}</p>
-        <p class="text-white text-sm mt-1"><strong>Teléfono:</strong> {{ cliente.telefono|default:"—" }}</p>
-      </div>
-
-      <div class="bg-gym-surface border border-white/10 rounded-2xl p-6">
-        <h2 class="text-white/80 text-sm uppercase tracking-wider mb-3">Membresía</h2>
-        {% if membresia %}
-          <p class="text-white text-sm font-semibold">{{ membresia.tipo.get_nombre_display }}</p>
-          <p class="text-white/60 text-sm mt-1">
-            Inicio: {{ membresia.fecha_inicio|date:"d/m/Y" }} · Vence: {{ membresia.fecha_fin|date:"d/m/Y" }}
-          </p>
-          <span class="inline-block mt-3 text-xs text-gym-gold border border-gym-gold/30 rounded-full px-3 py-0.5 uppercase">
-            {% if membresia.activa %}Activa{% else %}Inactiva{% endif %}
-          </span>
-        {% else %}
-          <p class="text-white/50 text-sm">No tiene membresía asignada.</p>
-        {% endif %}
-      </div>
-
-      <div class="bg-gym-surface border border-white/10 rounded-2xl p-6 text-center">
-        <h2 class="text-white/80 text-sm uppercase tracking-wider mb-3">Código QR</h2>
-        {% if qr and qr.imagen_qr %}
-          <div class="bg-white rounded-xl p-4 inline-block">
-            <img src="{{ qr.imagen_qr.url }}" alt="QR de acceso" width="160" height="160" loading="lazy">
+        <div class="flex items-start gap-4 sm:gap-5">
+          <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gym-red/10 border border-gym-red/20 flex items-center justify-center shrink-0">
+            <i data-lucide="user-round" class="w-7 h-7 text-gym-red"></i>
           </div>
-          <p class="text-white/40 text-xs mt-2">Generado el {{ qr.fecha_generado|date:"d/m/Y H:i" }}</p>
-        {% else %}
-          <p class="text-white/50 text-sm">No tiene QR generado aún.</p>
-        {% endif %}
+
+          <div>
+            <p class="text-gym-red text-xs sm:text-sm font-semibold uppercase tracking-[0.25em] mb-2">
+              Perfil del cliente
+            </p>
+
+            <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl text-white tracking-wide leading-tight">
+              {{ cliente.get_full_name|default:cliente.username }}
+            </h1>
+
+            <p class="text-white/50 text-sm mt-2">
+              Usuario:
+              <span class="text-white/70">{{ cliente.username }}</span>
+
+              <span class="text-white/20 mx-2">·</span>
+
+              Rol:
+              <span class="text-white/70">{{ cliente.get_rol_display }}</span>
+            </p>
+          </div>
+        </div>
+
+        <a
+          href="{% url 'administrador:editar_cliente' cliente.pk %}"
+          class="inline-flex items-center justify-center gap-2 self-start lg:self-end border border-white/20 text-white font-semibold px-5 py-3 rounded-xl uppercase tracking-wider text-xs hover:border-gym-red hover:text-gym-red transition-all duration-200">
+
+          <i data-lucide="user-pen" class="w-4 h-4"></i>
+          Editar datos
+        </a>
+
       </div>
     </div>
 
-    <a href="{% url 'administrador:lista_clientes' %}" class="inline-block mt-4 text-sm font-semibold text-white/60 hover:text-gym-red uppercase tracking-wider">
-      ← Volver al listado
+    <!-- Resumen principal -->
+    <div class="reveal grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6 mb-8">
+
+      <!-- Contacto -->
+      <article class="bg-gym-surface border border-white/10 rounded-2xl p-6 sm:p-7">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-11 h-11 rounded-xl bg-gym-red/10 flex items-center justify-center">
+            <i data-lucide="contact" class="w-5 h-5 text-gym-red"></i>
+          </div>
+
+          <div>
+            <p class="text-white/40 text-xs uppercase tracking-widest">
+              Información
+            </p>
+
+            <h2 class="font-display text-2xl text-white tracking-wide">
+              Contacto
+            </h2>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <div class="flex items-start gap-3">
+            <i data-lucide="mail" class="w-4 h-4 text-white/40 mt-0.5 shrink-0"></i>
+
+            <div class="min-w-0">
+              <p class="text-white/40 text-xs uppercase tracking-wider">
+                Correo electrónico
+              </p>
+
+              <p class="text-white text-sm mt-1 break-words">
+                {{ cliente.email|default:"—" }}
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3">
+            <i data-lucide="phone" class="w-4 h-4 text-white/40 mt-0.5 shrink-0"></i>
+
+            <div>
+              <p class="text-white/40 text-xs uppercase tracking-wider">
+                Teléfono
+              </p>
+
+              <p class="text-white text-sm mt-1">
+                {{ cliente.telefono|default:"—" }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Membresía -->
+      <article class="bg-gym-surface border border-white/10 rounded-2xl p-6 sm:p-7">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-11 h-11 rounded-xl bg-gym-gold/10 border border-gym-gold/20 flex items-center justify-center">
+            <i data-lucide="badge-check" class="w-5 h-5 text-gym-gold"></i>
+          </div>
+
+          <div>
+            <p class="text-white/40 text-xs uppercase tracking-widest">
+              Estado del plan
+            </p>
+
+            <h2 class="font-display text-2xl text-white tracking-wide">
+              Membresía
+            </h2>
+          </div>
+        </div>
+
+        {% if membresia %}
+
+          <p class="text-white text-xl font-semibold">
+            {{ membresia.tipo.get_nombre_display }}
+          </p>
+
+          <div class="space-y-2 mt-4">
+            <div class="flex items-center gap-2 text-white/50 text-sm">
+              <i data-lucide="calendar-days" class="w-4 h-4"></i>
+              <span>
+                Inicio: {{ membresia.fecha_inicio|date:"d/m/Y" }}
+              </span>
+            </div>
+
+            <div class="flex items-center gap-2 text-white/50 text-sm">
+              <i data-lucide="calendar-clock" class="w-4 h-4"></i>
+              <span>
+                Vence: {{ membresia.fecha_fin|date:"d/m/Y" }}
+              </span>
+            </div>
+          </div>
+
+          <span class="inline-flex items-center gap-2 mt-5 text-xs
+            {% if membresia.activa %}
+              text-gym-gold border-gym-gold/30 bg-gym-gold/5
+            {% else %}
+              text-white/40 border-white/20 bg-white/5
+            {% endif %}
+            border rounded-full px-3 py-1.5 uppercase tracking-wider">
+
+            <span class="w-1.5 h-1.5 rounded-full
+              {% if membresia.activa %}
+                bg-gym-gold
+              {% else %}
+                bg-white/40
+              {% endif %}">
+            </span>
+
+            {% if membresia.activa %}
+              Activa
+            {% else %}
+              Inactiva
+            {% endif %}
+          </span>
+
+        {% else %}
+
+          <div class="flex items-start gap-3">
+            <i data-lucide="circle-alert" class="w-5 h-5 text-white/40 mt-0.5 shrink-0"></i>
+
+            <p class="text-white/50 text-sm leading-relaxed">
+              No tiene membresía asignada.
+            </p>
+          </div>
+
+        {% endif %}
+      </article>
+
+      <!-- Código QR -->
+      <article class="bg-gym-surface border border-white/10 rounded-2xl p-6 sm:p-7 text-center">
+        <div class="flex items-center justify-center gap-3 mb-6">
+          <div class="w-11 h-11 rounded-xl bg-gym-red/10 flex items-center justify-center">
+            <i data-lucide="qr-code" class="w-5 h-5 text-gym-red"></i>
+          </div>
+
+          <div class="text-left">
+            <p class="text-white/40 text-xs uppercase tracking-widest">
+              Acceso digital
+            </p>
+
+            <h2 class="font-display text-2xl text-white tracking-wide">
+              Código QR
+            </h2>
+          </div>
+        </div>
+
+        {% if qr and qr.imagen_qr %}
+
+          <div class="inline-block bg-white rounded-2xl p-4 shadow-xl shadow-black/20">
+            <img
+              src="{{ qr.imagen_qr.url }}"
+              alt="Código QR de acceso de {{ cliente.get_full_name|default:cliente.username }}"
+              width="160"
+              height="160"
+              loading="lazy"
+              class="block w-40 h-40 object-contain">
+          </div>
+
+          <div class="flex items-center justify-center gap-2 text-white/40 text-xs mt-4">
+            <i data-lucide="calendar-clock" class="w-3.5 h-3.5"></i>
+
+            <span>
+              Generado el {{ qr.fecha_generado|date:"d/m/Y H:i" }}
+            </span>
+          </div>
+
+        {% else %}
+
+          <div class="py-8">
+            <div class="w-14 h-14 mx-auto rounded-2xl bg-white/5 flex items-center justify-center mb-4">
+              <i data-lucide="qr-code" class="w-7 h-7 text-white/30"></i>
+            </div>
+
+            <p class="text-white/50 text-sm">
+              No tiene QR generado aún.
+            </p>
+          </div>
+
+        {% endif %}
+      </article>
+
+    </div>
+
+    <!-- Información adicional -->
+    <div class="reveal bg-gym-surface border border-white/10 rounded-2xl p-6 sm:p-7 mb-8">
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
+          <i data-lucide="info" class="w-5 h-5 text-white/60"></i>
+        </div>
+
+        <div>
+          <p class="text-white/40 text-xs uppercase tracking-widest">
+            Administración
+          </p>
+
+          <h2 class="font-display text-xl sm:text-2xl text-white tracking-wide">
+            Información del usuario
+          </h2>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-white/[0.02] border border-white/5 rounded-xl px-4 py-3">
+          <p class="text-white/40 text-xs uppercase tracking-wider mb-1">
+            Nombre de usuario
+          </p>
+
+          <p class="text-white text-sm">
+            {{ cliente.username }}
+          </p>
+        </div>
+
+        <div class="bg-white/[0.02] border border-white/5 rounded-xl px-4 py-3">
+          <p class="text-white/40 text-xs uppercase tracking-wider mb-1">
+            Rol asignado
+          </p>
+
+          <p class="text-white text-sm">
+            {{ cliente.get_rol_display }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Regresar -->
+    <a
+      href="{% url 'administrador:lista_clientes' %}"
+      class="inline-flex items-center gap-2 text-sm font-semibold text-white/60 hover:text-gym-red uppercase tracking-wider transition-colors">
+
+      <span aria-hidden="true">←</span>
+      Volver al listado
     </a>
+
   </div>
 </section>
 {% endblock %}

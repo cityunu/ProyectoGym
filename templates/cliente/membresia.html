@@ -2,55 +2,228 @@
 {% block title %}| Mi membresía{% endblock %}
 
 {% block content %}
-<section class="min-h-screen bg-gym-black pt-32 pb-20 px-6 sm:px-10">
+<section class="min-h-screen bg-gym-black pt-28 sm:pt-32 pb-20 px-4 sm:px-8 lg:px-10">
   <div class="max-w-5xl mx-auto">
 
+    <!-- Encabezado -->
+    <div class="reveal mb-10 sm:mb-14">
+      <p class="text-gym-red text-xs sm:text-sm font-semibold uppercase tracking-[0.25em] mb-3">
+        Tu plan actual
+      </p>
+
+      <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl text-white tracking-wide leading-tight">
+        Mi membresía
+      </h1>
+
+      <p class="text-white/50 text-sm sm:text-base mt-4 max-w-2xl leading-relaxed">
+        Consulta el estado de tu plan o elige una opción diferente para continuar con tu entrenamiento.
+      </p>
+    </div>
+
+    <!-- Membresía actual -->
     <div class="reveal mb-12">
-      <p class="text-gym-red text-sm font-semibold uppercase tracking-widest mb-2">Tu plan actual</p>
-      <h1 class="font-display text-5xl text-white tracking-wide">Mi membresía</h1>
-    </div>
+      <div class="flex items-center gap-3 mb-5">
+        <span class="w-8 h-px bg-gym-red"></span>
 
-    <div class="reveal bg-gym-surface border border-white/10 rounded-2xl p-8 mb-12">
-      {% if membresia %}
-        <div class="flex items-center justify-between flex-wrap gap-4">
-          <div>
-            <p class="text-gym-gold text-xs uppercase tracking-widest font-semibold mb-1">Plan activo</p>
-            <h2 class="font-display text-3xl text-white">{{ membresia.tipo.get_nombre_display }}</h2>
-            <p class="text-white/50 text-sm mt-2">
-              Inicio: {{ membresia.fecha_inicio }} · Vence: {{ membresia.fecha_fin }}
-            </p>
+        <h2 class="text-white/70 text-xs font-semibold uppercase tracking-[0.2em]">
+          Estado de tu membresía
+        </h2>
+      </div>
+
+      <div class="bg-gym-surface border border-white/10 rounded-2xl overflow-hidden">
+        {% if membresia %}
+
+          <div class="p-6 sm:p-8">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-7">
+
+              <div class="flex items-start gap-4 sm:gap-5">
+                <div class="w-14 h-14 rounded-xl bg-gym-gold/10 border border-gym-gold/20 flex items-center justify-center shrink-0">
+                  <i data-lucide="badge-check" class="w-6 h-6 text-gym-gold"></i>
+                </div>
+
+                <div>
+                  <p class="text-gym-gold text-xs uppercase tracking-widest font-semibold mb-2">
+                    Plan actual
+                  </p>
+
+                  <h2 class="font-display text-3xl sm:text-4xl text-white tracking-wide">
+                    {{ membresia.tipo.get_nombre_display }}
+                  </h2>
+                </div>
+              </div>
+
+              <span class="self-start lg:self-center text-xs
+                {% if membresia.activa %}
+                  text-gym-gold border-gym-gold/30 bg-gym-gold/5
+                {% else %}
+                  text-white/40 border-white/20 bg-white/5
+                {% endif %}
+                border rounded-full px-4 py-2 uppercase tracking-wider">
+                {% if membresia.activa %}Activa{% else %}Inactiva{% endif %}
+              </span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 pt-6 border-t border-white/5">
+
+              <div class="bg-white/[0.02] border border-white/5 rounded-xl p-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center">
+                    <i data-lucide="calendar-days" class="w-4 h-4 text-white/60"></i>
+                  </div>
+
+                  <div>
+                    <p class="text-white/40 text-xs uppercase tracking-wider">
+                      Fecha de inicio
+                    </p>
+
+                    <p class="text-white text-sm mt-1">
+                      {{ membresia.fecha_inicio }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-white/[0.02] border border-white/5 rounded-xl p-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center">
+                    <i data-lucide="calendar-clock" class="w-4 h-4 text-white/60"></i>
+                  </div>
+
+                  <div>
+                    <p class="text-white/40 text-xs uppercase tracking-wider">
+                      Fecha de vencimiento
+                    </p>
+
+                    <p class="text-white text-sm mt-1">
+                      {{ membresia.fecha_fin }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
           </div>
-          <span class="text-xs {% if membresia.activa %}text-gym-gold border-gym-gold/30{% else %}text-white/40 border-white/20{% endif %} border rounded-full px-4 py-1.5 uppercase tracking-wider">
-            {% if membresia.activa %}Activa{% else %}Inactiva{% endif %}
-          </span>
-        </div>
-      {% else %}
-        <p class="text-white/50">No tienes una membresía activa actualmente. Elige un plan abajo para comenzar.</p>
-      {% endif %}
+
+        {% else %}
+
+          <div class="p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center gap-5">
+            <div class="w-14 h-14 rounded-xl bg-gym-red/10 flex items-center justify-center shrink-0">
+              <i data-lucide="circle-alert" class="w-6 h-6 text-gym-red"></i>
+            </div>
+
+            <div>
+              <h2 class="font-display text-2xl text-white tracking-wide mb-2">
+                No tienes una membresía activa
+              </h2>
+
+              <p class="text-white/50 text-sm leading-relaxed">
+                Elige uno de los planes disponibles para comenzar a entrenar con nosotros.
+              </p>
+            </div>
+          </div>
+
+        {% endif %}
+      </div>
     </div>
 
+    <!-- Opciones disponibles -->
     <div class="reveal">
-      <h3 class="font-display text-3xl text-white tracking-wide mb-6">Cambiar de plan</h3>
+      <div class="flex items-center gap-3 mb-5">
+        <span class="w-8 h-px bg-gym-red"></span>
 
-      <form method="post" action="{% url 'cliente:cambiar_membresia' %}" class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <h2 class="text-white/70 text-xs font-semibold uppercase tracking-[0.2em]">
+          Opciones disponibles
+        </h2>
+      </div>
+
+      <form method="post" action="{% url 'cliente:cambiar_membresia' %}">
         {% csrf_token %}
-        {% for tipo in tipos %}
-        <label class="cursor-pointer bg-gym-surface border border-white/10 rounded-2xl p-6 hover:border-gym-red/40 transition-all duration-300 flex flex-col">
-          <input type="radio" name="tipo_id" value="{{ tipo.pk }}" class="mb-4 accent-gym-red" {% if membresia and membresia.tipo_id == tipo.pk %}checked{% endif %}>
-          <span class="font-display text-2xl text-white mb-1">{{ tipo.get_nombre_display }}</span>
-          <span class="text-white/50 text-sm">${{ tipo.precio }}/mes</span>
-        </label>
-        {% endfor %}
 
-        <button type="submit" class="sm:col-span-3 bg-gym-red hover:bg-red-700 text-white font-semibold py-4 rounded-lg uppercase tracking-wider transition-all duration-200">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
+
+          {% for tipo in tipos %}
+            <div class="plan-option relative">
+
+              <!-- Radio real -->
+              <input
+                type="radio"
+                id="plan-{{ tipo.pk }}"
+                name="tipo_id"
+                value="{{ tipo.pk }}"
+                class="plan-radio"
+                {% if membresia and membresia.tipo_id == tipo.pk %}checked{% endif %}>
+
+              <!-- Tarjeta seleccionable -->
+              <label
+                for="plan-{{ tipo.pk }}"
+                class="plan-card">
+
+                <div class="flex items-start justify-between gap-4 mb-7">
+
+                  <div class="w-11 h-11 rounded-xl bg-gym-red/10 flex items-center justify-center">
+                    <i data-lucide="dumbbell" class="w-5 h-5 text-gym-red"></i>
+                  </div>
+
+                  <!-- Círculo superior derecho -->
+                  <span
+                    class="plan-indicator"
+                    aria-hidden="true">
+
+                    <span class="plan-dot"></span>
+                  </span>
+
+                </div>
+
+                <p class="text-white/40 text-xs uppercase tracking-widest mb-2">
+                  Plan de entrenamiento
+                </p>
+
+                <span class="block font-display text-2xl text-white tracking-wide mb-2">
+                  {{ tipo.get_nombre_display }}
+                </span>
+
+                <span class="text-white/50 text-sm">
+                  ${{ tipo.precio }} / mes
+                </span>
+
+                <div class="mt-6 pt-4 border-t border-white/5">
+
+                  <span class="plan-status-default text-xs uppercase tracking-wider">
+                    Seleccionar este plan
+                  </span>
+
+                  <span class="plan-status-selected text-xs uppercase tracking-wider">
+                    ✓ Plan seleccionado
+                  </span>
+
+                </div>
+
+              </label>
+            </div>
+          {% endfor %}
+
+        </div>
+
+        <!-- Confirmar cambio -->
+        <button
+          type="submit"
+          class="w-full mt-7 inline-flex items-center justify-center gap-3 bg-gym-red hover:bg-red-700 text-white font-semibold py-4 px-8 rounded-xl uppercase tracking-wider transition-all duration-200 hover:shadow-lg hover:shadow-gym-red/30">
+
+          <i data-lucide="refresh-cw" class="w-4 h-4"></i>
           Confirmar cambio de plan
         </button>
       </form>
     </div>
 
-    <a href="{% url 'cliente:inicio' %}" class="inline-block mt-10 text-sm font-semibold text-white/60 hover:text-gym-red uppercase tracking-wider">
-      ← Volver al panel
+    <!-- Volver al panel -->
+    <a
+      href="{% url 'cliente:inicio' %}"
+      class="inline-flex items-center gap-2 mt-10 text-sm font-semibold text-white/60 hover:text-gym-red uppercase tracking-wider transition-colors">
+
+      <span aria-hidden="true">←</span>
+      Volver al panel
     </a>
+
   </div>
 </section>
 {% endblock %}

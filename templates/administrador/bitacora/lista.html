@@ -2,56 +2,169 @@
 {% block title %}| Bitácora{% endblock %}
 
 {% block content %}
-<section class="min-h-screen bg-gym-black pt-32 pb-20 px-6 sm:px-10">
-  <div class="max-w-6xl mx-auto">
+<section class="min-h-screen bg-gym-black pt-28 sm:pt-32 pb-20 px-4 sm:px-8 lg:px-10">
+  <div class="max-w-7xl mx-auto">
 
-    <div class="reveal mb-8">
-      <h1 class="font-display text-5xl text-white tracking-wide">Bitácora del sistema</h1>
-      <p class="text-white/50 text-sm mt-2">
-        Últimos {{ eventos|length }} eventos registrados.
-      </p>
+    <!-- Encabezado -->
+    <div class="reveal mb-10 sm:mb-12">
+      <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
+
+        <div>
+          <p class="text-gym-red text-xs sm:text-sm font-semibold uppercase tracking-[0.25em] mb-3">
+            Registro de actividad
+          </p>
+
+          <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl text-white tracking-wide leading-tight">
+            Bitácora del sistema
+          </h1>
+
+          <p class="text-white/50 text-sm sm:text-base mt-4 max-w-2xl leading-relaxed">
+            Consulta las acciones realizadas dentro de la plataforma y mantén un seguimiento de la actividad del sistema.
+          </p>
+        </div>
+
+        <div class="inline-flex items-center gap-3 self-start lg:self-end bg-gym-surface border border-white/10 rounded-xl px-4 py-3">
+          <div class="w-9 h-9 rounded-lg bg-gym-red/10 flex items-center justify-center">
+            <i data-lucide="activity" class="w-4 h-4 text-gym-red"></i>
+          </div>
+
+          <div>
+            <p class="text-white/40 text-xs uppercase tracking-wider">
+              Eventos registrados
+            </p>
+
+            <p class="text-white font-semibold text-sm mt-1">
+              {{ eventos|length }}
+            </p>
+          </div>
+        </div>
+
+      </div>
     </div>
 
+    <!-- Tabla -->
     <div class="reveal bg-gym-surface border border-white/10 rounded-2xl overflow-hidden">
-      <table class="w-full text-left text-sm">
-        <thead class="bg-gym-surface2 text-white/50 uppercase text-xs tracking-wider">
-          <tr>
-            <th class="p-4">Fecha y hora</th>
-            <th class="p-4">Usuario</th>
-            <th class="p-4">Acción</th>
-            <th class="p-4">Detalle</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for e in eventos %}
-          <tr class="border-t border-white/5">
-            <td class="p-4 text-white/60">
-              {{ e.fecha_hora|date:"d/m/Y H:i" }}
-            </td>
-            <td class="p-4 text-white">
-              {{ e.usuario.get_full_name|default:e.usuario.username|default:"Sistema" }}
-            </td>
-            <td class="p-4 text-gym-gold text-xs uppercase tracking-wider">
-              {{ e.accion }}
-            </td>
-            <td class="p-4 text-white/50 text-xs">
-              {{ e.detalle|default:"—" }}
-            </td>
-          </tr>
-          {% empty %}
-          <tr>
-            <td colspan="4" class="p-8 text-center text-white/40">
-              No hay eventos registrados aún.
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+
+      <div class="px-5 sm:px-7 py-5 border-b border-white/5 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gym-red/10 flex items-center justify-center">
+          <i data-lucide="clipboard-list" class="w-5 h-5 text-gym-red"></i>
+        </div>
+
+        <div>
+          <h2 class="font-display text-xl sm:text-2xl text-white tracking-wide">
+            Actividad reciente
+          </h2>
+
+          <p class="text-white/40 text-xs sm:text-sm mt-1">
+            Últimos {{ eventos|length }} eventos registrados.
+          </p>
+        </div>
+      </div>
+
+      <!-- En móvil permite desplazamiento horizontal sin romper la tabla -->
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-[760px] text-left text-sm">
+          <thead class="bg-gym-surface2 text-white/50 uppercase text-xs tracking-wider">
+            <tr>
+              <th scope="col" class="px-5 sm:px-6 py-4 font-semibold">
+                Fecha y hora
+              </th>
+
+              <th scope="col" class="px-5 sm:px-6 py-4 font-semibold">
+                Usuario
+              </th>
+
+              <th scope="col" class="px-5 sm:px-6 py-4 font-semibold">
+                Acción
+              </th>
+
+              <th scope="col" class="px-5 sm:px-6 py-4 font-semibold">
+                Detalle
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for e in eventos %}
+              <tr class="border-t border-white/5 hover:bg-white/[0.02] transition-colors duration-200">
+
+                <!-- Fecha -->
+                <td class="px-5 sm:px-6 py-5 text-white/60 whitespace-nowrap">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center">
+                      <i data-lucide="clock-3" class="w-4 h-4 text-white/50"></i>
+                    </div>
+
+                    <span>
+                      {{ e.fecha_hora|date:"d/m/Y H:i" }}
+                    </span>
+                  </div>
+                </td>
+
+                <!-- Usuario -->
+                <td class="px-5 sm:px-6 py-5 text-white">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-gym-red/10 flex items-center justify-center">
+                      <i data-lucide="user" class="w-4 h-4 text-gym-red"></i>
+                    </div>
+
+                    <span>
+                      {{ e.usuario.get_full_name|default:e.usuario.username|default:"Sistema" }}
+                    </span>
+                  </div>
+                </td>
+
+                <!-- Acción -->
+                <td class="px-5 sm:px-6 py-5">
+                  <span class="inline-flex items-center gap-2 text-gym-gold text-xs uppercase tracking-wider border border-gym-gold/25 bg-gym-gold/5 rounded-full px-3 py-1.5 whitespace-nowrap">
+                    <span class="w-1.5 h-1.5 rounded-full bg-gym-gold"></span>
+                    {{ e.accion }}
+                  </span>
+                </td>
+
+                <!-- Detalle -->
+                <td class="px-5 sm:px-6 py-5 text-white/50 text-xs max-w-md">
+                  <span class="line-clamp-2">
+                    {{ e.detalle|default:"—" }}
+                  </span>
+                </td>
+
+              </tr>
+
+            {% empty %}
+
+              <tr>
+                <td colspan="4" class="px-6 py-16 text-center">
+                  <div class="w-14 h-14 mx-auto rounded-2xl bg-gym-red/10 flex items-center justify-center mb-5">
+                    <i data-lucide="clipboard-x" class="w-7 h-7 text-gym-red"></i>
+                  </div>
+
+                  <h3 class="font-display text-2xl text-white tracking-wide mb-2">
+                    No hay eventos registrados
+                  </h3>
+
+                  <p class="text-white/40 text-sm max-w-md mx-auto">
+                    Todavía no se han registrado actividades en la bitácora del sistema.
+                  </p>
+                </td>
+              </tr>
+
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
     </div>
 
-    <a href="{% url 'administrador:inicio' %}" class="inline-block mt-10 text-sm font-semibold text-white/60 hover:text-gym-red uppercase tracking-wider">
-      ← Volver al panel
+    <!-- Regresar -->
+    <a
+      href="{% url 'administrador:inicio' %}"
+      class="inline-flex items-center gap-2 mt-10 text-sm font-semibold text-white/60 hover:text-gym-red uppercase tracking-wider transition-colors">
+
+      <span aria-hidden="true">←</span>
+      Volver al panel
     </a>
+
   </div>
 </section>
 {% endblock %}

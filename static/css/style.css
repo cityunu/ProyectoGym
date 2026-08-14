@@ -459,3 +459,125 @@ body {
     font-size: 2rem;
   }
 }
+
+/* =========================================
+   Selector de planes de membresía
+   ========================================= */
+
+.plan-option {
+  position: relative;
+}
+
+/* Oculta el radio original, pero conserva su funcionalidad */
+.plan-radio {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Tarjeta normal */
+.plan-card {
+  display: block;
+  height: 100%;
+  cursor: pointer;
+  background-color: #171719;
+  border: 2px solid rgba(255, 255, 255, 0.10);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+
+/* Efecto al pasar el cursor */
+.plan-card:hover {
+  border-color: rgba(255, 30, 53, 0.55);
+  transform: translateY(-2px);
+}
+
+/* Tarjeta seleccionada */
+.plan-radio:checked + .plan-card {
+  border-color: #ff1e35;
+  background-color: rgba(255, 30, 53, 0.08);
+  box-shadow:
+    0 0 0 2px rgba(255, 30, 53, 0.30),
+    0 0 24px rgba(255, 30, 53, 0.12);
+}
+
+/* Enfoque visible con teclado */
+.plan-radio:focus-visible + .plan-card {
+  outline: 2px solid #ff1e35;
+  outline-offset: 4px;
+}
+
+/* =========================================
+   Círculo superior derecho
+   ========================================= */
+
+.plan-indicator {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+/* Círculo exterior cuando el plan está seleccionado */
+.plan-radio:checked + .plan-card .plan-indicator {
+  border-color: #ff1e35;
+  background-color: #ff1e35;
+  box-shadow: 0 0 0 4px rgba(255, 30, 53, 0.18);
+}
+
+/* Punto blanco interior */
+.plan-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  transform: scale(0);
+  opacity: 0;
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
+}
+
+/* Punto visible cuando se selecciona */
+.plan-radio:checked + .plan-card .plan-dot {
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* =========================================
+   Texto de selección
+   ========================================= */
+
+.plan-status-default {
+  display: inline;
+  color: rgba(255, 255, 255, 0.30);
+}
+
+.plan-status-selected {
+  display: none;
+  color: #d6b45a;
+}
+
+/* Cambia el texto de la tarjeta seleccionada */
+.plan-radio:checked + .plan-card .plan-status-default {
+  display: none;
+}
+
+.plan-radio:checked + .plan-card .plan-status-selected {
+  display: inline;
+}

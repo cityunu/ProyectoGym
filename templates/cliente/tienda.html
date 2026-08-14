@@ -2,53 +2,177 @@
 {% block title %}| Tienda{% endblock %}
 
 {% block content %}
-<section class="min-h-screen bg-gym-black pt-32 pb-20 px-6 sm:px-10">
+<section class="min-h-screen bg-gym-black pt-28 sm:pt-32 pb-20 px-4 sm:px-8 lg:px-10">
   <div class="max-w-7xl mx-auto">
 
-    <div class="reveal flex items-center justify-between flex-wrap gap-4 mb-12">
-      <div>
-        <p class="text-gym-red text-sm font-semibold uppercase tracking-widest mb-2">Complementa tu entrenamiento</p>
-        <h1 class="font-display text-5xl text-white tracking-wide">Tienda</h1>
+    <!-- Encabezado -->
+    <div class="reveal mb-10 sm:mb-14">
+      <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+
+        <div>
+          <p class="text-gym-red text-xs sm:text-sm font-semibold uppercase tracking-[0.25em] mb-3">
+            Complementa tu entrenamiento
+          </p>
+
+          <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl text-white tracking-wide leading-tight">
+            Tienda
+          </h1>
+
+          <p class="text-white/50 text-sm sm:text-base mt-4 max-w-xl leading-relaxed">
+            Encuentra productos para acompañar tus entrenamientos y alcanzar tus objetivos.
+          </p>
+        </div>
+
+        <a
+          href="{% url 'cliente:ver_carrito' %}"
+          class="inline-flex items-center justify-center gap-3 border border-white/20 text-white font-semibold px-6 py-3.5 rounded-xl uppercase tracking-wider text-sm hover:border-gym-red hover:text-gym-red transition-all duration-200">
+
+          <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+          Ver carrito
+        </a>
+
       </div>
-      <a href="{% url 'cliente:ver_carrito' %}" class="flex items-center gap-2 border border-white/20 text-white font-semibold px-6 py-3 rounded-lg uppercase tracking-wider text-sm hover:border-gym-red hover:text-gym-red transition-all duration-200">
-        <i data-lucide="shopping-cart" class="w-4 h-4"></i>
-        Ver carrito
-      </a>
     </div>
 
     {% if productos %}
-    <div class="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {% for producto in productos %}
-      <div class="bg-gym-surface border border-white/5 rounded-2xl overflow-hidden hover:border-gym-red/30 transition-all duration-300">
-        {% if producto.imagen %}
-        <div class="h-48 overflow-hidden">
-          <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="w-full h-full object-cover" width="400" height="300" loading="lazy">
-        </div>
-        {% endif %}
-        <div class="p-6">
-          <h3 class="font-display text-xl text-white tracking-wide mb-1">{{ producto.nombre }}</h3>
-          <p class="text-white/50 text-sm mb-4">{{ producto.descripcion }}</p>
-          <div class="flex items-center justify-between mb-4">
-            <span class="font-display text-2xl text-white">${{ producto.precio }}</span>
-            <span class="text-xs text-gym-gold border border-gym-gold/30 rounded-full px-3 py-0.5">{{ producto.stock }} disponibles</span>
-          </div>
-          <form method="post" action="{% url 'cliente:agregar_al_carrito' producto.pk %}">
-            {% csrf_token %}
-            <button type="submit" class="w-full bg-gym-red hover:bg-red-700 text-white font-semibold py-3 rounded-lg uppercase tracking-wider text-sm transition-all duration-200">
-              Agregar al carrito
-            </button>
-          </form>
-        </div>
+
+      <!-- Encabezado de catálogo -->
+      <div class="reveal flex items-center gap-3 mb-6">
+        <span class="w-8 h-px bg-gym-red"></span>
+
+        <h2 class="text-white/70 text-xs font-semibold uppercase tracking-[0.2em]">
+          Productos disponibles
+        </h2>
       </div>
-      {% endfor %}
-    </div>
+
+      <!-- Productos -->
+      <div class="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+
+        {% for producto in productos %}
+          <article class="group bg-gym-surface border border-white/5 rounded-2xl overflow-hidden hover:border-gym-red/35 transition-all duration-300 flex flex-col">
+
+            <!-- Imagen -->
+            {% if producto.imagen %}
+              <div class="relative h-52 sm:h-56 overflow-hidden bg-black/20">
+                <img
+                  src="{{ producto.imagen.url }}"
+                  alt="{{ producto.nombre }}"
+                  width="400"
+                  height="300"
+                  loading="lazy"
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none"></div>
+
+                <div class="absolute top-4 right-4">
+                  <span class="inline-flex items-center gap-1.5 text-xs text-gym-gold bg-black/60 backdrop-blur-sm border border-gym-gold/30 rounded-full px-3 py-1.5">
+                    <i data-lucide="package-check" class="w-3.5 h-3.5"></i>
+                    Disponible
+                  </span>
+                </div>
+              </div>
+            {% else %}
+              <div class="h-52 sm:h-56 bg-white/[0.02] flex items-center justify-center">
+                <div class="text-center">
+                  <div class="w-14 h-14 mx-auto rounded-xl bg-gym-red/10 flex items-center justify-center mb-3">
+                    <i data-lucide="image-off" class="w-6 h-6 text-gym-red"></i>
+                  </div>
+
+                  <p class="text-white/30 text-xs uppercase tracking-wider">
+                    Sin imagen
+                  </p>
+                </div>
+              </div>
+            {% endif %}
+
+            <!-- Información -->
+            <div class="p-5 sm:p-6 flex flex-col flex-1">
+
+              <div class="mb-5">
+                <p class="text-white/40 text-xs uppercase tracking-widest mb-2">
+                  Producto
+                </p>
+
+                <h3 class="font-display text-2xl text-white tracking-wide leading-tight">
+                  {{ producto.nombre }}
+                </h3>
+
+                {% if producto.descripcion %}
+                  <p class="text-white/50 text-sm mt-3 leading-relaxed line-clamp-3">
+                    {{ producto.descripcion }}
+                  </p>
+                {% else %}
+                  <p class="text-white/30 text-sm mt-3">
+                    Producto disponible en nuestra tienda.
+                  </p>
+                {% endif %}
+              </div>
+
+              <!-- Precio y stock -->
+              <div class="flex items-center justify-between gap-4 mt-auto mb-5 pt-5 border-t border-white/5">
+                <div>
+                  <p class="text-white/40 text-xs uppercase tracking-wider mb-1">
+                    Precio
+                  </p>
+
+                  <span class="font-display text-2xl text-white">
+                    ${{ producto.precio }}
+                  </span>
+                </div>
+
+                <span class="inline-flex items-center gap-1.5 text-xs text-gym-gold border border-gym-gold/30 bg-gym-gold/5 rounded-full px-3 py-1.5 text-right">
+                  <i data-lucide="boxes" class="w-3.5 h-3.5"></i>
+                  {{ producto.stock }} disponibles
+                </span>
+              </div>
+
+              <!-- Agregar al carrito -->
+              <form method="post" action="{% url 'cliente:agregar_al_carrito' producto.pk %}">
+                {% csrf_token %}
+
+                <button
+                  type="submit"
+                  class="w-full inline-flex items-center justify-center gap-2 bg-gym-red hover:bg-red-700 text-white font-semibold py-3.5 rounded-xl uppercase tracking-wider text-sm transition-all duration-200 hover:shadow-lg hover:shadow-gym-red/25">
+
+                  <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                  Agregar al carrito
+                </button>
+              </form>
+
+            </div>
+          </article>
+        {% endfor %}
+
+      </div>
+
     {% else %}
-    <p class="text-white/50 text-center py-20">No hay productos disponibles por el momento.</p>
+
+      <!-- Tienda vacía -->
+      <div class="reveal bg-gym-surface border border-white/5 rounded-2xl px-6 py-16 sm:py-20 text-center">
+        <div class="w-16 h-16 mx-auto rounded-2xl bg-gym-red/10 flex items-center justify-center mb-6">
+          <i data-lucide="store" class="w-7 h-7 text-gym-red"></i>
+        </div>
+
+        <h2 class="font-display text-2xl sm:text-3xl text-white tracking-wide mb-3">
+          No hay productos disponibles
+        </h2>
+
+        <p class="text-white/50 text-sm max-w-md mx-auto leading-relaxed">
+          No hay productos disponibles por el momento. Vuelve más tarde para consultar nuestro catálogo.
+        </p>
+      </div>
+
     {% endif %}
 
-    <a href="{% url 'cliente:inicio' %}" class="inline-block mt-10 text-sm font-semibold text-white/60 hover:text-gym-red uppercase tracking-wider">
-      ← Volver al panel
+    <!-- Regresar al panel -->
+    <a
+      href="{% url 'cliente:inicio' %}"
+      class="inline-flex items-center gap-2 mt-10 text-sm font-semibold text-white/60 hover:text-gym-red uppercase tracking-wider transition-colors">
+
+      <span aria-hidden="true">←</span>
+      Volver al panel
     </a>
+
   </div>
 </section>
 {% endblock %}

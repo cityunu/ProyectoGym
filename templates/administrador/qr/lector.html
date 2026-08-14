@@ -2,92 +2,216 @@
 {% block title %}| Lector QR{% endblock %}
 
 {% block content %}
-<section class="min-h-screen bg-gym-black pt-32 pb-20 px-6 sm:px-10 flex items-center justify-center">
-  <div class="reveal max-w-md w-full bg-gym-surface border border-white/10 rounded-2xl p-8 text-center">
-    <p class="text-gym-red text-sm font-semibold uppercase tracking-widest mb-2">Control de acceso</p>
-    <h1 class="font-display text-3xl text-white tracking-wide mb-6">Escanear QR</h1>
+<section class="min-h-screen bg-gym-black pt-28 sm:pt-32 pb-20 px-4 sm:px-8 lg:px-10 flex items-center justify-center">
+  <div class="reveal w-full max-w-lg">
 
-    <div id="reader" class="rounded-xl overflow-hidden mb-6"></div>
+    <!-- Encabezado -->
+    <div class="text-center mb-8">
+      <p class="text-gym-red text-xs sm:text-sm font-semibold uppercase tracking-[0.25em] mb-3">
+        Control de acceso
+      </p>
 
-    <div id="resultado" class="hidden rounded-xl p-5 text-left">
-      <p id="resultado-mensaje" class="font-semibold mb-2"></p>
-      <p id="resultado-detalle" class="text-white/60 text-sm"></p>
+      <h1 class="font-display text-4xl sm:text-5xl text-white tracking-wide leading-tight">
+        Escanear QR
+      </h1>
+
+      <p class="text-white/50 text-sm mt-4 max-w-md mx-auto leading-relaxed">
+        Escanea el código QR del cliente para verificar su acceso al gimnasio.
+      </p>
     </div>
 
-    <button id="btn-reiniciar" class="hidden mt-4 w-full border border-white/20 text-white font-semibold py-3 rounded-lg uppercase tracking-wider text-sm hover:border-gym-red hover:text-gym-red transition-all duration-200">
-      Escanear otro código
-    </button>
+    <!-- Lector -->
+    <div class="bg-gym-surface border border-white/10 rounded-2xl overflow-hidden">
 
-    <a href="{% url 'administrador:inicio' %}" class="inline-block mt-8 text-sm font-semibold text-white/60 hover:text-gym-red uppercase tracking-wider">
-      ← Volver al panel
+      <div class="px-6 sm:px-8 pt-7 pb-5 border-b border-white/5 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gym-red/10 flex items-center justify-center">
+          <i data-lucide="scan-line" class="w-5 h-5 text-gym-red"></i>
+        </div>
+
+        <div>
+          <h2 class="font-display text-xl sm:text-2xl text-white tracking-wide">
+            Cámara activa
+          </h2>
+
+          <p class="text-white/40 text-xs sm:text-sm mt-1">
+            Coloca el código dentro del recuadro.
+          </p>
+        </div>
+      </div>
+
+      <div class="p-6 sm:p-8">
+
+        <div
+          id="reader"
+          class="rounded-xl overflow-hidden border border-white/10 bg-black/20">
+        </div>
+
+        <!-- Resultado -->
+        <div
+          id="resultado"
+          class="hidden rounded-xl p-5 text-left mt-6">
+
+          <div class="flex items-start gap-3">
+            <div id="resultado-icono" class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0">
+              <i data-lucide="info" class="w-5 h-5"></i>
+            </div>
+
+            <div>
+              <p id="resultado-mensaje" class="font-semibold mb-2"></p>
+              <p id="resultado-detalle" class="text-white/60 text-sm leading-relaxed"></p>
+            </div>
+          </div>
+        </div>
+
+        <button
+          id="btn-reiniciar"
+          type="button"
+          class="hidden mt-5 w-full inline-flex items-center justify-center gap-2 border border-white/20 text-white font-semibold py-3.5 rounded-xl uppercase tracking-wider text-sm hover:border-gym-red hover:text-gym-red transition-all duration-200">
+
+          <i data-lucide="scan-line" class="w-4 h-4"></i>
+          Escanear otro código
+        </button>
+
+      </div>
+    </div>
+
+    <a
+      href="{% url 'administrador:inicio' %}"
+      class="inline-flex items-center gap-2 mt-8 text-sm font-semibold text-white/60 hover:text-gym-red uppercase tracking-wider transition-colors">
+
+      <span aria-hidden="true">←</span>
+      Volver al panel
     </a>
+
   </div>
 </section>
 
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
 <script>
-function getCookie(name) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(';').shift();
-}
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+      return parts.pop().split(';').shift();
+    }
+    return null;
+  }
 
-const csrftoken = getCookie('csrftoken');
-let escaneando = true;
+  const csrftoken = getCookie('csrftoken');
+  let escaneando = true;
 
-const html5QrCode = new Html5Qrcode("reader");
+  const html5QrCode = new Html5Qrcode("reader");
 
-function onScanSuccess(decodedText) {
-  if (!escaneando) return;
-  escaneando = false;
-  html5QrCode.pause();
+  function mostrarResultado(data) {
+    const resultado = document.getElementById('resultado');
+    const mensaje = document.getElementById('resultado-mensaje');
+    const detalle = document.getElementById('resultado-detalle');
+    const icono = document.getElementById('resultado-icono');
 
-  fetch("{% url 'administrador:verificar_qr' %}", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-CSRFToken": csrftoken,
-    },
-    body: JSON.stringify({ codigo: decodedText }),
-  })
-    .then(res => res.json())
-    .then(data => {
-      const resultado = document.getElementById('resultado');
-      const mensaje = document.getElementById('resultado-mensaje');
-      const detalle = document.getElementById('resultado-detalle');
+    resultado.classList.remove('hidden');
+    mensaje.textContent = data.mensaje || 'Resultado del escaneo';
 
-      resultado.classList.remove('hidden');
-      mensaje.textContent = data.mensaje;
+    if (data.valido) {
+      resultado.className = 'rounded-xl p-5 text-left mt-6 bg-green-900/30 border border-green-500/30';
+      mensaje.className = 'font-semibold mb-2 text-green-300';
+      icono.className = 'w-10 h-10 rounded-lg flex items-center justify-center shrink-0 bg-green-500/10 text-green-300';
+      icono.innerHTML = '<i data-lucide="circle-check" class="w-5 h-5"></i>';
+      detalle.textContent = `Membresía: ${data.membresia || '—'} · Vence: ${data.vence || '—'}`;
+    } else {
+      resultado.className = 'rounded-xl p-5 text-left mt-6 bg-red-900/30 border border-red-500/30';
+      mensaje.className = 'font-semibold mb-2 text-red-300';
+      icono.className = 'w-10 h-10 rounded-lg flex items-center justify-center shrink-0 bg-red-500/10 text-red-300';
+      icono.innerHTML = '<i data-lucide="circle-x" class="w-5 h-5"></i>';
+      detalle.textContent = 'El acceso no fue autorizado.';
+    }
 
-      if (data.valido) {
-        resultado.className = "rounded-xl p-5 text-left bg-green-900/30 border border-green-500/30";
-        mensaje.className = "font-semibold mb-2 text-green-300";
-        detalle.textContent = `Membresía: ${data.membresia} · Vence: ${data.vence}`;
-      } else {
-        resultado.className = "rounded-xl p-5 text-left bg-red-900/30 border border-red-500/30";
-        mensaje.className = "font-semibold mb-2 text-red-300";
-        detalle.textContent = '';
-      }
+    if (window.lucide) {
+      lucide.createIcons();
+    }
 
-      document.getElementById('btn-reiniciar').classList.remove('hidden');
+    document.getElementById('btn-reiniciar').classList.remove('hidden');
+  }
+
+  function onScanSuccess(decodedText) {
+    if (!escaneando) return;
+
+    escaneando = false;
+    html5QrCode.pause(true);
+
+    fetch("{% url 'administrador:verificar_qr' %}", {
+      method: "POST",
+      mode: "same-origin",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrftoken
+      },
+      body: JSON.stringify({
+        codigo: decodedText
+      })
     })
-    .catch(() => {
-      escaneando = true;
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Error al verificar el código.');
+        }
+
+        return response.json();
+      })
+      .then(data => {
+        mostrarResultado(data);
+      })
+      .catch(error => {
+        const resultado = document.getElementById('resultado');
+        const mensaje = document.getElementById('resultado-mensaje');
+        const detalle = document.getElementById('resultado-detalle');
+
+        resultado.className = 'rounded-xl p-5 text-left mt-6 bg-red-900/30 border border-red-500/30';
+        resultado.classList.remove('hidden');
+
+        mensaje.className = 'font-semibold mb-2 text-red-300';
+        mensaje.textContent = 'No se pudo verificar el código';
+
+        detalle.textContent = error.message || 'Intenta nuevamente.';
+        document.getElementById('btn-reiniciar').classList.remove('hidden');
+      });
+  }
+
+  html5QrCode.start(
+    { facingMode: "environment" },
+    {
+      fps: 10,
+      qrbox: 220
+    },
+    onScanSuccess
+  ).catch(error => {
+    const resultado = document.getElementById('resultado');
+    const mensaje = document.getElementById('resultado-mensaje');
+    const detalle = document.getElementById('resultado-detalle');
+
+    resultado.className = 'rounded-xl p-5 text-left mt-6 bg-red-900/30 border border-red-500/30';
+    resultado.classList.remove('hidden');
+
+    mensaje.className = 'font-semibold mb-2 text-red-300';
+    mensaje.textContent = 'No se pudo activar la cámara';
+
+    detalle.textContent = 'Verifica los permisos de cámara del navegador.';
+    document.getElementById('btn-reiniciar').classList.remove('hidden');
+  });
+
+  document.getElementById('btn-reiniciar').addEventListener('click', () => {
+    const resultado = document.getElementById('resultado');
+
+    resultado.classList.add('hidden');
+    document.getElementById('btn-reiniciar').classList.add('hidden');
+
+    escaneando = true;
+
+    try {
       html5QrCode.resume();
-    });
-}
-
-html5QrCode.start(
-  { facingMode: "environment" },
-  { fps: 10, qrbox: 220 },
-  onScanSuccess
-);
-
-document.getElementById('btn-reiniciar').addEventListener('click', () => {
-  document.getElementById('resultado').classList.add('hidden');
-  document.getElementById('btn-reiniciar').classList.add('hidden');
-  escaneando = true;
-  html5QrCode.resume();
-});
+    } catch (error) {
+      window.location.reload();
+    }
+  });
 </script>
 {% endblock %}

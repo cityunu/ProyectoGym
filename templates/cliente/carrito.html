@@ -2,52 +2,163 @@
 {% block title %}| Mi carrito{% endblock %}
 
 {% block content %}
-<section class="min-h-screen bg-gym-black pt-32 pb-20 px-6 sm:px-10">
-  <div class="max-w-4xl mx-auto">
+<section class="min-h-screen bg-gym-black pt-28 sm:pt-32 pb-20 px-4 sm:px-8 lg:px-10">
+  <div class="max-w-5xl mx-auto">
 
-    <div class="reveal mb-12">
-      <p class="text-gym-red text-sm font-semibold uppercase tracking-widest mb-2">Revisa antes de comprar</p>
-      <h1 class="font-display text-5xl text-white tracking-wide">Mi carrito</h1>
+    <!-- Encabezado -->
+    <div class="reveal mb-10 sm:mb-14">
+      <p class="text-gym-red text-xs sm:text-sm font-semibold uppercase tracking-[0.25em] mb-3">
+        Revisa antes de comprar
+      </p>
+
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+        <div>
+          <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl text-white tracking-wide leading-tight">
+            Mi carrito
+          </h1>
+
+          <p class="text-white/50 text-sm sm:text-base mt-4 max-w-xl leading-relaxed">
+            Revisa tus productos antes de confirmar tu compra.
+          </p>
+        </div>
+
+        {% if items %}
+          <div class="flex items-center gap-2 text-white/40 text-sm">
+            <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+            <span>{{ items|length }} artículo{{ items|length|pluralize }}</span>
+          </div>
+        {% endif %}
+      </div>
     </div>
 
     {% if items %}
-    <div class="reveal space-y-4 mb-10">
-      {% for item in items %}
-      <div class="bg-gym-surface border border-white/5 rounded-xl p-5 flex items-center justify-between gap-4 flex-wrap">
-        <div>
-          <h3 class="text-white font-semibold">{{ item.producto.nombre }}</h3>
-          <p class="text-white/50 text-sm">Cantidad: {{ item.cantidad }} · ${{ item.producto.precio }} c/u</p>
+
+      <!-- Lista de productos -->
+      <div class="reveal mb-8">
+        <div class="flex items-center gap-3 mb-5">
+          <span class="w-8 h-px bg-gym-red"></span>
+          <h2 class="text-white/70 text-xs font-semibold uppercase tracking-[0.2em]">
+            Productos seleccionados
+          </h2>
         </div>
-        <div class="flex items-center gap-4">
-          <span class="font-display text-xl text-white">${{ item.subtotal }}</span>
-          <form method="post" action="{% url 'cliente:eliminar_del_carrito' item.pk %}">
-            {% csrf_token %}
-            <button type="submit" class="text-white/40 hover:text-gym-red transition-colors" aria-label="Eliminar">
-              <i data-lucide="trash-2" class="w-5 h-5"></i>
-            </button>
-          </form>
+
+        <div class="space-y-4">
+          {% for item in items %}
+            <article class="group bg-gym-surface border border-white/5 rounded-2xl p-5 sm:p-6 hover:border-gym-red/30 transition-all duration-300">
+
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+
+                <!-- Información del producto -->
+                <div class="flex items-start gap-4 min-w-0">
+                  <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-gym-red/10 flex items-center justify-center shrink-0">
+                    <i data-lucide="package" class="w-5 h-5 text-gym-red"></i>
+                  </div>
+
+                  <div class="min-w-0">
+                    <p class="text-white/40 text-xs uppercase tracking-widest mb-1">
+                      Producto
+                    </p>
+
+                    <h3 class="text-white font-semibold text-base sm:text-lg truncate">
+                      {{ item.producto.nombre }}
+                    </h3>
+
+                    <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2 text-white/50 text-sm">
+                      <span>Cantidad: {{ item.cantidad }}</span>
+                      <span class="text-white/20">•</span>
+                      <span>${{ item.producto.precio }} c/u</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Subtotal y eliminar -->
+                <div class="flex items-center justify-between sm:justify-end gap-5 sm:min-w-[170px]">
+                  <div class="sm:text-right">
+                    <p class="text-white/40 text-xs uppercase tracking-widest mb-1">
+                      Subtotal
+                    </p>
+
+                    <span class="font-display text-2xl text-white">
+                      ${{ item.subtotal }}
+                    </span>
+                  </div>
+
+                  <form method="post" action="{% url 'cliente:eliminar_del_carrito' item.pk %}">
+                    {% csrf_token %}
+                    <button
+                      type="submit"
+                      class="w-10 h-10 rounded-lg border border-white/10 text-white/40 hover:text-gym-red hover:border-gym-red/40 hover:bg-gym-red/5 transition-all duration-200 flex items-center justify-center"
+                      aria-label="Eliminar {{ item.producto.nombre }} del carrito"
+                      title="Eliminar producto">
+                      <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                  </form>
+                </div>
+
+              </div>
+            </article>
+          {% endfor %}
         </div>
       </div>
-      {% endfor %}
-    </div>
 
-    <div class="reveal bg-gym-surface border border-white/10 rounded-2xl p-8 flex items-center justify-between flex-wrap gap-4">
-      <span class="font-display text-3xl text-white">Total: ${{ total }}</span>
-      <form method="post" action="{% url 'cliente:confirmar_compra' %}">
-        {% csrf_token %}
-        <button type="submit" class="bg-gym-red hover:bg-red-700 text-white font-semibold px-8 py-4 rounded-lg uppercase tracking-wider transition-all duration-200">
-          Confirmar compra
-        </button>
-      </form>
-    </div>
+      <!-- Resumen de compra -->
+      <div class="reveal">
+        <div class="bg-gym-surface border border-white/10 rounded-2xl p-6 sm:p-8">
+
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+            <div>
+              <p class="text-white/40 text-xs uppercase tracking-[0.2em] mb-2">
+                Resumen de compra
+              </p>
+
+              <div class="flex items-baseline gap-3">
+                <span class="text-white/60 text-sm">Total</span>
+                <span class="font-display text-3xl sm:text-4xl text-white">
+                  ${{ total }}
+                </span>
+              </div>
+            </div>
+
+            <form method="post" action="{% url 'cliente:confirmar_compra' %}">
+              {% csrf_token %}
+              <button
+                type="submit"
+                class="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-gym-red hover:bg-red-700 text-white font-semibold px-7 sm:px-8 py-4 rounded-xl uppercase tracking-wider transition-all duration-200 hover:shadow-lg hover:shadow-gym-red/30">
+                <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+                Confirmar compra
+              </button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+
     {% else %}
-    <p class="text-white/50 text-center py-20">Tu carrito está vacío.</p>
-    <div class="text-center">
-      <a href="{% url 'cliente:tienda' %}" class="inline-block text-sm font-semibold text-gym-red hover:text-red-400 uppercase tracking-wider">
-        Ir a la tienda →
-      </a>
-    </div>
+
+      <!-- Carrito vacío -->
+      <div class="reveal bg-gym-surface border border-white/5 rounded-2xl px-6 py-16 sm:py-20 text-center">
+        <div class="w-16 h-16 mx-auto rounded-2xl bg-gym-red/10 flex items-center justify-center mb-6">
+          <i data-lucide="shopping-cart" class="w-7 h-7 text-gym-red"></i>
+        </div>
+
+        <h2 class="font-display text-2xl sm:text-3xl text-white tracking-wide mb-3">
+          Tu carrito está vacío
+        </h2>
+
+        <p class="text-white/50 text-sm max-w-md mx-auto leading-relaxed mb-7">
+          Todavía no has agregado productos. Explora nuestra tienda y encuentra lo que necesitas para complementar tu entrenamiento.
+        </p>
+
+        <a
+          href="{% url 'cliente:tienda' %}"
+          class="inline-flex items-center gap-2 text-sm font-semibold text-gym-red hover:text-red-400 uppercase tracking-wider transition-colors">
+          Ir a la tienda
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+
     {% endif %}
+
   </div>
 </section>
-{% endblock %}  
+{% endblock %}

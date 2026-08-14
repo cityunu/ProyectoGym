@@ -2,60 +2,215 @@
 {% block title %}| Productos{% endblock %}
 
 {% block content %}
-<section class="min-h-screen bg-gym-black pt-32 pb-20 px-6 sm:px-10">
-  <div class="max-w-6xl mx-auto">
+<section class="min-h-screen bg-gym-black pt-28 sm:pt-32 pb-20 px-4 sm:px-8 lg:px-10">
+  <div class="max-w-7xl mx-auto">
 
-    <div class="reveal flex items-center justify-between flex-wrap gap-4 mb-10">
-      <h1 class="font-display text-5xl text-white tracking-wide">Productos</h1>
-      <a href="{% url 'administrador:agregar_producto' %}"
-         class="bg-gym-red hover:bg-red-700 text-white font-semibold px-6 py-2.5 rounded-lg uppercase tracking-wider text-sm transition-all duration-200">
-        + Agregar producto
-      </a>
+    <!-- Encabezado -->
+    <div class="reveal mb-10 sm:mb-12">
+      <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+
+        <div>
+          <p class="text-gym-red text-xs sm:text-sm font-semibold uppercase tracking-[0.25em] mb-3">
+            Administración de inventario
+          </p>
+
+          <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl text-white tracking-wide leading-tight">
+            Productos
+          </h1>
+
+          <p class="text-white/50 text-sm mt-4">
+            Consulta y administra los productos disponibles en la tienda.
+          </p>
+        </div>
+
+        <a
+          href="{% url 'administrador:agregar_producto' %}"
+          class="inline-flex items-center justify-center gap-2 self-start lg:self-end bg-gym-red hover:bg-red-700 text-white font-semibold px-6 py-3.5 rounded-xl uppercase tracking-wider text-sm transition-all duration-200 hover:shadow-lg hover:shadow-gym-red/25">
+
+          <i data-lucide="plus" class="w-4 h-4"></i>
+          Agregar producto
+        </a>
+
+      </div>
     </div>
 
+    <!-- Tabla -->
     <div class="reveal bg-gym-surface border border-white/10 rounded-2xl overflow-hidden">
-      <table class="w-full text-left text-sm">
-        <thead class="bg-gym-surface-2 text-white/50 uppercase text-xs tracking-wider">
-          <tr>
-            <th class="p-4">Nombre</th>
-            <th class="p-4">Precio</th>
-            <th class="p-4">Stock</th>
-            <th class="p-4">Activo</th>
-            <th class="p-4">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for producto in productos %}
-          <tr class="border-t border-white/5">
-            <td class="p-4 text-white">{{ producto.nombre }}</td>
-            <td class="p-4 text-white/60">${{ producto.precio }}</td>
-            <td class="p-4 {% if producto.stock == 0 %}text-gym-red{% else %}text-white/60{% endif %}">{{ producto.stock }}</td>
-            <td class="p-4">
-              <span class="text-xs {% if producto.activo %}text-gym-gold border-gym-gold/30{% else %}text-white/40 border-white/20{% endif %} border rounded-full px-3 py-0.5 uppercase">
-                {% if producto.activo %}Sí{% else %}No{% endif %}
-              </span>
-            </td>
-            <td class="p-4 flex gap-3">
-              <a href="{% url 'administrador:editar_producto' producto.pk %}" class="text-white/50 hover:text-gym-gold" aria-label="Editar">
-                <i data-lucide="pencil" class="w-4 h-4"></i>
-              </a>
-              <a href="{% url 'administrador:eliminar_producto' producto.pk %}" class="text-white/50 hover:text-gym-red" aria-label="Eliminar">
-                <i data-lucide="trash-2" class="w-4 h-4"></i>
-              </a>
-            </td>
-          </tr>
-          {% empty %}
-          <tr>
-            <td colspan="5" class="p-8 text-center text-white/40">No hay productos registrados.</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+
+      <div class="px-5 sm:px-7 py-5 border-b border-white/5 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
+          <i data-lucide="package-search" class="w-5 h-5 text-white/60"></i>
+        </div>
+
+        <div>
+          <h2 class="font-display text-xl sm:text-2xl text-white tracking-wide">
+            Catálogo de productos
+          </h2>
+
+          <p class="text-white/40 text-xs sm:text-sm mt-1">
+            Gestiona precios, stock y disponibilidad.
+          </p>
+        </div>
+      </div>
+
+      <!-- Contenedor responsive -->
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-[850px] text-left text-sm">
+
+          <thead class="bg-gym-surface2 text-white/50 uppercase text-xs tracking-wider">
+            <tr>
+              <th scope="col" class="px-5 sm:px-6 py-4 font-semibold">
+                Producto
+              </th>
+
+              <th scope="col" class="px-5 sm:px-6 py-4 font-semibold">
+                Precio
+              </th>
+
+              <th scope="col" class="px-5 sm:px-6 py-4 font-semibold">
+                Stock
+              </th>
+
+              <th scope="col" class="px-5 sm:px-6 py-4 font-semibold">
+                Estado
+              </th>
+
+              <th scope="col" class="px-5 sm:px-6 py-4 font-semibold text-right">
+                Acciones
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for producto in productos %}
+              <tr class="border-t border-white/5 hover:bg-white/[0.02] transition-colors duration-200">
+
+                <!-- Producto -->
+                <td class="px-5 sm:px-6 py-5">
+                  <div class="flex items-center gap-3">
+
+                    {% if producto.imagen %}
+                      <img
+                        src="{{ producto.imagen.url }}"
+                        alt="{{ producto.nombre }}"
+                        width="48"
+                        height="48"
+                        loading="lazy"
+                        class="w-12 h-12 rounded-xl object-cover border border-white/10">
+                    {% else %}
+                      <div class="w-12 h-12 rounded-xl bg-gym-red/10 flex items-center justify-center">
+                        <i data-lucide="image-off" class="w-5 h-5 text-gym-red"></i>
+                      </div>
+                    {% endif %}
+
+                    <span class="text-white font-medium">
+                      {{ producto.nombre }}
+                    </span>
+                  </div>
+                </td>
+
+                <!-- Precio -->
+                <td class="px-5 sm:px-6 py-5 text-white/70">
+                  ${{ producto.precio }}
+                </td>
+
+                <!-- Stock -->
+                <td class="px-5 sm:px-6 py-5">
+                  <span class="{% if producto.stock == 0 %}text-gym-red{% else %}text-white/60{% endif %}">
+                    {{ producto.stock }}
+                  </span>
+
+                  {% if producto.stock == 0 %}
+                    <span class="block text-gym-red/70 text-xs mt-1">
+                      Agotado
+                    </span>
+                  {% endif %}
+                </td>
+
+                <!-- Estado -->
+                <td class="px-5 sm:px-6 py-5">
+                  <span class="inline-flex items-center gap-2 text-xs
+                    {% if producto.activo %}
+                      text-gym-gold border-gym-gold/30 bg-gym-gold/5
+                    {% else %}
+                      text-white/40 border-white/20 bg-white/5
+                    {% endif %}
+                    border rounded-full px-3 py-1.5 uppercase tracking-wider">
+
+                    <span class="w-1.5 h-1.5 rounded-full
+                      {% if producto.activo %}
+                        bg-gym-gold
+                      {% else %}
+                        bg-white/40
+                      {% endif %}">
+                    </span>
+
+                    {% if producto.activo %}Activo{% else %}Inactivo{% endif %}
+                  </span>
+                </td>
+
+                <!-- Acciones -->
+                <td class="px-5 sm:px-6 py-5">
+                  <div class="flex items-center justify-end gap-3">
+
+                    <a
+                      href="{% url 'administrador:editar_producto' producto.pk %}"
+                      class="w-9 h-9 rounded-lg border border-white/10 text-white/50 hover:text-gym-gold hover:border-gym-gold/40 flex items-center justify-center transition-all duration-200"
+                      aria-label="Editar {{ producto.nombre }}"
+                      title="Editar producto">
+
+                      <i data-lucide="pencil" class="w-4 h-4"></i>
+                    </a>
+
+                    <a
+                      href="{% url 'administrador:eliminar_producto' producto.pk %}"
+                      class="w-9 h-9 rounded-lg border border-white/10 text-white/50 hover:text-gym-red hover:border-gym-red/40 flex items-center justify-center transition-all duration-200"
+                      aria-label="Eliminar {{ producto.nombre }}"
+                      title="Eliminar producto">
+
+                      <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </a>
+
+                  </div>
+                </td>
+
+              </tr>
+
+            {% empty %}
+
+              <tr>
+                <td colspan="5" class="px-6 py-16 text-center">
+                  <div class="w-16 h-16 mx-auto rounded-2xl bg-gym-red/10 flex items-center justify-center mb-6">
+                    <i data-lucide="package-open" class="w-8 h-8 text-gym-red"></i>
+                  </div>
+
+                  <h2 class="font-display text-2xl sm:text-3xl text-white tracking-wide mb-3">
+                    No hay productos registrados
+                  </h2>
+
+                  <p class="text-white/50 text-sm">
+                    Agrega el primer producto para comenzar a llenar el catálogo.
+                  </p>
+                </td>
+              </tr>
+
+            {% endfor %}
+          </tbody>
+
+        </table>
+      </div>
+
     </div>
 
-    <a href="{% url 'administrador:inicio' %}" class="inline-block mt-10 text-sm font-semibold text-white/60 hover:text-gym-red uppercase tracking-wider">
-      ← Volver al panel
+    <!-- Regresar -->
+    <a
+      href="{% url 'administrador:inicio' %}"
+      class="inline-flex items-center gap-2 mt-10 text-sm font-semibold text-white/60 hover:text-gym-red uppercase tracking-wider transition-colors">
+
+      <span aria-hidden="true">←</span>
+      Volver al panel
     </a>
+
   </div>
 </section>
 {% endblock %}

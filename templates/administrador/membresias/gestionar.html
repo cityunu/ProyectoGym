@@ -2,50 +2,177 @@
 {% block title %}| Membresías{% endblock %}
 
 {% block content %}
-<section class="min-h-screen bg-gym-black pt-32 pb-20 px-6 sm:px-10">
-  <div class="max-w-6xl mx-auto">
+<section class="min-h-screen bg-gym-black pt-28 sm:pt-32 pb-20 px-4 sm:px-8 lg:px-10">
+  <div class="max-w-7xl mx-auto">
 
-    <div class="reveal mb-12">
-      <h1 class="font-display text-5xl text-white tracking-wide">Gestión de membresías</h1>
-      <p class="text-white/50 text-sm mt-2">Actualiza precio, descripción y disponibilidad de cada plan.</p>
-    </div>
+    <!-- Encabezado -->
+    <div class="reveal mb-10 sm:mb-12">
+      <p class="text-gym-red text-xs sm:text-sm font-semibold uppercase tracking-[0.25em] mb-3">
+        Administración de planes
+      </p>
 
-    <div class="reveal grid grid-cols-1 sm:grid-cols-3 gap-6">
-      {% for tipo in tipos %}
-      <div class="bg-gym-surface border border-white/10 rounded-2xl p-6">
-        <p class="text-gym-gold text-xs uppercase tracking-widest font-semibold mb-1">{{ tipo.get_nombre_display }}</p>
-        <p class="font-display text-3xl text-white mb-4">${{ tipo.precio }}</p>
+      <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
+        <div>
+          <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl text-white tracking-wide leading-tight">
+            Gestión de membresías
+          </h1>
 
-        <form method="post" class="space-y-4">
-          {% csrf_token %}
-          <input type="hidden" name="tipo_id" value="{{ tipo.id }}">
+          <p class="text-white/50 text-sm sm:text-base mt-4 max-w-2xl leading-relaxed">
+            Actualiza el precio, la descripción y la disponibilidad de cada plan.
+          </p>
+        </div>
 
-          <div>
-            <label class="block text-white/60 text-xs uppercase tracking-wider mb-1">Nuevo precio</label>
-            <input type="number" name="precio" step="0.01" value="{{ tipo.precio }}" required class="form-input">
+        <div class="inline-flex items-center gap-3 self-start lg:self-end bg-gym-surface border border-white/10 rounded-xl px-4 py-3">
+          <div class="w-9 h-9 rounded-lg bg-gym-red/10 flex items-center justify-center">
+            <i data-lucide="layers-3" class="w-4 h-4 text-gym-red"></i>
           </div>
 
           <div>
-            <label class="block text-white/60 text-xs uppercase tracking-wider mb-1">Descripción</label>
-            <textarea name="descripcion" rows="3" class="form-input">{{ tipo.descripcion }}</textarea>
+            <p class="text-white/40 text-xs uppercase tracking-wider">
+              Planes registrados
+            </p>
+
+            <p class="text-white font-semibold text-sm mt-1">
+              {{ tipos|length }}
+            </p>
           </div>
-
-          <label class="flex items-center gap-2 text-white/70 text-sm">
-            <input type="checkbox" name="activo" {% if tipo.activo %}checked{% endif %} class="accent-gym-red">
-            Plan activo
-          </label>
-
-          <button type="submit" class="w-full bg-gym-red hover:bg-red-700 text-white font-semibold py-2.5 rounded-lg uppercase tracking-wider text-sm transition-all duration-200">
-            Actualizar
-          </button>
-        </form>
+        </div>
       </div>
-      {% endfor %}
     </div>
 
-    <a href="{% url 'administrador:inicio' %}" class="inline-block mt-10 text-sm font-semibold text-white/60 hover:text-gym-red uppercase tracking-wider">
-      ← Volver al panel
+    <!-- Tarjetas -->
+    <div class="reveal grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6">
+
+      {% for tipo in tipos %}
+        <article class="bg-gym-surface border border-white/10 rounded-2xl overflow-hidden flex flex-col">
+
+          <!-- Encabezado del plan -->
+          <div class="p-6 sm:p-7 border-b border-white/5">
+            <div class="flex items-start justify-between gap-4">
+
+              <div>
+                <p class="text-gym-gold text-xs uppercase tracking-widest font-semibold mb-2">
+                  Plan disponible
+                </p>
+
+                <h2 class="font-display text-2xl sm:text-3xl text-white tracking-wide">
+                  {{ tipo.get_nombre_display }}
+                </h2>
+              </div>
+
+              <div class="w-11 h-11 rounded-xl bg-gym-gold/10 border border-gym-gold/20 flex items-center justify-center shrink-0">
+                <i data-lucide="dumbbell" class="w-5 h-5 text-gym-gold"></i>
+              </div>
+            </div>
+
+            <div class="flex items-baseline gap-2 mt-6">
+              <span class="text-white/40 text-sm">
+                Precio actual
+              </span>
+
+              <span class="font-display text-3xl text-white">
+                ${{ tipo.precio }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Formulario -->
+          <form method="post" class="p-6 sm:p-7 space-y-5 flex flex-col flex-1">
+            {% csrf_token %}
+
+            <input
+              type="hidden"
+              name="tipo_id"
+              value="{{ tipo.id }}">
+
+            <div>
+              <label
+                for="precio-{{ tipo.id }}"
+                class="flex items-center gap-2 text-white/60 text-xs uppercase tracking-wider mb-2">
+
+                <i data-lucide="badge-dollar-sign" class="w-4 h-4 text-gym-red"></i>
+                Nuevo precio
+              </label>
+
+              <input
+                id="precio-{{ tipo.id }}"
+                type="number"
+                name="precio"
+                step="0.01"
+                min="0"
+                value="{{ tipo.precio }}"
+                required
+                class="form-input">
+            </div>
+
+            <div>
+              <label
+                for="descripcion-{{ tipo.id }}"
+                class="flex items-center gap-2 text-white/60 text-xs uppercase tracking-wider mb-2">
+
+                <i data-lucide="file-text" class="w-4 h-4 text-gym-red"></i>
+                Descripción
+              </label>
+
+              <textarea
+                id="descripcion-{{ tipo.id }}"
+                name="descripcion"
+                rows="4"
+                class="form-input">{{ tipo.descripcion }}</textarea>
+            </div>
+
+            <label class="flex items-center gap-3 text-white/70 text-sm cursor-pointer mt-auto">
+              <input
+                type="checkbox"
+                name="activo"
+                {% if tipo.activo %}checked{% endif %}
+                class="w-4 h-4 accent-gym-red">
+
+              <span>
+                Plan activo
+              </span>
+            </label>
+
+            <button
+              type="submit"
+              class="w-full inline-flex items-center justify-center gap-2 bg-gym-red hover:bg-red-700 text-white font-semibold py-3.5 rounded-xl uppercase tracking-wider text-sm transition-all duration-200 hover:shadow-lg hover:shadow-gym-red/25">
+
+              <i data-lucide="save" class="w-4 h-4"></i>
+              Actualizar
+            </button>
+          </form>
+
+        </article>
+
+      {% empty %}
+
+        <div class="md:col-span-2 xl:col-span-3 bg-gym-surface border border-white/10 rounded-2xl px-6 py-16 text-center">
+          <div class="w-16 h-16 mx-auto rounded-2xl bg-gym-red/10 flex items-center justify-center mb-6">
+            <i data-lucide="layers-3" class="w-8 h-8 text-gym-red"></i>
+          </div>
+
+          <h2 class="font-display text-2xl sm:text-3xl text-white tracking-wide mb-3">
+            No hay planes registrados
+          </h2>
+
+          <p class="text-white/50 text-sm">
+            Todavía no existen tipos de membresía configurados.
+          </p>
+        </div>
+
+      {% endfor %}
+
+    </div>
+
+    <!-- Regresar -->
+    <a
+      href="{% url 'administrador:inicio' %}"
+      class="inline-flex items-center gap-2 mt-10 text-sm font-semibold text-white/60 hover:text-gym-red uppercase tracking-wider transition-colors">
+
+      <span aria-hidden="true">←</span>
+      Volver al panel
     </a>
+
   </div>
 </section>
 
@@ -53,12 +180,36 @@
   .form-input {
     width: 100%;
     background: #171614;
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 0.5rem;
-    padding: 0.5rem 0.75rem;
-    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 0.75rem;
+    padding: 0.8rem 1rem;
+    color: #ffffff;
     font-size: 0.875rem;
+    line-height: 1.5;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      background-color 0.2s ease;
   }
-  .form-input:focus { outline: none; border-color: #dc2626; }
+
+  .form-input:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .form-input:focus {
+    outline: none;
+    border-color: #dc2626;
+    background: #1c1917;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+  }
+
+  textarea.form-input {
+    resize: vertical;
+    min-height: 7rem;
+  }
+
+  input[type="checkbox"] {
+    accent-color: #dc2626;
+  }
 </style>
 {% endblock %}

@@ -2,81 +2,188 @@
 {% block title %}| Panel del cliente{% endblock %}
 
 {% block content %}
-<section class="min-h-screen bg-gym-black pt-32 pb-20 px-6 sm:px-10">
+<section class="min-h-screen bg-gym-black pt-28 sm:pt-32 pb-20 px-4 sm:px-8 lg:px-10">
   <div class="max-w-7xl mx-auto">
 
-    <div class="reveal mb-12">
-      <p class="text-gym-red text-sm font-semibold uppercase tracking-widest mb-2">Bienvenido de nuevo</p>
-      <h1 class="font-display text-5xl sm:text-6xl text-white tracking-wide">
-        Hola, {{ request.user.first_name|default:request.user.username }}
-      </h1>
-      <p class="text-white/50 text-base mt-3 max-w-xl">
-        Administra tu membresía, tu acceso QR y tus compras desde un solo lugar.
-      </p>
+    <!-- Encabezado -->
+    <div class="reveal mb-10 sm:mb-14">
+      <div class="max-w-3xl">
+        <p class="text-gym-red text-xs sm:text-sm font-semibold uppercase tracking-[0.25em] mb-3">
+          Bienvenido de nuevo
+        </p>
+
+        <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl text-white tracking-wide leading-tight">
+          Hola, {{ request.user.first_name|default:request.user.username }}
+        </h1>
+
+        <p class="text-white/50 text-sm sm:text-base mt-4 max-w-2xl leading-relaxed">
+          Administra tu membresía, tu acceso QR y tus compras desde un solo lugar.
+        </p>
+      </div>
     </div>
 
-    <div class="reveal grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+    <!-- Resumen de cuenta -->
+    <div class="reveal mb-10">
+      <div class="flex items-center gap-3 mb-5">
+        <span class="w-8 h-px bg-gym-red"></span>
+        <h2 class="text-white/70 text-xs font-semibold uppercase tracking-[0.2em]">
+          Resumen de tu cuenta
+        </h2>
+      </div>
 
-      <div class="bg-gym-surface border border-white/5 rounded-2xl p-8 hover:border-gym-red/30 transition-all duration-300">
-        <div class="flex items-center gap-3 mb-4">
-          <div class="w-11 h-11 rounded-lg bg-gym-red/10 flex items-center justify-center">
-            <i data-lucide="badge-check" class="w-5 h-5 text-gym-red"></i>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-6">
+
+        <!-- Membresía -->
+        <article class="group bg-gym-surface border border-white/5 rounded-2xl p-6 sm:p-8 hover:border-gym-red/30 transition-all duration-300">
+          <div class="flex items-start justify-between gap-4 mb-7">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 rounded-xl bg-gym-red/10 flex items-center justify-center shrink-0">
+                <i data-lucide="badge-check" class="w-5 h-5 text-gym-red"></i>
+              </div>
+
+              <div>
+                <p class="text-white/40 text-xs uppercase tracking-widest mb-1">
+                  Estado actual
+                </p>
+                <h3 class="font-display text-2xl text-white tracking-wide">
+                  Mi membresía
+                </h3>
+              </div>
+            </div>
+
+            <i data-lucide="arrow-up-right"
+               class="w-5 h-5 text-white/20 group-hover:text-gym-red transition-colors duration-300">
+            </i>
           </div>
-          <h3 class="font-display text-2xl text-white tracking-wide">Mi membresía</h3>
-        </div>
 
-        {% if membresia %}
-          <p class="text-white text-lg font-semibold mb-1">{{ membresia.tipo.get_nombre_display }}</p>
-          <p class="text-white/50 text-sm">Vence: {{ membresia.fecha_fin }}</p>
-          <span class="inline-block mt-4 text-xs {% if membresia.activa %}text-gym-gold border-gym-gold/30{% else %}text-white/40 border-white/20{% endif %} border rounded-full px-3 py-1 uppercase tracking-wider">
-            {% if membresia.activa %}Activa{% else %}Inactiva{% endif %}
+          <div class="border-t border-white/5 pt-5">
+            {% if membresia %}
+              <p class="text-white text-lg font-semibold mb-2">
+                {{ membresia.tipo.get_nombre_display }}
+              </p>
+
+              <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
+                <p class="text-white/50 text-sm">
+                  Vence: {{ membresia.fecha_fin }}
+                </p>
+
+                <span class="text-xs
+                  {% if membresia.activa %}
+                    text-gym-gold border-gym-gold/30 bg-gym-gold/5
+                  {% else %}
+                    text-white/40 border-white/20 bg-white/5
+                  {% endif %}
+                  border rounded-full px-3 py-1 uppercase tracking-wider">
+                  {% if membresia.activa %}Activa{% else %}Inactiva{% endif %}
+                </span>
+              </div>
+            {% else %}
+              <p class="text-white/50 text-sm leading-relaxed mb-5">
+                No tienes una membresía activa en este momento.
+              </p>
+
+              <a href="{% url 'cliente:mi_membresia' %}"
+                 class="inline-flex items-center gap-2 text-sm font-semibold text-gym-red hover:text-red-400 uppercase tracking-wider transition-colors">
+                Elegir un plan
+                <span aria-hidden="true">→</span>
+              </a>
+            {% endif %}
+          </div>
+        </article>
+
+        <!-- Carrito -->
+        <article class="group bg-gym-surface border border-white/5 rounded-2xl p-6 sm:p-8 hover:border-gym-red/30 transition-all duration-300">
+          <div class="flex items-start justify-between gap-4 mb-7">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 rounded-xl bg-gym-red/10 flex items-center justify-center shrink-0">
+                <i data-lucide="shopping-cart" class="w-5 h-5 text-gym-red"></i>
+              </div>
+
+              <div>
+                <p class="text-white/40 text-xs uppercase tracking-widest mb-1">
+                  Compras pendientes
+                </p>
+                <h3 class="font-display text-2xl text-white tracking-wide">
+                  Carrito
+                </h3>
+              </div>
+            </div>
+
+            <i data-lucide="arrow-up-right"
+               class="w-5 h-5 text-white/20 group-hover:text-gym-red transition-colors duration-300">
+            </i>
+          </div>
+
+          <div class="border-t border-white/5 pt-5">
+            {% if items_carrito > 0 %}
+              <p class="text-white text-lg font-semibold mb-3">
+                {{ items_carrito }} producto{{ items_carrito|pluralize }}
+              </p>
+
+              <a href="{% url 'cliente:ver_carrito' %}"
+                 class="inline-flex items-center gap-2 text-sm font-semibold text-gym-red hover:text-red-400 uppercase tracking-wider transition-colors">
+                Ver carrito
+                <span aria-hidden="true">→</span>
+              </a>
+            {% else %}
+              <p class="text-white/50 text-sm leading-relaxed">
+                Tu carrito está vacío por ahora.
+              </p>
+            {% endif %}
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+    <!-- Acciones rápidas -->
+    <div class="reveal">
+      <div class="flex items-center gap-3 mb-5">
+        <span class="w-8 h-px bg-gym-red"></span>
+        <h2 class="text-white/70 text-xs font-semibold uppercase tracking-[0.2em]">
+          Acciones rápidas
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+
+        <a href="{% url 'cliente:mi_qr' %}"
+           class="group flex items-center justify-between gap-4 bg-gym-red hover:bg-red-700 text-white font-semibold px-5 py-4 rounded-xl uppercase tracking-wider transition-all duration-200 hover:shadow-lg hover:shadow-gym-red/30">
+          <span class="flex items-center gap-3">
+            <i data-lucide="qr-code" class="w-4 h-4"></i>
+            <span>Ver mi QR</span>
           </span>
-        {% else %}
-          <p class="text-white/50 text-sm mb-4">No tienes una membresía activa en este momento.</p>
-          <a href="{% url 'cliente:mi_membresia' %}" class="inline-block text-sm font-semibold text-gym-red hover:text-red-400 uppercase tracking-wider">
-            Elegir un plan →
-          </a>
-        {% endif %}
+
+          <span class="text-white/60 group-hover:text-white transition-colors" aria-hidden="true">
+            →
+          </span>
+        </a>
+
+        <a href="{% url 'cliente:mi_membresia' %}"
+           class="group flex items-center justify-between gap-4 border border-white/20 text-white font-semibold px-5 py-4 rounded-xl uppercase tracking-wider hover:border-gym-red hover:text-gym-red transition-all duration-200">
+          <span class="flex items-center gap-3">
+            <i data-lucide="id-card" class="w-4 h-4"></i>
+            <span>Mi membresía</span>
+          </span>
+
+          <span class="text-white/30 group-hover:text-gym-red transition-colors" aria-hidden="true">
+            →
+          </span>
+        </a>
+
+        <a href="{% url 'cliente:tienda' %}"
+           class="group flex items-center justify-between gap-4 border border-white/20 text-white font-semibold px-5 py-4 rounded-xl uppercase tracking-wider hover:border-gym-red hover:text-gym-red transition-all duration-200">
+          <span class="flex items-center gap-3">
+            <i data-lucide="store" class="w-4 h-4"></i>
+            <span>Tienda</span>
+          </span>
+
+          <span class="text-white/30 group-hover:text-gym-red transition-colors" aria-hidden="true">
+            →
+          </span>
+        </a>
+
       </div>
-
-      <div class="bg-gym-surface border border-white/5 rounded-2xl p-8 hover:border-gym-red/30 transition-all duration-300">
-        <div class="flex items-center gap-3 mb-4">
-          <div class="w-11 h-11 rounded-lg bg-gym-red/10 flex items-center justify-center">
-            <i data-lucide="shopping-cart" class="w-5 h-5 text-gym-red"></i>
-          </div>
-          <h3 class="font-display text-2xl text-white tracking-wide">Carrito</h3>
-        </div>
-
-        {% if items_carrito > 0 %}
-          <p class="text-white text-lg font-semibold mb-1">{{ items_carrito }} producto{{ items_carrito|pluralize }}</p>
-          <a href="{% url 'cliente:ver_carrito' %}" class="inline-block text-sm font-semibold text-gym-red hover:text-red-400 uppercase tracking-wider mt-2">
-            Ver carrito →
-          </a>
-        {% else %}
-          <p class="text-white/50 text-sm">Tu carrito está vacío por ahora.</p>
-        {% endif %}
-      </div>
-
-    </div>
-
-    <div class="reveal grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <a href="{% url 'cliente:mi_qr' %}"
-         class="flex items-center justify-center gap-2 bg-gym-red hover:bg-red-700 text-white font-semibold py-4 rounded-lg uppercase tracking-wider transition-all duration-200 hover:shadow-lg hover:shadow-gym-red/30">
-        <i data-lucide="qr-code" class="w-4 h-4"></i>
-        Ver mi QR
-      </a>
-
-      <a href="{% url 'cliente:mi_membresia' %}"
-         class="flex items-center justify-center gap-2 border border-white/20 text-white font-semibold py-4 rounded-lg uppercase tracking-wider hover:border-gym-red hover:text-gym-red transition-all duration-200">
-        <i data-lucide="id-card" class="w-4 h-4"></i>
-        Mi membresía
-      </a>
-
-      <a href="{% url 'cliente:tienda' %}"
-         class="flex items-center justify-center gap-2 border border-white/20 text-white font-semibold py-4 rounded-lg uppercase tracking-wider hover:border-gym-red hover:text-gym-red transition-all duration-200">
-        <i data-lucide="store" class="w-4 h-4"></i>
-        Tienda
-      </a>
     </div>
 
   </div>

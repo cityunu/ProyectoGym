@@ -2,100 +2,288 @@
 {% block title %}| Ingresos{% endblock %}
 
 {% block content %}
-<section class="min-h-screen bg-gym-black pt-32 pb-20 px-6 sm:px-10">
-  <div class="max-w-6xl mx-auto">
+<section class="min-h-screen bg-gym-black pt-28 sm:pt-32 pb-20 px-4 sm:px-8 lg:px-10">
+  <div class="max-w-7xl mx-auto">
 
-    <div class="reveal mb-8">
-      <h1 class="font-display text-5xl text-white tracking-wide">Reporte de ingresos</h1>
-      <p class="text-white/50 text-sm mt-2">
-        Ventas de productos entre {{ desde }} y {{ hasta }}.
+    <!-- Encabezado -->
+    <div class="reveal mb-10 sm:mb-12">
+      <p class="text-gym-red text-xs sm:text-sm font-semibold uppercase tracking-[0.25em] mb-3">
+        Análisis financiero
+      </p>
+
+      <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl text-white tracking-wide leading-tight">
+        Reporte de ingresos
+      </h1>
+
+      <p class="text-white/50 text-sm mt-4">
+        Ventas de productos entre
+        <span class="text-white/70">{{ desde }}</span>
+        y
+        <span class="text-white/70">{{ hasta }}</span>.
       </p>
     </div>
 
+    <!-- Filtros -->
     <div class="reveal mb-6">
-      <form method="get" class="grid grid-cols-1 sm:grid-cols-4 gap-3 items-end bg-gym-surface border border-white/10 rounded-2xl p-4">
+      <form
+        method="get"
+        class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end bg-gym-surface border border-white/10 rounded-2xl p-5 sm:p-6">
+
         <div>
-          <label class="block text-white/60 text-xs uppercase tracking-wider mb-1">Desde</label>
-          <input type="date" name="desde" value="{{ desde }}"
-                 class="w-full bg-gym-black border border-white/15 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-gym-red">
+          <label
+            for="ingresos-desde"
+            class="flex items-center gap-2 text-white/60 text-xs uppercase tracking-wider mb-2">
+
+            <i data-lucide="calendar-days" class="w-4 h-4 text-gym-red"></i>
+            Desde
+          </label>
+
+          <input
+            id="ingresos-desde"
+            type="date"
+            name="desde"
+            value="{{ desde }}"
+            class="income-input">
         </div>
+
         <div>
-          <label class="block text-white/60 text-xs uppercase tracking-wider mb-1">Hasta</label>
-          <input type="date" name="hasta" value="{{ hasta }}"
-                 class="w-full bg-gym-black border border-white/15 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-gym-red">
+          <label
+            for="ingresos-hasta"
+            class="flex items-center gap-2 text-white/60 text-xs uppercase tracking-wider mb-2">
+
+            <i data-lucide="calendar-clock" class="w-4 h-4 text-gym-red"></i>
+            Hasta
+          </label>
+
+          <input
+            id="ingresos-hasta"
+            type="date"
+            name="hasta"
+            value="{{ hasta }}"
+            class="income-input">
         </div>
-        <div class="sm:col-span-2 flex gap-3 justify-end">
-          <button type="submit"
-                  class="bg-gym-red hover:bg-red-700 text-white font-semibold px-5 py-2 rounded-lg uppercase tracking-wider text-xs transition-all duration-200">
+
+        <div class="md:col-span-2 flex flex-col sm:flex-row gap-3 md:justify-end">
+          <button
+            type="submit"
+            class="inline-flex items-center justify-center gap-2 bg-gym-red hover:bg-red-700 text-white font-semibold px-5 py-3 rounded-xl uppercase tracking-wider text-xs transition-all duration-200">
+
+            <i data-lucide="filter" class="w-4 h-4"></i>
             Filtrar
           </button>
-          <a href="{% url 'administrador:historial_ventas' %}"
-             class="border border-white/20 text-white/70 font-semibold px-5 py-2 rounded-lg uppercase tracking-wider text-xs hover:border-gym-red hover:text-gym-red transition-all duration-200">
+
+          <a
+            href="{% url 'administrador:historial_ventas' %}"
+            class="inline-flex items-center justify-center gap-2 border border-white/20 text-white/70 font-semibold px-5 py-3 rounded-xl uppercase tracking-wider text-xs hover:border-gym-red hover:text-gym-red transition-all duration-200">
+
+            <i data-lucide="history" class="w-4 h-4"></i>
             Ver historial
           </a>
         </div>
+
       </form>
     </div>
 
+    <!-- Resumen -->
     <div class="reveal grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-      <div class="bg-gym-surface border border-white/10 rounded-2xl p-4">
-        <p class="text-white/50 text-xs uppercase tracking-widest mb-2">Total del periodo</p>
-        <p class="font-display text-3xl text-gym-gold">${{ total_periodo }}</p>
+
+      <div class="bg-gym-surface border border-white/10 rounded-2xl p-5 sm:p-6">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <p class="text-white/50 text-xs uppercase tracking-widest mb-2">
+              Total del periodo
+            </p>
+
+            <p class="font-display text-3xl text-gym-gold">
+              ${{ total_periodo }}
+            </p>
+          </div>
+
+          <div class="w-11 h-11 rounded-xl bg-gym-gold/10 flex items-center justify-center">
+            <i data-lucide="wallet" class="w-5 h-5 text-gym-gold"></i>
+          </div>
+        </div>
       </div>
-      <div class="bg-gym-surface border border-white/10 rounded-2xl p-4">
-        <p class="text-white/50 text-xs uppercase tracking-widest mb-2">Número de ventas</p>
-        <p class="font-display text-3xl text-white">{{ cantidad_ventas }}</p>
+
+      <div class="bg-gym-surface border border-white/10 rounded-2xl p-5 sm:p-6">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <p class="text-white/50 text-xs uppercase tracking-widest mb-2">
+              Número de ventas
+            </p>
+
+            <p class="font-display text-3xl text-white">
+              {{ cantidad_ventas }}
+            </p>
+          </div>
+
+          <div class="w-11 h-11 rounded-xl bg-gym-red/10 flex items-center justify-center">
+            <i data-lucide="receipt-text" class="w-5 h-5 text-gym-red"></i>
+          </div>
+        </div>
       </div>
-      <div class="bg-gym-surface border border-white/10 rounded-2xl p-4">
-        <p class="text-white/50 text-xs uppercase tracking-widest mb-2">Promedio por venta</p>
-        <p class="font-display text-3xl text-white">
-          ${{ promedio_venta|floatformat:2 }}
-        </p>
+
+      <div class="bg-gym-surface border border-white/10 rounded-2xl p-5 sm:p-6">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <p class="text-white/50 text-xs uppercase tracking-widest mb-2">
+              Promedio por venta
+            </p>
+
+            <p class="font-display text-3xl text-white">
+              ${{ promedio_venta|floatformat:2 }}
+            </p>
+          </div>
+
+          <div class="w-11 h-11 rounded-xl bg-white/5 flex items-center justify-center">
+            <i data-lucide="chart-no-axes-column-increasing" class="w-5 h-5 text-white/60"></i>
+          </div>
+        </div>
       </div>
+
     </div>
 
+    <!-- Tabla -->
     <div class="reveal bg-gym-surface border border-white/10 rounded-2xl overflow-hidden">
-      <table class="w-full text-left text-sm">
-        <thead class="bg-gym-surface2 text-white/50 uppercase text-xs tracking-wider">
-          <tr>
-            <th class="p-4">Fecha</th>
-            <th class="p-4">Cliente</th>
-            <th class="p-4">Productos</th>
-            <th class="p-4">Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for venta in ventas %}
-          <tr class="border-t border-white/5">
-            <td class="p-4 text-white/60">
-              {{ venta.fecha|date:"d/m/Y H:i" }}
-            </td>
-            <td class="p-4 text-white">
-              {{ venta.cliente.get_full_name|default:venta.cliente.username|default:"Venta general" }}
-            </td>
-            <td class="p-4 text-white/60 text-xs">
-              {% for d in venta.detalles.all %}
-                {{ d.producto.nombre }} x{{ d.cantidad }}{% if not forloop.last %}, {% endif %}
-              {% endfor %}
-            </td>
-            <td class="p-4 text-gym-gold font-display text-xl">
-              ${{ venta.total }}
-            </td>
-          </tr>
-          {% empty %}
-          <tr>
-            <td colspan="4" class="p-8 text-center text-white/40">
-              No hay ventas en el periodo seleccionado.
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+
+      <div class="px-5 sm:px-7 py-5 border-b border-white/5 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
+          <i data-lucide="chart-column" class="w-5 h-5 text-white/60"></i>
+        </div>
+
+        <div>
+          <h2 class="font-display text-xl sm:text-2xl text-white tracking-wide">
+            Detalle de ingresos
+          </h2>
+
+          <p class="text-white/40 text-xs sm:text-sm mt-1">
+            Ventas incluidas en el periodo seleccionado.
+          </p>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-[850px] text-left text-sm">
+
+          <thead class="bg-gym-surface2 text-white/50 uppercase text-xs tracking-wider">
+            <tr>
+              <th scope="col" class="px-5 sm:px-6 py-4 font-semibold">
+                Fecha
+              </th>
+
+              <th scope="col" class="px-5 sm:px-6 py-4 font-semibold">
+                Cliente
+              </th>
+
+              <th scope="col" class="px-5 sm:px-6 py-4 font-semibold">
+                Productos
+              </th>
+
+              <th scope="col" class="px-5 sm:px-6 py-4 font-semibold">
+                Total
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for venta in ventas %}
+              <tr class="border-t border-white/5 hover:bg-white/[0.02] transition-colors duration-200">
+
+                <td class="px-5 sm:px-6 py-5 text-white/60 whitespace-nowrap">
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="calendar-clock" class="w-4 h-4 text-white/40"></i>
+                    {{ venta.fecha|date:"d/m/Y H:i" }}
+                  </div>
+                </td>
+
+                <td class="px-5 sm:px-6 py-5 text-white">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-gym-red/10 flex items-center justify-center">
+                      <i data-lucide="user" class="w-4 h-4 text-gym-red"></i>
+                    </div>
+
+                    <span>
+                      {{ venta.cliente.get_full_name|default:venta.cliente.username|default:"Venta general" }}
+                    </span>
+                  </div>
+                </td>
+
+                <td class="px-5 sm:px-6 py-5 text-white/60 text-xs max-w-sm">
+                  <div class="space-y-1">
+                    {% for d in venta.detalles.all %}
+                      <p>
+                        {{ d.producto.nombre }}
+                        <span class="text-white/30">×{{ d.cantidad }}</span>
+                      </p>
+                    {% endfor %}
+                  </div>
+                </td>
+
+                <td class="px-5 sm:px-6 py-5">
+                  <span class="font-display text-xl text-gym-gold">
+                    ${{ venta.total }}
+                  </span>
+                </td>
+
+              </tr>
+
+            {% empty %}
+
+              <tr>
+                <td colspan="4" class="px-6 py-16 text-center">
+                  <div class="w-16 h-16 mx-auto rounded-2xl bg-gym-red/10 flex items-center justify-center mb-6">
+                    <i data-lucide="chart-no-axes-column" class="w-8 h-8 text-gym-red"></i>
+                  </div>
+
+                  <h2 class="font-display text-2xl sm:text-3xl text-white tracking-wide mb-3">
+                    No hay ventas en el periodo
+                  </h2>
+
+                  <p class="text-white/40 text-sm">
+                    No se encontraron ingresos para las fechas seleccionadas.
+                  </p>
+                </td>
+              </tr>
+
+            {% endfor %}
+          </tbody>
+
+        </table>
+      </div>
+
     </div>
 
-    <a href="{% url 'administrador:inicio' %}" class="inline-block mt-10 text-sm font-semibold text-white/60 hover:text-gym-red uppercase tracking-wider">
-      ← Volver al panel
+    <a
+      href="{% url 'administrador:inicio' %}"
+      class="inline-flex items-center gap-2 mt-10 text-sm font-semibold text-white/60 hover:text-gym-red uppercase tracking-wider transition-colors">
+
+      <span aria-hidden="true">←</span>
+      Volver al panel
     </a>
+
   </div>
 </section>
+
+<style>
+  .income-input {
+    width: 100%;
+    background: #0f0f0f;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 0.75rem;
+    padding: 0.8rem 0.9rem;
+    color: #ffffff;
+    font-size: 0.875rem;
+  }
+
+  .income-input:focus {
+    outline: none;
+    border-color: #dc2626;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+  }
+
+  .income-input::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+  }
+</style>
 {% endblock %}
